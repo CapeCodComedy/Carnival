@@ -14,7 +14,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 44, t2: 33, balc: 35 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",

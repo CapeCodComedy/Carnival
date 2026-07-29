@@ -370,7 +370,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     <div>
       <section class="map-card">
         <h2 style="padding:0 10px">Pick your seats</h2>
-        <p class="sub" style="padding:0 10px">Prices by section: Orchestra <b class="mono" style="color:var(--glow)">$88</b> · Tier 1 <b class="mono" style="color:var(--glow)">$44</b> · Tier 2 <b class="mono" style="color:var(--glow)">$33</b> · Balcony <b class="mono" style="color:var(--glow)">$35</b> — plus a $3 card fee per seat, shown plainly in your stub (it goes to the card processor, not to us). One section per checkout.</p>
+        <p class="sub" style="padding:0 10px">Prices by section: Orchestra <b class="mono" style="color:var(--glow)">$88</b> · Tier 1 <b class="mono" style="color:var(--glow)">$66</b> · Tier 2 <b class="mono" style="color:var(--glow)">$55</b> · Balcony <b class="mono" style="color:var(--glow)">$35</b> — plus a $3 card fee per seat, shown plainly in your stub (it goes to the card processor, not to us). One section per checkout.</p>
         <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
         <div class="legend">
           <span><i style="background:var(--bone)"></i>Available</span>
@@ -500,7 +500,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 44, t2: 33, balc: 35 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
