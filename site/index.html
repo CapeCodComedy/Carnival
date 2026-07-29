@@ -796,7 +796,7 @@ function buildSeatMap(svg, opts){
   const open = () => { g.hidden = true; site.style.visibility = "visible"; boot(); };
   if (!CONFIG.gate.enabled){
     $("#modeChip").textContent = "ON SALE NOW"; $("#modeChip").classList.remove("warn"); $("#modeChip").classList.add("live");
-    open(); return;
+    setTimeout(open, 0); return;   // after this script finishes initializing — never mid-parse
   }
   g.hidden = false;
   const tryPw = () => {
