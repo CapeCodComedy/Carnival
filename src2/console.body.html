@@ -1,0 +1,66 @@
+<div id="gate" hidden>
+  <div class="g-box">
+    <div class="org">THE 1140A CORPORATION · CREW ONLY</div>
+    <h1>BOX OFFICE<br><span class="amp">CONSOLE</span></h1>
+    <p>Enter the admin token (the same one set as ADMIN_TOKEN on the server).</p>
+    <input id="gatePw" type="password" autocomplete="off" placeholder="admin token" aria-label="Admin token">
+    <button id="gateGo">Open the booth</button>
+    <div class="g-err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="wrap" id="site" style="visibility:hidden">
+  <header class="site">
+    <div class="head-left">
+      <div class="org">THE 1140A CORPORATION PRESENTS</div>
+      <h1>BOX OFFICE <span class="amp">CONSOLE</span></h1>
+      <div class="when">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · LIVE STORE</div>
+    </div>
+    <div class="head-right">
+      <span class="chip live" id="liveChip">LIVE · READS THE SAME STORE AS THE MAP</span>
+      <span class="chip" id="countChip"></span>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-pane="dash">Numbers</button>
+    <button class="tab" data-pane="seats">Seat manager</button>
+    <button class="tab" data-pane="ops">House moves</button>
+  </div>
+
+  <div class="pane on" id="pane-dash">
+    <div class="stats" id="statTiles"></div>
+    <div class="chart-box">
+      <h3>Ledger proof — from the live store, on demand</h3>
+      <pre class="io" id="ledgerBox" style="min-height:120px;white-space:pre-wrap">press PROVE</pre>
+      <div class="btn-row" style="justify-content:flex-start"><button class="btn primary" id="proveBtn">Prove the closing identity</button></div>
+      <p class="hint">Money truth lives in the Stripe dashboard (one settlement stream — no second platform to sum). This console proves seats; Stripe proves dollars.</p>
+    </div>
+  </div>
+
+  <div class="pane" id="pane-seats">
+    <p class="sub">INSPECT is the default — tap any seat and it says exactly what it is. Action tools write straight to the live store; the buyer map sees it within seconds.</p>
+    <div class="seat-tools" id="toolTools"></div>
+    <section class="map-card">
+      <div class="map-scroll"><svg id="adminMap" role="group" aria-label="Admin seat map"></svg></div>
+      <div class="legend">
+        <span><i style="background:var(--bone)"></i>Open</span>
+        <span><i style="background:var(--sold)"></i>Sold / buyer holding</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #e6c069"></i>Sponsor</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #8fd9c9"></i>House comp</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #f5b445"></i>Marketing</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #c07fb0"></i>Charity</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #7f96d9"></i>Companion</span>
+        <span><i style="background:var(--held);box-shadow:0 0 0 1.5px #7fb069"></i>Volunteer</span>
+      </div>
+      <p class="hint" id="seatMsg" style="padding:0 10px 8px">Tap a seat with INSPECT selected to identify it.</p>
+    </section>
+  </div>
+
+  <div class="pane" id="pane-ops">
+    <div class="action-list" id="actionList"></div>
+  </div>
+
+  <footer><p class="mono" style="opacity:.7">CONSOLE · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
+</div>
+<div id="toast" role="status"></div>

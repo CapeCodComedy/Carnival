@@ -1,0 +1,146 @@
+<div id="gate" hidden>
+  <div class="g-box">
+    <div class="org">THE 1140A CORPORATION</div>
+    <h1>DOORS<br><span class="amp">NOT OPEN</span> YET</h1>
+    <p>This box office is in private testing. Enter the crew password to step inside.</p>
+    <input id="gatePw" type="password" autocomplete="off" placeholder="password" aria-label="Site password">
+    <button id="gateGo">Let me in</button>
+    <div class="g-err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="wrap" id="site" style="visibility:hidden">
+
+  <header class="site">
+    <div class="head-left">
+      <div class="org" id="orgName"></div>
+      <h1 id="evTitle"></h1>
+      <div class="when" id="evWhen"></div>
+    </div>
+    <div class="head-right">
+      <span class="chip warn" id="modeChip">TEST MODE · BEHIND PASSWORD</span>
+      <span class="chip">EVERY SEAT RESERVED · LIVE MAP</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>One ticket. The whole night. Your exact seat.</h2>
+    <p class="sub">Two headline sets — Brendan Sagalow and Mike Cannon — hosted by Jason Choi, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
+  </section>
+
+  <div class="cols">
+    <div>
+      <section class="map-card">
+        <h2 style="padding:0 10px">Pick your seats</h2>
+        <p class="sub" style="padding:0 10px">Prices by section: Orchestra <b class="mono" style="color:var(--glow)">$88</b> · Tier 1 <b class="mono" style="color:var(--glow)">$44</b> · Tier 2 <b class="mono" style="color:var(--glow)">$33</b> · Balcony <b class="mono" style="color:var(--glow)">$35</b> — plus a $3 card fee per seat, shown plainly in your stub (it goes to the card processor, not to us). One section per checkout.</p>
+        <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
+        <div class="legend">
+          <span><i style="background:var(--bone)"></i>Available</span>
+          <span><i style="background:var(--glow)"></i>Yours (held)</span>
+          <span><i style="background:var(--sold)"></i>Spoken for</span>
+          <span><i style="background:var(--bone);box-shadow:0 0 0 2px var(--gilt)"></i>Orchestra</span>
+          <span><i class="sq" style="background:var(--held);box-shadow:0 0 0 1.5px #7f96d9"></i>Wheelchair space</span>
+        </div>
+        <p class="hint" style="padding:0 10px 8px" id="liveNote">Map refreshes automatically.</p>
+      </section>
+    </div>
+
+    <aside class="stub" aria-label="Your order" id="stubBox">
+      <h2>Your stub</h2>
+      <p class="sub">Seats hold for a short spell while you decide — then they're locked to you all through payment.</p>
+      <ul id="cartList"></ul>
+      <div class="empty" id="cartEmpty">Nothing claimed yet — tap any open seat on the map.</div>
+      <div class="totals" id="totals"></div>
+      <div class="hold" id="holdRow" hidden>
+        <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
+        <div class="hbar"><b id="holdBar" style="width:100%"></b></div>
+      </div>
+      <button class="cta" id="checkoutBtn" disabled>Pay & lock seats</button>
+      <div class="fee-note" id="feeNote">Checkout is a secure Stripe payment page. Your seats stay held the whole time you're paying.</div>
+    </aside>
+  </div>
+
+  <div class="mature">
+    <h3>About the language — plainly, before you buy</h3>
+    <p>This is grown-up stand-up. Expect adult language and adult themes — roughly what late-night network television lets through, and nothing you wouldn't overhear on a busy street. It is <b>not</b> explicit-record territory: nothing risqué for its own sake, nobody in the crowd gets attacked. An evening ticketed show is an adult room by nature; we say this so no one is surprised, not to scare anyone off.</p>
+  </div>
+
+  <div class="mature" style="border-color:#3f4a3a;background:rgba(127,176,105,.05)">
+    <h3 style="color:#a6c99a">A note on the $3 — because we'd rather be upfront</h3>
+    <p>The $3 per seat is a card-processing fee charged by our payment processor, not by us. <b>The 1140A Corporation receives none of it</b> — it goes straight to the processor to cover the cost of taking your card safely. We pass it through at exact cost rather than hiding it inside a higher ticket price. Your ticket price is the ticket price.</p>
+  </div>
+
+  <section id="access">
+    <h2>Access, groups &amp; getting hold of us</h2>
+    <div class="contact-cats">
+      <button class="cat-btn" data-cat="groups"><b>Groups of more than eight</b><span>Nine or more and we'll block-seat the whole gang together — tell us your headcount.</span></button>
+      <button class="cat-btn" data-cat="wheelchair"><b>Wheelchair &amp; special assistance</b><span>Dedicated spaces with companion seats, $33 with the card fee waived — book right here.</span></button>
+      <button class="cat-btn" data-cat="asl"><b>ASL interpreter</b><span>Gladly arranged on request, no charge.</span></button>
+    </div>
+
+    <div class="cat-panel" id="cat-groups">
+      <h3>Bringing the whole crew?</h3>
+      <p>Orders cap at eight seats. For nine or more we hand-pick a block so nobody sits alone. Email us with your headcount and a phone number; we confirm seats before anything is charged.</p>
+      <a class="btn primary" id="mailGroups" href="#">Email the box office</a>
+    </div>
+
+    <div class="cat-panel" id="cat-wheelchair">
+      <h3>Wheelchair &amp; companion seating</h3>
+      <p>Dedicated wheelchair spaces sit on the <b>Tier 2 cross-aisle (row K)</b>, marked ♿ on the map, each pairable with an adjacent companion seat. Both price at $33 with the $3 card fee waived — access never costs extra here. Tap a ♿ space on the map (or the button below), read the short terms, and pay — same live, instant reservation as every other seat.</p>
+      <p class="fine">A kind reminder for the night: if you park in the Special Access lot, please display your accessible-parking placard or plate where it can be seen.</p>
+      <div class="notice-line">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
+      <p class="fine">"May" means exactly that — a possibility, and if it happens, a polite request from a volunteer.</p>
+      <div class="btn-row" style="justify-content:flex-start;margin-top:12px">
+        <button class="btn primary" id="openAccessible">Book a wheelchair space</button>
+        <a class="btn" id="mailWheel" href="#">Questions? Email us</a>
+      </div>
+    </div>
+
+    <div class="cat-panel" id="cat-asl">
+      <h3>ASL interpretation — offered, gladly</h3>
+      <p>If you or someone in your party is deaf or hard of hearing, we will arrange a qualified ASL interpreter at no charge. Ask by mid-August so we can book well and set your sightlines properly.</p>
+      <a class="btn primary" id="mailAsl" href="#">Request an interpreter</a>
+    </div>
+
+    <p class="fine" style="margin-top:16px;color:var(--dim)">Anyone requiring accommodations to attend this event should contact the Licensee, The 1140A Corporation, at <span class="mono" id="mailPlain2"></span> — we will arrange them.</p>
+  </section>
+
+  <footer>
+    <p><b>The 1140A Corporation</b> is a Massachusetts non-profit. Every seat is reserved and sold by this site directly — the map you see is the box office itself, live.</p>
+    <p>Your ticket's QR code is your <b>entry credential</b> — one of a kind, scanned at the door, dead on arrival if copied. Keep it on your phone or printed.</p>
+    <p>Questions, accommodations, anything: <span class="mono" id="mailPlain3"></span> · <span class="mono">1140A.com</span></p>
+    <p class="mono" style="opacity:.55">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · CAPE COD COMMUNITY COLLEGE · WEST BARNSTABLE, MA</p>
+  </footer>
+</div>
+
+<div id="miniBar"><span id="mbCount"></span><span class="mb-total" id="mbTotal"></span><button id="mbGo">Pay</button></div>
+
+<div id="veil"></div>
+
+<div class="modal" id="termsModal" role="dialog" aria-modal="true" aria-label="Wheelchair seating terms">
+  <div class="box">
+    <button class="close" data-close="termsModal" aria-label="Close">×</button>
+    <h2 style="font-family:'Big Shoulders';letter-spacing:.04em">Wheelchair seating — the short terms</h2>
+    <p class="sub">Three terms, in plain English. When the end of the terms is on your screen, the agree button wakes.</p>
+    <div class="terms-scroll" id="termsScroll">
+      <h3>What you're booking</h3>
+      <p>A dedicated wheelchair space on the Tier 2 cross-aisle (row K), sized for a wheelchair or mobility device, with clear sightlines and an aisle-side approach. Each space can pair with one adjacent <b>companion seat</b>. Both price at the ordinary Tier 2 rate with the card fee waived — access never costs extra here.</p>
+      <h3>The terms</h3>
+      <p><b>1.</b> Wheelchair spaces exist for patrons who attend in a wheelchair or mobility device. Booking one is your statement that it's for such a patron in your party. Nobody will ever ask you for proof of disability — not at checkout, not at the door.</p>
+      <p><b>2.</b> The space itself is the seat: it fits a wheelchair, and it is where the wheelchair parks for the show.</p>
+      <p><b>3.</b> A ticket obtained by <b>misrepresentation</b> is <b>void and non-refundable</b> — the wheelchair space and its paired companion seat are both forfeit (just the single seat, if booked alone). There is nothing to chase and nothing to dispute: the ticket is simply void, on terms you read right here.</p>
+      <h3>Parking, while we have you</h3>
+      <div class="notice">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
+      <p>A kind request, not a demand: display your placard or plate where the volunteer can spot it. "May be asked" means exactly that.</p>
+      <p class="fine" style="color:var(--dim)">— end of terms. Thanks for actually reading.</p>
+    </div>
+    <div class="scroll-hint" id="scrollHint">▼ scroll to the very end to wake the agree button ▼</div>
+    <div style="margin-bottom:10px" id="wcChoiceBox"></div>
+    <div class="btn-row">
+      <button class="btn" data-close="termsModal">Not now</button>
+      <button class="btn primary" id="agreeBtn" disabled>I agree — book it</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>

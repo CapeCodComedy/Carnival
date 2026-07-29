@@ -1,0 +1,13 @@
+{
+  "name": "carnival-box-office",
+  "version": "2.0.0",
+  "private": true,
+  "description": "The Cape Cod Comedy Carnival — all-Stripe reserved-seat box office (the map IS the box office)",
+  "dependencies": {
+    "@upstash/redis": "^1.34.0",
+    "stripe": "^16.0.0"
+  },
+  "devDependencies": {
+    "ioredis": "^5.4.0"
+  }
+}

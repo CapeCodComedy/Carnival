@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Door Scan — Cape Cod Comedy Carnival</title>
+<!-- v2: server-verified single scan across ALL door devices via /api/scan.
+     Offline fallback: checksum + this-device dedupe. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#171a2b; --ink-2:#20243a; --line:#31364f; --bone:#d8d3c5; --dim:#8d8fa3;
+         --glow:#f5b445; --gilt:#e6c069; --ok:#7fb069; --danger:#e2694f; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;font-size:15px;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto;padding:22px 16px 80px}
+  .org{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  h1{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:42px;line-height:.95;color:#fff;margin:4px 0 2px}
+  h1 span{color:var(--glow)}
+  .sub{font-size:13px;color:var(--dim);margin-bottom:18px}
+  .panel{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+  input{width:100%;padding:13px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:15px;letter-spacing:.06em}
+  input:focus{outline:none;border-color:var(--glow)}
+  .btn{padding:12px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--bone);font-family:'Archivo';font-weight:600;font-size:14px;cursor:pointer}
+  .btn:hover{border-color:var(--glow);color:var(--glow)}
+  .btn.primary{background:var(--glow);border-color:var(--glow);color:var(--ink)}
+  .btn-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+  #result{border-radius:12px;padding:22px 18px;margin:14px 0;display:none;text-align:center}
+  #result.ok{display:block;background:#1d2b1a;border:2px solid var(--ok)}
+  #result.dupe{display:block;background:#2b241a;border:2px solid var(--glow)}
+  #result.bad{display:block;background:#2b1d1a;border:2px solid var(--danger)}
+  #result .verdict{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:44px;letter-spacing:.03em;line-height:1}
+  #result.ok .verdict{color:var(--ok)} #result.dupe .verdict{color:var(--glow)} #result.bad .verdict{color:var(--danger)}
+  #result .detail{font-family:'Spline Sans Mono',monospace;font-size:16px;margin-top:8px;color:#fff}
+  #result .why{font-size:12px;color:var(--dim);margin-top:6px}
+  video{width:100%;border-radius:10px;background:#000;display:none;margin-top:10px}
+  .hint{font-size:12px;color:var(--dim);margin-top:8px}
+  .log{font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--dim);border-top:1px dotted var(--line);margin-top:10px;padding-top:8px;max-height:150px;overflow:auto}
+  .log div{padding:2px 0}
+  a{color:var(--glow)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="org">THE 1140A CORPORATION · CREW ONLY</div>
+  <h1>DOOR <span>SCAN</span></h1>
+  <p class="sub">One credential type for the whole house — every ticket is a reserved seat. First scan admits and shows the seat; re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
+
+  <div class="panel">
+    <label for="codeIn">Scan result / ticket code</label>
+    <input id="codeIn" placeholder="CCC-XXXX-XXXXX" autocomplete="off">
+    <div class="btn-row">
+      <button class="btn primary" id="checkBtn">Check ticket</button>
+      <button class="btn" id="camBtn">Scan with camera</button>
+    </div>
+    <video id="cam" playsinline muted></video>
+    <p class="hint" id="camHint"></p>
+  </div>
+
+  <div id="result" role="status">
+    <div class="verdict" id="verdict"></div>
+    <div class="detail" id="detail"></div>
+    <div class="why" id="why"></div>
+  </div>
+
+  <div class="panel">
+    <label>Door log — this device</label>
+    <div class="log" id="log"><div>— no scans yet —</div></div>
+  </div>
+
+  <p class="hint">If the lobby connection blips, the scanner falls back to checksum + this-device duplicate protection and says so. <a href="/admin.html">console</a> · <a href="/">buyer site</a></p>
+</div>
+
+<script>
+const ALPHA = "235689ACDEFHJKLMNPRTUVWXY";
+const localScanned = new Map();
+function checksumOk(code){
+  const m = /^CCC-([A-Z0-9]{4})-([A-Z0-9]{4})([A-Z0-9])$/.exec(code);
+  if (!m) return false;
+  const body = m[1] + m[2];
+  if ([...body].some(ch => ALPHA.indexOf(ch) < 0)) return false;
+  let sum = 0; [...body].forEach(ch => sum += ALPHA.indexOf(ch));
+  return ALPHA[sum % ALPHA.length] === m[3];
+}
+function show(kind, verdict, detail, why){
+  const r = document.getElementById("result");
+  r.className = ""; r.classList.add(kind); r.style.display = "block";
+  document.getElementById("verdict").textContent = verdict;
+  document.getElementById("detail").textContent = detail || "";
+  document.getElementById("why").textContent = why || "";
+  const log = document.getElementById("log");
+  if (log.firstChild && log.firstChild.textContent.startsWith("—")) log.innerHTML = "";
+  const d = document.createElement("div");
+  d.textContent = new Date().toLocaleTimeString() + " · " + verdict + (detail ? " · " + detail : "");
+  log.prepend(d);
+}
+async function check(raw){
+  let code = String(raw || "").trim().toUpperCase();
+  if (code.includes("|")) code = (code.split("|").find(p => p.startsWith("CCC-")) || code);
+  if (!code) return;
+  if (!checksumOk(code)){ show("bad", "VOID", code, "fails the checksum — copied or mistyped"); return; }
+  try {
+    const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }) });
+    const v = await r.json();
+    if (v.verdict === "VALID") show("ok", "VALID — ADMIT", "SEAT " + v.seat);
+    else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", "SEAT " + v.seat, "fine at re-entry, fishy at first entry");
+    else show("bad", "VOID", code, v.why || "not issued by this box office");
+  } catch (e) {
+    /* offline fallback: checksum passed; enforce single-scan on this device only */
+    if (localScanned.has(code)) show("dupe", "ALREADY IN (offline)", code, "first scanned " + localScanned.get(code) + " on this device");
+    else { localScanned.set(code, new Date().toLocaleTimeString()); show("ok", "VALID (offline mode)", code, "checksum OK — server unreachable; duplicate protection is this-device-only until it returns"); }
+  }
+}
+document.getElementById("checkBtn").addEventListener("click", () => check(document.getElementById("codeIn").value));
+document.getElementById("codeIn").addEventListener("keydown", e => { if (e.key === "Enter") check(e.target.value); });
+
+let stream = null, scanning = false;
+document.getElementById("camBtn").addEventListener("click", async () => {
+  const v = document.getElementById("cam"), hint = document.getElementById("camHint");
+  if (scanning){ stopCam(); return; }
+  if (!("BarcodeDetector" in window)){ hint.textContent = "This browser lacks a built-in QR detector — paste the code instead."; return; }
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    v.srcObject = stream; v.style.display = "block"; await v.play();
+    scanning = true;
+    document.getElementById("camBtn").textContent = "Stop camera";
+    const det = new BarcodeDetector({ formats: ["qr_code"] });
+    const loop = async () => {
+      if (!scanning) return;
+      try {
+        const codes = await det.detect(v);
+        if (codes.length){ document.getElementById("codeIn").value = codes[0].rawValue; check(codes[0].rawValue); stopCam(); return; }
+      } catch(e){}
+      requestAnimationFrame(loop);
+    };
+    loop();
+  } catch(e){ hint.textContent = "Camera unavailable (" + e.name + ") — paste the code instead."; }
+});
+function stopCam(){
+  scanning = false;
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  document.getElementById("cam").style.display = "none";
+  document.getElementById("camBtn").textContent = "Scan with camera";
+}
+</script>
+</body>
+</html>
