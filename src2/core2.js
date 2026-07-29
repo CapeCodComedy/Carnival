@@ -28,7 +28,7 @@ const CONFIG = {
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
   pollMs: 8000,            // map repaint cadence (matches CDN cache window)
   api: "/api",
-  gate: { enabled: true, password: "pitrow" }   // THE SWITCH — false = public
+  gate: { enabled: false, password: "pitrow" }   // THE SWITCH — false = public
 };
 
 /* ---------- house layout (venue chart — geometry only; state lives server-side) ---------- */
