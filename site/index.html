@@ -411,14 +411,14 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   <section id="access">
     <h2>Access, groups &amp; getting hold of us</h2>
     <div class="contact-cats">
-      <button class="cat-btn" data-cat="groups"><b>Groups of more than eight</b><span>Nine or more and we'll block-seat the whole gang together — tell us your headcount.</span></button>
+      <button class="cat-btn" data-cat="groups"><b>Groups of more than ten</b><span>Eleven or more and we'll block-seat the whole gang together — tell us your headcount.</span></button>
       <button class="cat-btn" data-cat="wheelchair"><b>Wheelchair &amp; special assistance</b><span>Dedicated spaces with companion seats, $33 with the card fee waived — book right here.</span></button>
       <button class="cat-btn" data-cat="asl"><b>ASL interpreter</b><span>Gladly arranged on request, no charge.</span></button>
     </div>
 
     <div class="cat-panel" id="cat-groups">
       <h3>Bringing the whole crew?</h3>
-      <p>Orders cap at eight seats. For nine or more we hand-pick a block so nobody sits alone. Email us with your headcount and a phone number; we confirm seats before anything is charged.</p>
+      <p>Orders cap at ten seats. For eleven or more we hand-pick a block so nobody sits alone. Email us with your headcount and a phone number; we confirm seats before anything is charged.</p>
       <a class="btn primary" id="mailGroups" href="#">Email the box office</a>
     </div>
 
@@ -504,7 +504,7 @@ const CONFIG = {
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
-  maxPerOrder: 8,
+  maxPerOrder: 10,
   zones: {
     orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
     t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
@@ -823,7 +823,7 @@ function boot(){
   $("#evWhen").textContent = CONFIG.event.when + " · WEST BARNSTABLE, CAPE COD";
   ["#mailPlain2","#mailPlain3"].forEach(id => { const n = $(id); if (n) n.textContent = CONFIG.event.contactEmail; });
   const M = CONFIG.event.contactEmail, EV = CONFIG.event.plainTitle + " (Sat Aug 29)";
-  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (nine or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
+  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (eleven or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
   $("#mailWheel").href  = `mailto:${M}?subject=${encodeURIComponent("WHEELCHAIR & ASSISTANCE · " + EV)}`;
   $("#mailAsl").href    = `mailto:${M}?subject=${encodeURIComponent("ASL INTERPRETER · " + EV)}`;
 
@@ -860,7 +860,7 @@ async function onSeatClick(id){
   }
   if (unavailable.has(id)){ toast("Gone — that one's spoken for."); return; }
   if (selected.size >= CONFIG.maxPerOrder){
-    toast("Orders cap at eight seats — for a bigger crew, use the Groups line below."); return;
+    toast("Orders cap at ten seats — for a bigger crew, use the Groups line below."); return;
   }
   const zone = seatZone[id];
   const existingZone = selected.size ? seatZone[[...selected][0]] : null;

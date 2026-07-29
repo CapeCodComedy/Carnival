@@ -95,6 +95,8 @@ const ord3 = await J('/api/order-status?sid=' + co3.sid);
 await J('/test/refund?pi=pi_mock_' + co3.sid.slice(-8));
 const st3 = await J('/api/seats-state');
 ok('refund reopens the seat', !st3.unavailable.includes('E-101'));
+const sDead = await api('scan', { code: ord3.codes['E-101'] });
+ok('door: refunded ticket scans VOID', sDead.verdict === 'VOID' && /refunded/.test(sDead.why));
 
 /* ---------- accessible flow: wc space + companion, $33 + $0 fee ---------- */
 const wc = await api('create-checkout', { holder: 'wheels', seats: ['K-WA', 'K-15'], accessible: true });
@@ -112,6 +114,9 @@ const s2 = await api('scan', { code });
 const s3 = await api('scan', { code: 'CCC-AAAA-AAAAA' });
 ok('door: first scan VALID with seat, re-scan ALREADY IN, tampered VOID',
    s1.verdict === 'VALID' && /H-10/.test(s1.seat) && s2.verdict === 'ALREADY IN' && s3.verdict === 'VOID');
+const compR = await A('marksold', { seats: ['C-1'] });
+const sComp = await api('scan', { code: compR.codes['C-1'] });
+ok('comp ticket scans VALID at the door', sComp.verdict === 'VALID' && sComp.seat === 'C-1');
 
 /* ---------- console ---------- */
 const conPage = await browser.newPage();

@@ -33,7 +33,7 @@ function boot(){
   $("#evWhen").textContent = CONFIG.event.when + " · WEST BARNSTABLE, CAPE COD";
   ["#mailPlain2","#mailPlain3"].forEach(id => { const n = $(id); if (n) n.textContent = CONFIG.event.contactEmail; });
   const M = CONFIG.event.contactEmail, EV = CONFIG.event.plainTitle + " (Sat Aug 29)";
-  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (nine or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
+  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (eleven or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
   $("#mailWheel").href  = `mailto:${M}?subject=${encodeURIComponent("WHEELCHAIR & ASSISTANCE · " + EV)}`;
   $("#mailAsl").href    = `mailto:${M}?subject=${encodeURIComponent("ASL INTERPRETER · " + EV)}`;
 
@@ -70,7 +70,7 @@ async function onSeatClick(id){
   }
   if (unavailable.has(id)){ toast("Gone — that one's spoken for."); return; }
   if (selected.size >= CONFIG.maxPerOrder){
-    toast("Orders cap at eight seats — for a bigger crew, use the Groups line below."); return;
+    toast("Orders cap at ten seats — for a bigger crew, use the Groups line below."); return;
   }
   const zone = seatZone[id];
   const existingZone = selected.size ? seatZone[[...selected][0]] : null;

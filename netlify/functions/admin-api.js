@@ -74,6 +74,8 @@ exports.handler = async (event) => {
     await store.finalize(holder, seats);
     const issued = Object.fromEntries((seats || []).map(id => [id, codes.gen()]));
     await store.putOrder("comp_" + holder, { holder, seats, status: "sold", codes: issued, comp: true, soldAt: Date.now() });
+    for (const [seatId, code] of Object.entries(issued))          // door-scan index — comps scan like any sale
+      await store.putOrder("code_" + code, { seat: seatId, sid: "comp_" + holder });
     return ok({ sold: seats, codes: issued });
   }
 

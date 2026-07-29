@@ -40,7 +40,7 @@ Switch `STRIPE_SECRET_KEY` to the live key, then: two phones on the live map →
 ## Laws encoded (do not loosen)
 - **Hold-TTL law:** hard hold 2100 s ≥ Stripe session 1800 s (`lib/house.json`). Never shorten the hold below the session.
 - **One conditional write** claims seats (`lib/store.js` Lua); **one webhook** finalizes; the webhook **re-verifies and auto-refunds** on conflict — a buyer can never silently pay for a taken chair.
-- **One tier per transaction**; 8 seats max; groups of nine-plus route to email.
+- **One tier per transaction**; 10 seats max; groups of eleven-plus route to email.
 - **Buyer-blind holds** (every unavailable seat looks simply sold); console sees categories.
 - **No digit 4** in anything the system authors (codes, timers, counts). Venue seat labels and owner-locked prices are the standing exemptions.
 - **$3 fee**: itemized, labeled not-ours, framed as transparency — in the cart, at Stripe, and on the receipt page.

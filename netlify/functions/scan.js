@@ -13,6 +13,10 @@ exports.handler = async (event) => {
   if (!codes.valid(code)) return resp({ verdict: "VOID", why: "fails checksum — copied or mistyped" });
   const rec = await store.getOrder("code_" + code);
   if (!rec) return resp({ verdict: "VOID", why: "code not issued by this box office" });
+  /* a refunded order's tickets die with it — the seat went back on sale */
+  const order = rec.sid ? await store.getOrder(rec.sid) : null;
+  if (order && String(order.status || "").startsWith("refunded"))
+    return resp({ verdict: "VOID", seat: rec.seat, why: "order was refunded — this ticket is no longer live" });
   const first = await store.onceEvent("scan_" + code, 7776000);
   if (!first) return resp({ verdict: "ALREADY IN", seat: rec.seat });
   return resp({ verdict: "VALID", seat: rec.seat });
