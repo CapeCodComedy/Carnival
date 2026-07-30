@@ -16,7 +16,7 @@
  "@context": "https://schema.org",
  "@type": "ComedyEvent",
  "name": "The Cape Cod Comedy Carnival",
- "description": "One night of stand-up at the Tilden Arts Center: Brendan Sagalow and Mike Cannon, hosted by Jason Choi \u2014 Saturday, August 29, 2026, 7:00 PM. Every seat reserved; pick your exact seat on the live map. A flat $3 card-processing fee per seat is passed through at cost.",
+ "description": "One night of stand-up at the Tilden Arts Center: Brendan Sagalow and Mike Cannon \u2014 Saturday, August 29, 2026, 7:00 PM. Every seat reserved; pick your exact seat on the live map. A flat $3 card-processing fee per seat is passed through at cost.",
  "startDate": "2026-08-29T19:00:00-04:00",
  "eventStatus": "https://schema.org/EventScheduled",
  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
@@ -40,10 +40,6 @@
   {
    "@type": "Person",
    "name": "Mike Cannon"
-  },
-  {
-   "@type": "Person",
-   "name": "Jason Choi"
   }
  ],
  "organizer": {
@@ -363,7 +359,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
   <section>
     <h2>One ticket. The whole night. Your exact seat.</h2>
-    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — hosted by JASON CHOI, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
+    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
   </section>
 
   <div class="cols">
@@ -603,7 +599,7 @@ function buildSeatMap(svg, opts){
   const G = 23, AISLE = 20, ROW_H = 27, R = 8.2;
   const CGRID = 15;                       // centre slots (115..101)
   const MARG_L = 7.5*G + AISLE + 10*G + 46;
-  const MARG_R = 7.5*G + AISLE + 10*G + 62;   // room for TP/TQ flank
+  const MARG_R = 7.5*G + AISLE + (CGRID - 1)*G + 62;   // widest right block: balcony evens to 28
   const CX = MARG_L;                      // x of house centreline
   const W = MARG_L + MARG_R;
   const centerStart = CX - (CGRID/2)*G;
@@ -678,25 +674,29 @@ function buildSeatMap(svg, opts){
     /* left block — from the aisle outward */
     if (Array.isArray(Rw.l)){
       let d = 0;
-      const MAXL = 10;                                   // widest left block (rows H-J)
-      const shift = (Rw.zone === "balc") ? (MAXL - Rw.l.length) * G : 0;   // balcony hugs the house's left edge
+      const anchL = (Rw.zone === "balc") ? centerStart - 2*G : aisleL;   // balcony passages run two seats wide
       [...Rw.l].reverse().forEach(n => {                 // reversed: seat 1 first, outward
         const span = (typeof n === "string") ? WCSPAN[n] : 1;
-        const x = aisleL - shift - (d + span/2) * G;
+        const x = anchL - (d + span/2) * G;
         makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
         d += span;
       });
-      mono(el("text",{x:aisleL - shift - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      mono(el("text",{x:anchL - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     } else {
       mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     }
 
-    /* centre block — pinned to the 115→101 grid */
+    /* centre block — pinned to the 115→101 grid; balcony rows anchor to the
+       centre section's LEFT edge per the venue chart (114 starts where 115 would) */
     if (Rw.c){
+      let bi = 0;
       Rw.c.forEach(n => {
         if (typeof n === "string"){                      // WC space C spans 109-107
           const x = centerStart + ((115-109) + WCSPAN[n]/2) * G;
           makeSeat(`${Rw.row}-${n}`, x, cy, WCSPAN[n]);
+        } else if (Rw.zone === "balc"){
+          makeSeat(`${Rw.row}-${n}`, centerStart + (bi + 0.5) * G, cy);
+          bi += 1;
         } else {
           makeSeat(`${Rw.row}-${n}`, centerXFor(n), cy);
         }
@@ -706,13 +706,14 @@ function buildSeatMap(svg, opts){
     /* right block — from the aisle outward (2,4,6…) */
     if (Array.isArray(Rw.r) && Rw.r.length){
       let d = 0;
+      const anchR = (Rw.zone === "balc") ? centerStart + (CGRID + 1)*G : aisleR;   // centre is one seat narrower up top; passage two wide
       Rw.r.forEach(n => {
         const span = (typeof n === "string") ? WCSPAN[n] : 1;
-        const x = aisleR + (d + span/2) * G;
+        const x = anchR + (d + span/2) * G;
         makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
         d += span;
       });
-      if (!Rw.ext) mono(el("text",{x:aisleR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      if (!Rw.ext) mono(el("text",{x:anchR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     } else if (!Rw.ext){
       mono(el("text",{x:aisleR + 12, y:cy+3.6,"text-anchor":"start",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     }
