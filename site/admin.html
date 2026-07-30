@@ -542,13 +542,15 @@ function buildSeatMap(svg, opts){
     /* left block — from the aisle outward */
     if (Array.isArray(Rw.l)){
       let d = 0;
+      const MAXL = 10;                                   // widest left block (rows H-J)
+      const shift = (Rw.zone === "balc") ? (MAXL - Rw.l.length) * G : 0;   // balcony hugs the house's left edge
       [...Rw.l].reverse().forEach(n => {                 // reversed: seat 1 first, outward
         const span = (typeof n === "string") ? WCSPAN[n] : 1;
-        const x = aisleL - (d + span/2) * G;
+        const x = aisleL - shift - (d + span/2) * G;
         makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
         d += span;
       });
-      mono(el("text",{x:aisleL - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      mono(el("text",{x:aisleL - shift - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     } else {
       mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     }

@@ -363,14 +363,14 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
   <section>
     <h2>One ticket. The whole night. Your exact seat.</h2>
-    <p class="sub">Two headline sets — Brendan Sagalow and Mike Cannon — hosted by Jason Choi, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
+    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — hosted by JASON CHOI, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
   </section>
 
   <div class="cols">
     <div>
       <section class="map-card">
         <h2 style="padding:0 10px">Pick your seats</h2>
-        <p class="sub" style="padding:0 10px">Prices by section: Orchestra <b class="mono" style="color:var(--glow)">$88</b> · Tier 1 <b class="mono" style="color:var(--glow)">$66</b> · Tier 2 <b class="mono" style="color:var(--glow)">$55</b> · Balcony <b class="mono" style="color:var(--glow)">$35</b> — plus a $3 card fee per seat, shown plainly in your stub (it goes to the card processor, not to us). One section per checkout.</p>
+        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$35</b> — plus $3 per seat card processor fee*</p>
         <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
         <div class="legend">
           <span><i style="background:var(--bone)"></i>Available</span>
@@ -399,12 +399,12 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   </div>
 
   <div class="mature">
-    <h3>About the language — plainly, before you buy</h3>
+    <h3>ABOUT THE LANGUAGE — PLAINLY, BEFORE YOU BUY</h3>
     <p>This is grown-up stand-up. Expect adult language and adult themes — roughly what late-night network television lets through, and nothing you wouldn't overhear on a busy street. It is <b>not</b> explicit-record territory: nothing risqué for its own sake, nobody in the crowd gets attacked. An evening ticketed show is an adult room by nature; we say this so no one is surprised, not to scare anyone off.</p>
   </div>
 
   <div class="mature" style="border-color:#3f4a3a;background:rgba(127,176,105,.05)">
-    <h3 style="color:#a6c99a">A note on the $3 — because we'd rather be upfront</h3>
+    <h3 style="color:#a6c99a">*A NOTE ON THE $3 — BECAUSE WE'D RATHER BE UPFRONT</h3>
     <p>The $3 per seat is a card-processing fee charged by our payment processor, not by us. <b>The 1140A Corporation receives none of it</b> — it goes straight to the processor to cover the cost of taking your card safely. We pass it through at exact cost rather than hiding it inside a higher ticket price. Your ticket price is the ticket price.</p>
   </div>
 
@@ -678,13 +678,15 @@ function buildSeatMap(svg, opts){
     /* left block — from the aisle outward */
     if (Array.isArray(Rw.l)){
       let d = 0;
+      const MAXL = 10;                                   // widest left block (rows H-J)
+      const shift = (Rw.zone === "balc") ? (MAXL - Rw.l.length) * G : 0;   // balcony hugs the house's left edge
       [...Rw.l].reverse().forEach(n => {                 // reversed: seat 1 first, outward
         const span = (typeof n === "string") ? WCSPAN[n] : 1;
-        const x = aisleL - (d + span/2) * G;
+        const x = aisleL - shift - (d + span/2) * G;
         makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
         d += span;
       });
-      mono(el("text",{x:aisleL - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      mono(el("text",{x:aisleL - shift - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     } else {
       mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     }
