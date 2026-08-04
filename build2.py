@@ -87,7 +87,8 @@ landing = f'''<!DOCTYPE html>
 </body>
 </html>
 '''
-(OUT / "index.html").write_text(landing)
+# landing withdrawn pending owner art — map is the front door
+(OUT / "landing-hold.html").write_text(landing)
 
 tickets = f'''<!DOCTYPE html>
 <html lang="en-US">
@@ -107,6 +108,7 @@ tickets = f'''<!DOCTYPE html>
 </html>
 '''
 (OUT / "tickets.html").write_text(tickets)
+(OUT / "index.html").write_text(tickets.replace('href="/tickets.html', 'href="/'))
 
 admin = f'''<!DOCTYPE html>
 <html lang="en-US">

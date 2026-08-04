@@ -3,65 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Cape Cod Comedy Carnival — Sagalow & Cannon Live · Sat Aug 29 · Tilden Arts Center, Cape Cod</title>
-<meta name="description" content="Two headline sets, one night: Brendan Sagalow and Mike Cannon with opener Jason Choi — Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved. Tickets on sale now.">
+<title>Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center</title>
+<meta name="description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $35 to $88, transparent $3 card fee.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://1140a.com/">
-<meta property="og:title" content="The Cape Cod Comedy Carnival — Sagalow & Cannon Live · Sat Aug 29 · Tilden Arts Center, Cape Cod">
-<meta property="og:description" content="Two headline sets, one night: Brendan Sagalow and Mike Cannon with opener Jason Choi — Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved. Tickets on sale now.">
-<meta property="og:url" content="https://1140a.com/">
+<link rel="canonical" href="https://1140a.com/tickets.html">
+<meta property="og:title" content="Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center">
+<meta property="og:description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $35 to $88, transparent $3 card fee.">
+<meta property="og:url" content="https://1140a.com/tickets.html">
 <meta property="og:type" content="website">
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "ComedyEvent",
- "name": "The Cape Cod Comedy Carnival",
- "description": "One night of stand-up at the Tilden Arts Center: Brendan Sagalow and Mike Cannon, with opener Jason Choi \u2014 Saturday, August 29, 2026, 7:00 PM. Every seat reserved; pick your exact seat on the live map. A flat $3 card-processing fee per seat is passed through at cost.",
- "startDate": "2026-08-29T19:00:00-04:00",
- "eventStatus": "https://schema.org/EventScheduled",
- "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
- "location": {
-  "@type": "PerformingArtsTheater",
-  "name": "Tilden Arts Center, Cape Cod Community College",
-  "address": {
-   "@type": "PostalAddress",
-   "streetAddress": "2240 Iyannough Rd (Rte 132)",
-   "addressLocality": "West Barnstable",
-   "addressRegion": "MA",
-   "postalCode": "02668",
-   "addressCountry": "US"
-  }
- },
- "performer": [
-  {
-   "@type": "Person",
-   "name": "Brendan Sagalow"
-  },
-  {
-   "@type": "Person",
-   "name": "Mike Cannon"
-  },
-  {
-   "@type": "Person",
-   "name": "Jason Choi"
-  }
- ],
- "organizer": {
-  "@type": "Organization",
-  "name": "The 1140A Corporation",
-  "url": "https://1140A.com"
- },
- "offers": {
-  "@type": "AggregateOffer",
-  "priceCurrency": "USD",
-  "lowPrice": 33,
-  "highPrice": 88,
-  "url": "https://1140a.com",
-  "availability": "https://schema.org/InStock",
-  "validFrom": "2026-07-29T10:00:00-04:00"
- }
-}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -336,67 +285,693 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   THE SWITCH: CONFIG.gate.enabled (both pages, one line each).
   ============================================================
 -->
-<main style="min-height:96vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:38px 18px;gap:0">
+<div id="gate" hidden>
+  <div class="g-box">
+    <div class="org">THE 1140A CORPORATION</div>
+    <h1>DOORS<br><span class="amp">NOT OPEN</span> YET</h1>
+    <p>This box office is in private testing. Enter the crew password to step inside.</p>
+    <input id="gatePw" type="password" autocomplete="off" placeholder="password" aria-label="Site password">
+    <button id="gateGo">Let me in</button>
+    <div class="g-err" id="gateErr"></div>
+  </div>
+</div>
 
-  <p class="mono" style="color:#8d8fa3;letter-spacing:.35em;font-size:12px;margin:0 0 10px">THE 1140A CORPORATION PRESENTS</p>
-  <h1 style="font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(42px,9vw,92px);line-height:.95;margin:0">THE CAPE COD <span class="amp">COMEDY CARNIVAL</span></h1>
-  <p class="mono" style="color:var(--glow);letter-spacing:.18em;font-size:clamp(12px,2.6vw,16px);margin:16px 0 0">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · WEST BARNSTABLE, CAPE COD</p>
-  <p class="sub" style="max-width:560px;margin:18px auto 0">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI. One night, one ticket, every seat reserved: you pick your exact chair on the live map.</p>
+<div class="wrap" id="site" style="visibility:hidden">
 
-  <a id="buyBtn" href="/tickets.html"
-     style="display:inline-block;margin-top:30px;background:var(--glow);color:#171a2b;font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(22px,5vw,32px);letter-spacing:.09em;padding:18px 58px;border-radius:10px;text-decoration:none;box-shadow:0 0 38px rgba(245,180,69,.35)">BUY TICKETS</a>
-
-  <section style="max-width:620px;margin-top:56px;border:1px solid #31365f;border-radius:12px;padding:26px 22px;text-align:left;background:rgba(255,255,255,.02)">
-    <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 8px">THE SINGLETS — GET IN LINE</h2>
-    <p class="sub" style="margin:0 0 16px">Same night, two solo sets: SAGALOW alone and CANNON alone, each opened by JASON CHOI. Singlet tickets are <b>not on sale yet</b> — the Carnival pass above is, and it covers the whole night. Want first crack when singlets open? Leave your email, pick your corner, and you hear the moment the window opens. One email when it does — no spam, and the list is never shared.</p>
-
-    <div id="wlChoices" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-      <button type="button" class="wl-pick" data-choice="sagalow" style="flex:1;min-width:120px;padding:12px 8px;border-radius:8px;border:1px solid #31365f;background:transparent;color:var(--bone);font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer">SAGALOW</button>
-      <button type="button" class="wl-pick" data-choice="cannon" style="flex:1;min-width:120px;padding:12px 8px;border-radius:8px;border:1px solid #31365f;background:transparent;color:var(--bone);font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer">CANNON</button>
-      <button type="button" class="wl-pick" data-choice="either" style="flex:1;min-width:120px;padding:12px 8px;border-radius:8px;border:1px solid #31365f;background:transparent;color:var(--bone);font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer">EITHER ONE</button>
+  <header class="site">
+    <div class="head-left">
+      <div class="org" id="orgName"></div>
+      <h1 id="evTitle"></h1>
+      <div class="when" id="evWhen"></div>
     </div>
-
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <input id="wlEmail" type="email" placeholder="your@email.com" autocomplete="email"
-             style="flex:1;min-width:200px;padding:12px;border-radius:8px;border:1px solid #31365f;background:#171a2b;color:var(--bone);font-family:'Archivo';font-size:15px">
-      <input id="wlHp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
-      <button id="wlGo" type="button"
-              style="padding:12px 22px;border-radius:8px;border:0;background:var(--bone);color:#171a2b;font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer">JOIN THE WAITLIST</button>
+    <div class="head-right">
+      <span class="chip warn" id="modeChip">TEST MODE · BEHIND PASSWORD</span>
+      <span class="chip">EVERY SEAT RESERVED · LIVE MAP</span>
     </div>
-    <p id="wlMsg" class="mono" style="min-height:20px;margin:12px 0 0;font-size:13px;color:#a6c99a"></p>
+  </header>
+
+  <section>
+    <h2>One ticket. The whole night. Your exact seat.</h2>
+    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
   </section>
 
-  <p class="sub" style="margin-top:38px;font-size:13px">Questions, groups of eleven or more, wheelchair &amp; assistance, ASL — <span class="mono" id="mailLand">info@1140A.com</span> · Tilden Arts Center, Cape Cod Community College, 2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668</p>
-</main>
+  <div class="cols">
+    <div>
+      <section class="map-card">
+        <h2 style="padding:0 10px">Pick your seats</h2>
+        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$35</b> — plus $3 per seat card processor fee*</p>
+        <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
+        <div class="legend">
+          <span><i style="background:var(--bone)"></i>Available</span>
+          <span><i style="background:var(--glow)"></i>Yours (held)</span>
+          <span><i style="background:var(--sold)"></i>Spoken for</span>
+          <span><i style="background:var(--bone);box-shadow:0 0 0 2px var(--gilt)"></i>Orchestra</span>
+          <span><i class="sq" style="background:var(--held);box-shadow:0 0 0 1.5px #7f96d9"></i>Wheelchair space</span>
+        </div>
+        <p class="hint" style="padding:0 10px 8px" id="liveNote">Map refreshes automatically.</p>
+      </section>
+    </div>
+
+    <aside class="stub" aria-label="Your order" id="stubBox">
+      <h2>Your stub</h2>
+      <p class="sub">Seats hold for a short spell while you decide — then they're locked to you all through payment.</p>
+      <ul id="cartList"></ul>
+      <div class="empty" id="cartEmpty">Nothing claimed yet — tap any open seat on the map.</div>
+      <div class="totals" id="totals"></div>
+      <div class="hold" id="holdRow" hidden>
+        <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
+        <div class="hbar"><b id="holdBar" style="width:100%"></b></div>
+      </div>
+      <button class="cta" id="checkoutBtn" disabled>Pay & lock seats</button>
+      <div class="fee-note" id="feeNote">Checkout is a secure Stripe payment page. Your seats stay held the whole time you're paying.</div>
+    </aside>
+  </div>
+
+  <div class="mature">
+    <h3>ABOUT THE LANGUAGE — PLAINLY, BEFORE YOU BUY</h3>
+    <p>This is grown-up stand-up. Expect adult language and adult themes — roughly what late-night network television lets through, and nothing you wouldn't overhear on a busy street. It is <b>not</b> explicit-record territory: nothing risqué for its own sake, nobody in the crowd gets attacked. An evening ticketed show is an adult room by nature; we say this so no one is surprised, not to scare anyone off.</p>
+  </div>
+
+  <div class="mature" style="border-color:#3f4a3a;background:rgba(127,176,105,.05)">
+    <h3 style="color:#a6c99a">*A NOTE ON THE $3 — BECAUSE WE'D RATHER BE UPFRONT</h3>
+    <p>The $3 per seat is a card-processing fee charged by our payment processor, not by us. <b>The 1140A Corporation receives none of it</b> — it goes straight to the processor to cover the cost of taking your card safely. We pass it through at exact cost rather than hiding it inside a higher ticket price. Your ticket price is the ticket price.</p>
+  </div>
+
+  <section id="access">
+    <h2>Access, groups &amp; getting hold of us</h2>
+    <div class="contact-cats">
+      <button class="cat-btn" data-cat="groups"><b>Groups of more than ten</b><span>Eleven or more and we'll block-seat the whole gang together — tell us your headcount.</span></button>
+      <button class="cat-btn" data-cat="wheelchair"><b>Wheelchair &amp; special assistance</b><span>Dedicated spaces with companion seats, $33 with the card fee waived — book right here.</span></button>
+      <button class="cat-btn" data-cat="asl"><b>ASL interpreter</b><span>Gladly arranged on request, no charge.</span></button>
+    </div>
+
+    <div class="cat-panel" id="cat-groups">
+      <h3>Bringing the whole crew?</h3>
+      <p>Orders cap at ten seats. For eleven or more we hand-pick a block so nobody sits alone. Email us with your headcount and a phone number; we confirm seats before anything is charged.</p>
+      <a class="btn primary" id="mailGroups" href="#">Email the box office</a>
+    </div>
+
+    <div class="cat-panel" id="cat-wheelchair">
+      <h3>Wheelchair &amp; companion seating</h3>
+      <p>Dedicated wheelchair spaces sit on the <b>Tier 2 cross-aisle (row K)</b>, marked ♿ on the map, each pairable with an adjacent companion seat. Both price at $33 with the $3 card fee waived — access never costs extra here. Tap a ♿ space on the map (or the button below), read the short terms, and pay — same live, instant reservation as every other seat.</p>
+      <p class="fine">A kind reminder for the night: if you park in the Special Access lot, please display your accessible-parking placard or plate where it can be seen.</p>
+      <div class="notice-line">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
+      <p class="fine">"May" means exactly that — a possibility, and if it happens, a polite request from a volunteer.</p>
+      <div class="btn-row" style="justify-content:flex-start;margin-top:12px">
+        <button class="btn primary" id="openAccessible">Book a wheelchair space</button>
+        <a class="btn" id="mailWheel" href="#">Questions? Email us</a>
+      </div>
+    </div>
+
+    <div class="cat-panel" id="cat-asl">
+      <h3>ASL interpretation — offered, gladly</h3>
+      <p>If you or someone in your party is deaf or hard of hearing, we will arrange a qualified ASL interpreter at no charge. Ask by mid-August so we can book well and set your sightlines properly.</p>
+      <a class="btn primary" id="mailAsl" href="#">Request an interpreter</a>
+    </div>
+
+    <p class="fine" style="margin-top:16px;color:var(--dim)">Anyone requiring accommodations to attend this event should contact the Licensee, The 1140A Corporation, at <span class="mono" id="mailPlain2"></span> — we will arrange them.</p>
+  </section>
+
+  <footer>
+    <p><b>The 1140A Corporation</b> is a Massachusetts non-profit. Every seat is reserved and sold by this site directly — the map you see is the box office itself, live.</p>
+    <p>Your ticket's QR code is your <b>entry credential</b> — one of a kind, scanned at the door, dead on arrival if copied. Keep it on your phone or printed.</p>
+    <p>Questions, accommodations, anything: <span class="mono" id="mailPlain3"></span> · <span class="mono">1140A.com</span></p>
+    <p class="mono" style="opacity:.55">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · CAPE COD COMMUNITY COLLEGE · WEST BARNSTABLE, MA</p>
+  </footer>
+</div>
+
+<div id="miniBar"><span id="mbCount"></span><span class="mb-total" id="mbTotal"></span><button id="mbGo">Pay</button></div>
+
+<div id="veil"></div>
+
+<div class="modal" id="termsModal" role="dialog" aria-modal="true" aria-label="Wheelchair seating terms">
+  <div class="box">
+    <button class="close" data-close="termsModal" aria-label="Close">×</button>
+    <h2 style="font-family:'Big Shoulders';letter-spacing:.04em">Wheelchair seating — the short terms</h2>
+    <p class="sub">Three terms, in plain English. When the end of the terms is on your screen, the agree button wakes.</p>
+    <div class="terms-scroll" id="termsScroll">
+      <h3>What you're booking</h3>
+      <p>A dedicated wheelchair space on the Tier 2 cross-aisle (row K), sized for a wheelchair or mobility device, with clear sightlines and an aisle-side approach. Each space can pair with one adjacent <b>companion seat</b>. Both price at the ordinary Tier 2 rate with the card fee waived — access never costs extra here.</p>
+      <h3>The terms</h3>
+      <p><b>1.</b> Wheelchair spaces exist for patrons who attend in a wheelchair or mobility device. Booking one is your statement that it's for such a patron in your party. Nobody will ever ask you for proof of disability — not at checkout, not at the door.</p>
+      <p><b>2.</b> The space itself is the seat: it fits a wheelchair, and it is where the wheelchair parks for the show.</p>
+      <p><b>3.</b> A ticket obtained by <b>misrepresentation</b> is <b>void and non-refundable</b> — the wheelchair space and its paired companion seat are both forfeit (just the single seat, if booked alone). There is nothing to chase and nothing to dispute: the ticket is simply void, on terms you read right here.</p>
+      <h3>Parking, while we have you</h3>
+      <div class="notice">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
+      <p>A kind request, not a demand: display your placard or plate where the volunteer can spot it. "May be asked" means exactly that.</p>
+      <p class="fine" style="color:var(--dim)">— end of terms. Thanks for actually reading.</p>
+    </div>
+    <div class="scroll-hint" id="scrollHint">▼ scroll to the very end to wake the agree button ▼</div>
+    <div style="margin-bottom:10px" id="wcChoiceBox"></div>
+    <div class="btn-row">
+      <button class="btn" data-close="termsModal">Not now</button>
+      <button class="btn primary" id="agreeBtn" disabled>I agree — book it</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
 
 <script>
-/* Landing page — one hot button + the singlet waitlist. Self-contained. */
-(function(){
-  const $ = s => document.querySelector(s);
-  let choice = null;
-  const picks = [...document.querySelectorAll(".wl-pick")];
-  picks.forEach(b => b.addEventListener("click", () => {
-    choice = b.dataset.choice;
-    picks.forEach(x => { x.style.background = "transparent"; x.style.color = "var(--bone)"; x.style.borderColor = "#31365f"; });
-    b.style.background = "var(--glow)"; b.style.color = "#171a2b"; b.style.borderColor = "var(--glow)";
-    $("#wlMsg").textContent = "";
-  }));
+/* ==================================================================
+   CARNIVAL BOX OFFICE v2 — shared core (buyer + console)
+   All-reserved, all-Stripe. The map IS the box office (spec §0).
+   Seat state comes ONLY from /api/seats-state — never guessed locally.
+   ================================================================== */
+const CONFIG = {
+  event: {
+    org: "THE 1140A CORPORATION PRESENTS",
+    title: 'THE CAPE COD <span class="amp">COMEDY CARNIVAL</span>',
+    plainTitle: "The Cape Cod Comedy Carnival",
+    when: "SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER",
+    venue: "Tilden Arts Center, Cape Cod Community College",
+    address: "2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668",
+    contactEmail: "info@1140A.com",
+    url: "https://1140a.com"
+  },
+  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
+  fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
+  wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
+  currency: "$",
+  maxPerOrder: 10,
+  zones: {
+    orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
+    t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
+    t2:   { name: "TIER 2",    desc: "Rows K–Q — the cross-aisle back half" },
+    balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
+  },
+  softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
+  pollMs: 8000,            // map repaint cadence (matches CDN cache window)
+  api: "/api",
+  gate: { enabled: false, password: "pitrow" }   // THE SWITCH — false = public
+};
 
-  $("#wlGo").addEventListener("click", async () => {
-    const email = $("#wlEmail").value.trim();
-    const msg = $("#wlMsg");
-    if (!choice){ msg.style.color = "#e08a7a"; msg.textContent = "Pick a corner first — SAGALOW, CANNON, or EITHER ONE."; return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ msg.style.color = "#e08a7a"; msg.textContent = "That email doesn't look right."; return; }
-    $("#wlGo").disabled = true; $("#wlGo").textContent = "…";
-    try {
-      const r = await fetch("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, choice, hp: $("#wlHp").value }) });
-      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line. One email when the singlet window opens — that's the whole deal."; $("#wlEmail").value = ""; }
-      else { const d = await r.json().catch(() => ({})); msg.style.color = "#e08a7a"; msg.textContent = d.err || "Something hiccuped — try again."; }
-    } catch(e){ msg.style.color = "#e08a7a"; msg.textContent = "Can't reach the box office — check your connection."; }
-    $("#wlGo").disabled = false; $("#wlGo").textContent = "JOIN THE WAITLIST";
+/* ---------- house layout (venue chart — geometry only; state lives server-side) ---------- */
+const CEN = [115,114,113,112,111,110,109,108,107,106,105,104,103,102,101];
+const LAYOUT = [
+  {row:"TA",zone:"orch",l:[5,3,1],c:CEN,pit:true},
+  {row:"TB",zone:"orch",l:[7,5,3,1],c:CEN,pit:true},
+  {row:"C",zone:"orch",l:[9,7,5,3,1],c:CEN,close:true},
+  {row:"D",zone:"t1",l:[11,9,7,5,3,1],c:CEN},
+  {row:"E",zone:"t1",l:[13,11,9,7,5,3,1],c:CEN},
+  {row:"F",zone:"t1",l:[15,13,11,9,7,5,3,1],c:CEN},
+  {row:"G",zone:"t1",l:[17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"H",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"I",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"J",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"K",zone:"t2",l:[19,17,15,"WA","WB",5,3,1],c:[115,114,113,112,111,110,"WC",106,105,104,103,102,101]},
+  {row:"L",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"M",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"N",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"O",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"P",zone:"t2",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
+  {row:"Q",zone:"t2",l:null,c:CEN,ext:{row:"TQ",hi:20}},
+  {row:"AA",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"BB",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"CC",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"DD",zone:"balc",l:[11,9,7,5,3,1],c:[114,113,112,111],booth:true,hiEven:28},
+  {row:"EE",zone:"balc",l:[11,9,7,5,3,1],c:[115,114,113],booth:true,hiEven:28}
+];
+/* Even-side (house-right) blocks are generated from the venue chart's
+   high seat per row — 2 up to that even — so the map and the chart
+   can never disagree on a hand-typed list. */
+const EVENS_HI = { TA:6, TB:8, C:10, D:12, E:14, F:16, G:18, H:20, I:20, J:20, L:18, M:18, N:18, O:18 };
+LAYOUT.forEach(R => {
+  if (R.row in EVENS_HI){
+    R.r = []; for (let n=2; n<=EVENS_HI[R.row]; n+=2) R.r.push(n);
+  } else if (R.row === "K"){
+    R.r = [2,4,6,"WD",14,16,18];             // WD spans the missing 8-10-12
+  } else if (R.hiEven){
+    R.r = []; for (let n=2; n<=R.hiEven; n+=2) R.r.push(n);
+  } else R.r = [];
+  if (R.ext){ R.ext.seats = []; for (let n=2; n<=R.ext.hi; n+=2) R.ext.seats.push(n); }
+});
+const WCSPAN = { WA:2, WB:2, WC:3, WD:3 };
+
+/* zone + wheelchair lookup derived from the layout walk */
+const seatZone = {}, WC_IDS = new Set();
+LAYOUT.forEach(R => {
+  const put = (row, n) => {
+    const id = `${row}-${n}`;
+    seatZone[id] = R.zone;
+    if (typeof n === "string") WC_IDS.add(id);
+  };
+  (Array.isArray(R.l) ? R.l : []).forEach(n => put(R.row, n));
+  (R.c || []).forEach(n => put(R.row, n));
+  (Array.isArray(R.r) ? R.r : []).forEach(n => put(R.row, n));
+  if (R.ext) R.ext.seats.forEach(n => put(R.ext.row, n));
+});
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const money = n => CONFIG.currency + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toFixed(2));
+function holdWords(msLeft){
+  const m = Math.ceil(msLeft / 60000);
+  if (msLeft <= 0) return "expired";
+  if (m <= 1) return "under a minute";
+  return m + " min";
+}
+if (typeof CanvasRenderingContext2D !== "undefined" && !CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    r = Math.min(r, w/2, h/2);
+    this.moveTo(x+r,y); this.arcTo(x+w,y,x+w,y+h,r); this.arcTo(x+w,y+h,x,y+h,r);
+    this.arcTo(x,y+h,x,y,r); this.arcTo(x,y,x+w,y,r); this.closePath(); return this;
+  };
+}
+let toastT = null;
+function toast(msg){
+  const t = $("#toast"); if (!t) return;
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3800);
+}
+
+/* ---------- seat-map renderer (geometry from the venue chart) ---------- */
+function buildSeatMap(svg, opts){
+  const NS = "http://www.w3.org/2000/svg";
+  const G = 23, AISLE = 20, ROW_H = 27, R = 8.2;
+  const CGRID = 15;                       // centre slots (115..101)
+  const MARG_L = 7.5*G + AISLE + 10*G + 46;
+  const MARG_R = 7.5*G + AISLE + (CGRID - 1)*G + 62;   // widest right block: balcony evens to 28
+  const CX = MARG_L;                      // x of house centreline
+  const W = MARG_L + MARG_R;
+  const centerStart = CX - (CGRID/2)*G;
+  const aisleL = centerStart - AISLE;
+  const aisleR = centerStart + CGRID*G + AISLE;
+
+  const el = (name, attrs, parent) => {
+    const e = document.createElementNS(NS, name);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  };
+  const mono = t => { t.style.fontFamily = "'Spline Sans Mono',monospace"; return t; };
+
+  /* vertical plan — TA/TB sit in the pit, C a breath behind, then the house */
+  const STAGE_H = 56;
+  let y = STAGE_H + 22;
+  const rowY = {};
+  LAYOUT.forEach(Rw => {
+    if (Rw.row === "C") y += 7;
+    if (Rw.row === "D") y += 17;
+    if (Rw.row === "K") y += 27;
+    if (Rw.row === "AA") y += 58;
+    rowY[Rw.row] = y;
+    y += ROW_H;
   });
+  const H = y + 18;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  /* stage + tungsten wash */
+  const defs = el("defs", {});
+  const gid = "wash-" + (opts.mode||"m");
+  const grad = el("radialGradient", {id:gid, cx:"50%", cy:"0%", r:"78%"}, defs);
+  el("stop",{offset:"0%","stop-color":"#f5b445","stop-opacity":"0.18"},grad);
+  el("stop",{offset:"55%","stop-color":"#f5b445","stop-opacity":"0.05"},grad);
+  el("stop",{offset:"100%","stop-color":"#f5b445","stop-opacity":"0"},grad);
+  el("rect",{x:0,y:0,width:W,height:Math.min(H,720),fill:`url(#${gid})`});
+  el("path",{d:`M ${CX-W*0.36} ${STAGE_H} Q ${CX} ${STAGE_H-40} ${CX+W*0.36} ${STAGE_H}`,fill:"none",stroke:"#f5b445","stroke-width":"2","stroke-opacity":"0.85"});
+  const st = mono(el("text",{x:CX,y:STAGE_H-13,"text-anchor":"middle",fill:"#f5b445","font-size":"13","letter-spacing":"6"}));
+  st.textContent = "STAGE";
+
+  /* balcony rule */
+  mono(el("text",{x:CX,y:rowY["AA"]-26,"text-anchor":"middle",fill:"#8d8fa3","font-size":"11.5","letter-spacing":"5"})).textContent="BALCONY";
+  el("line",{x1:40,x2:W-40,y1:rowY["AA"]-40,y2:rowY["AA"]-40,stroke:"#31364f","stroke-dasharray":"5 7"});
+
+  const seatEls = new Map();
+  const centerXFor = n => centerStart + (115 - n + 0.5) * G;
+
+  const makeSeat = (id, x, cy, span) => {
+    const isWC = span !== undefined;
+    const g = el("g",{class:"seat","data-id":id,tabindex:0,role:"button"});
+    let shape, label;
+    if (isWC){
+      const w = span*G - 6;
+      shape = el("rect",{x:x-w/2,y:cy-R-2.5,width:w,height:(R+2.5)*2,rx:5,class:"shape",fill:"var(--held)",stroke:"#7f96d9","stroke-width":"1.4"},g);
+      const t = mono(el("text",{x:x,y:cy+3.8,"text-anchor":"middle","font-size":"10",fill:"#9db1e8","pointer-events":"none"},g));
+      t.textContent = "♿ " + id.split("-")[1].slice(1);
+      label = t;
+    } else {
+      shape = el("circle",{cx:x,cy,r:R,class:"shape",fill:"var(--bone)"},g);
+      label = mono(el("text",{x, y:cy+2.8, "text-anchor":"middle","font-size":"6.8","fill":"#171a2b","pointer-events":"none",opacity:0},g));
+      label.textContent = id.split("-")[1];
+    }
+    seatEls.set(id, {g, shape, label, isWC});
+    g.addEventListener("click", () => opts.onSeat && opts.onSeat(id));
+    g.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); opts.onSeat && opts.onSeat(id);} });
+  };
+
+  LAYOUT.forEach(Rw => {
+    const cy = rowY[Rw.row];
+
+    /* left block — from the aisle outward */
+    if (Array.isArray(Rw.l)){
+      let d = 0;
+      const BOFF = -(2*G + AISLE);                                       // balcony left edge flush with the floor's left edge
+      const anchL = (Rw.zone === "balc") ? centerStart + BOFF - 2*G : aisleL;   // balcony passages run two seats wide
+      [...Rw.l].reverse().forEach(n => {                 // reversed: seat 1 first, outward
+        const span = (typeof n === "string") ? WCSPAN[n] : 1;
+        const x = anchL - (d + span/2) * G;
+        makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
+        d += span;
+      });
+      mono(el("text",{x:anchL - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    } else {
+      mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    }
+
+    /* centre block — pinned to the 115→101 grid; balcony rows anchor to the
+       centre section's LEFT edge per the venue chart (114 starts where 115 would) */
+    if (Rw.c){
+      let bi = 0;
+      Rw.c.forEach(n => {
+        if (typeof n === "string"){                      // WC space C spans 109-107
+          const x = centerStart + ((115-109) + WCSPAN[n]/2) * G;
+          makeSeat(`${Rw.row}-${n}`, x, cy, WCSPAN[n]);
+        } else if (Rw.zone === "balc"){
+          makeSeat(`${Rw.row}-${n}`, centerStart - (2*G + AISLE) + (bi + 0.5) * G, cy);
+          bi += 1;
+        } else {
+          makeSeat(`${Rw.row}-${n}`, centerXFor(n), cy);
+        }
+      });
+    }
+
+    /* right block — from the aisle outward (2,4,6…) */
+    if (Array.isArray(Rw.r) && Rw.r.length){
+      let d = 0;
+      const anchR = (Rw.zone === "balc") ? centerStart - (2*G + AISLE) + (CGRID + 1)*G : aisleR;   // centre narrower up top; passage two wide
+      Rw.r.forEach(n => {
+        const span = (typeof n === "string") ? WCSPAN[n] : 1;
+        const x = anchR + (d + span/2) * G;
+        makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
+        d += span;
+      });
+      if (!Rw.ext) mono(el("text",{x:anchR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    } else if (!Rw.ext){
+      mono(el("text",{x:aisleR + 12, y:cy+3.6,"text-anchor":"start",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    }
+
+    /* temporary flank rows TP / TQ */
+    if (Rw.ext){
+      mono(el("text",{x:aisleR - 8, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      let d = 0.6;
+      Rw.ext.seats.forEach(n => {
+        makeSeat(`${Rw.ext.row}-${n}`, aisleR + (d + 0.5) * G, cy);
+        d += 1;
+      });
+      mono(el("text",{x:aisleR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.ext.row;
+    }
+  });
+
+  /* booth footprints */
+  const pY = rowY["P"], qY = rowY["Q"];
+  el("rect",{x:aisleL - 10*G, y:pY-12, width:8.6*G, height:(qY-pY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
+  mono(el("text",{x:aisleL - 10*G + 4.3*G, y:(pY+qY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="CONTROL BOOTH";
+  const dY = rowY["DD"], eY = rowY["EE"];
+  el("rect",{x:centerXFor(110)-G/2, y:dY-12, width:9.2*G, height:(eY-dY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
+  mono(el("text",{x:centerXFor(110)-G/2 + 4.6*G, y:(dY+eY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="PROJECTION BOOTH";
+
+
+  /* ---------- paint (v2: all-reserved; state injected, never guessed) ---------- */
+  const HOLD_COLORS = { sponsor:"#e6c069", comp:"#8fd9c9", marketing:"#f5b445", companion:"#7f96d9",
+                        volunteer:"#7fb069", charity:"#c07fb0", wheelchair:"#7f96d9", house:"#8d8fa3" };
+
+  function update(view){
+    /* view: { unavailable:Set, selected:Set, cats?:Object(id->category), buyerHeld?:Set } */
+    const isBuyer = opts.mode === "buyer";
+    seatEls.forEach((els, id) => {
+      const zone = seatZone[id];
+      els.g.classList.remove("sold","blocked","sel");
+      if (els.isWC){
+        /* wheelchair space: bookable via accessible flow unless sold/held */
+        const gone = view.unavailable.has(id);
+        els.shape.setAttribute("fill", gone ? "var(--sold)" : "var(--held)");
+        els.shape.setAttribute("stroke", gone ? "#4a4e63" : "#7f96d9");
+        els.g.classList.add("wc");
+        els.g.setAttribute("aria-label", gone ? `Wheelchair space — unavailable` : `Wheelchair space — tap for accessible booking`);
+        return;
+      }
+      const sel = view.selected && view.selected.has(id);
+      if (sel){
+        els.g.classList.add("sel");
+        els.shape.setAttribute("fill", "var(--glow)");
+        els.shape.setAttribute("stroke-width", "0");
+        els.label.setAttribute("opacity", .95);
+        els.g.setAttribute("aria-label", `Seat ${id} — in your stub`);
+        return;
+      }
+      els.label.setAttribute("opacity", 0);
+      if (view.unavailable.has(id)){
+        els.g.classList.add(isBuyer ? "sold" : "blocked");
+        els.shape.setAttribute("fill", isBuyer ? "var(--sold)" : (view.cats && view.cats[id] ? "var(--held)" : "var(--sold)"));
+        if (!isBuyer && view.cats && view.cats[id]){
+          els.shape.setAttribute("stroke", HOLD_COLORS[view.cats[id]] || HOLD_COLORS.house);
+          els.shape.setAttribute("stroke-width", "1.7");
+        } else if (!isBuyer && view.buyerHeld && view.buyerHeld.has(id)){
+          els.shape.setAttribute("stroke", "#ffffff");
+          els.shape.setAttribute("stroke-width", "1.4");
+        } else els.shape.setAttribute("stroke-width", "0");
+        els.g.setAttribute("aria-label", `Seat ${id} — sold`);
+        return;
+      }
+      /* open */
+      els.shape.setAttribute("fill", "var(--bone)");
+      els.g.setAttribute("aria-label", `Seat ${id}, ${CONFIG.zones[zone].name} — available, ${money(CONFIG.prices[zone])}`);
+      if (zone === "orch"){ els.shape.setAttribute("stroke", "var(--gilt)"); els.shape.setAttribute("stroke-width", "1.5"); }
+      else els.shape.setAttribute("stroke-width", "0");
+    });
+  }
+  return { update, seatEls };
+}
+
+/* ================= BUYER BOX OFFICE LOGIC (v2 — all-Stripe) ================= */
+
+/* ---------- gate ---------- */
+(function gate(){
+  const g = $("#gate"), site = $("#site");
+  const open = () => { g.hidden = true; site.style.visibility = "visible"; boot(); };
+  if (!CONFIG.gate.enabled){
+    $("#modeChip").textContent = "ON SALE NOW"; $("#modeChip").classList.remove("warn"); $("#modeChip").classList.add("live");
+    setTimeout(open, 0); return;   // after this script finishes initializing — never mid-parse
+  }
+  g.hidden = false;
+  const tryPw = () => {
+    if ($("#gatePw").value === CONFIG.gate.password) open();
+    else { $("#gateErr").textContent = "Not tonight's password."; $("#gatePw").select(); }
+  };
+  $("#gateGo").addEventListener("click", tryPw);
+  $("#gatePw").addEventListener("keydown", e => { if (e.key === "Enter") tryPw(); });
 })();
+
+/* ---------- state ---------- */
+const HOLDER = "b_" + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now());
+let unavailable = new Set();          // from the server — the only truth
+const selected = new Set();           // my held seats (also appear server-side as held)
+let map = null, pollT = null, holdTimer = null, holdEndsAt = null, paying = false;
+
+const api = (path, body) => fetch(CONFIG.api + path, body ? {
+  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body)
+} : undefined).then(async r => ({ ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) }));
+
+function boot(){
+  $("#orgName").textContent = CONFIG.event.org;
+  $("#evTitle").innerHTML = CONFIG.event.title;
+  $("#evWhen").textContent = CONFIG.event.when + " · WEST BARNSTABLE, CAPE COD";
+  ["#mailPlain2","#mailPlain3"].forEach(id => { const n = $(id); if (n) n.textContent = CONFIG.event.contactEmail; });
+  const M = CONFIG.event.contactEmail, EV = CONFIG.event.plainTitle + " (Sat Aug 29)";
+  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (eleven or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
+  $("#mailWheel").href  = `mailto:${M}?subject=${encodeURIComponent("WHEELCHAIR & ASSISTANCE · " + EV)}`;
+  $("#mailAsl").href    = `mailto:${M}?subject=${encodeURIComponent("ASL INTERPRETER · " + EV)}`;
+
+  map = buildSeatMap($("#map"), { mode: "buyer", getShow: () => "all", onSeat: onSeatClick });
+  refreshState(true);
+  pollT = setInterval(() => { if (!document.hidden) refreshState(); }, CONFIG.pollMs + Math.floor(Math.random() * 1500));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshState(); });
+  if (new URLSearchParams(location.search).get("canceled"))
+    toast("No charge — your seats release back to the house in a few minutes.");
+}
+
+async function refreshState(first){
+  try {
+    const r = await fetch(CONFIG.api + "/seats-state", { cache: "no-store" });
+    const s = await r.json();
+    unavailable = new Set(s.unavailable || []);
+    selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
+    paint();
+    $("#liveNote").textContent = `Live map · ${s.sold} seats sold · refreshes automatically`;
+  } catch (e) {
+    if (first) toast("Can't reach the box office — check your connection and refresh.");
+  }
+}
+const paint = () => map && map.update({ unavailable, selected });
+
+/* ---------- selection (soft holds — real server holds, spec §5.1) ---------- */
+async function onSeatClick(id){
+  if (paying) return;
+  if (WC_IDS.has(id)){ openTerms(id); return; }
+  if (selected.has(id)){
+    selected.delete(id); paint(); renderCart();
+    api("/claim-seats", { holder: HOLDER, seats: [id], action: "release" });
+    return;
+  }
+  if (unavailable.has(id)){ toast("Gone — that one's spoken for."); return; }
+  if (selected.size >= CONFIG.maxPerOrder){
+    toast("Orders cap at ten seats — for a bigger crew, use the Groups line below."); return;
+  }
+  const zone = seatZone[id];
+  const existingZone = selected.size ? seatZone[[...selected][0]] : null;
+  if (existingZone && existingZone !== zone){
+    toast(`One section per checkout — finish your ${CONFIG.zones[existingZone].name} seats first (or clear the stub), then come back for ${CONFIG.zones[zone].name}.`);
+    return;
+  }
+  const r = await api("/claim-seats", { holder: HOLDER, seats: [id], action: "hold" });
+  if (!r.ok){
+    toast(r.status === 409 ? "Someone just took that one — pick another." : (r.data.err || "Couldn't hold that seat."));
+    refreshState(); return;
+  }
+  selected.add(id);
+  bumpHold(); paint(); renderCart();
+}
+
+/* ---------- hold countdown (words only — house rule) ---------- */
+function bumpHold(){
+  holdEndsAt = Date.now() + CONFIG.softHoldSec * 1000;
+  if (!holdTimer) holdTimer = setInterval(tickHold, 900);
+  $("#holdRow").hidden = false;
+  tickHold();
+}
+function tickHold(){
+  const left = holdEndsAt - Date.now();
+  if (left <= 0){
+    clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true;
+    if (selected.size && !paying){
+      api("/claim-seats", { holder: HOLDER, seats: [...selected], action: "release" });
+      selected.clear(); paint(); renderCart();
+      toast("Hold expired — seats released back to the house. No harm done.");
+    }
+    return;
+  }
+  $("#holdClock").textContent = holdWords(left);
+  $("#holdBar").style.width = (100 * left / (CONFIG.softHoldSec * 1000)).toFixed(1) + "%";
+}
+
+/* ---------- cart + fee transparency (spec §9: itemized, labeled, framed) ---------- */
+function renderCart(){
+  const list = $("#cartList"); list.innerHTML = "";
+  const ids = [...selected].sort();
+  let tickets = 0;
+  ids.forEach(id => {
+    const zone = seatZone[id];
+    const p = CONFIG.prices[zone];
+    tickets += p;
+    const li = document.createElement("li");
+    li.innerHTML = `<span>Seat ${id}<span class="tag">${CONFIG.zones[zone].name} · reserved</span></span>
+      <span>${money(p)} <button aria-label="Remove ${id}" data-id="${id}">✕</button></span>`;
+    list.appendChild(li);
+  });
+  list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
+  const fee = ids.length * CONFIG.fee;
+  $("#cartEmpty").style.display = ids.length ? "none" : "block";
+  $("#totals").innerHTML = ids.length ? `
+    <div><span>Tickets</span><span>${money(tickets)}</span></div>
+    <div><span>Card processing fee — passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
+    <div class="grand"><span>Total</span><span>${money(tickets + fee)}</span></div>` : "";
+  $("#checkoutBtn").disabled = !ids.length;
+  const mb = $("#miniBar");
+  if (ids.length){ mb.classList.add("on"); $("#mbCount").textContent = "the stub"; $("#mbTotal").textContent = money(tickets + fee); }
+  else mb.classList.remove("on");
+  if (!ids.length && holdTimer){ clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true; }
+}
+
+/* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
+async function checkout(accessibleSeats){
+  const seats = accessibleSeats || [...selected];
+  if (!seats.length) return;
+  paying = true;
+  $("#checkoutBtn").disabled = true;
+  $("#checkoutBtn").textContent = "Locking your seats…";
+  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats });
+  if (!r.ok){
+    paying = false;
+    $("#checkoutBtn").textContent = "Pay & lock seats";
+    $("#checkoutBtn").disabled = !selected.size;
+    if (r.status === 409){
+      toast(`Seat ${r.data.seat} was just taken — it's out of your stub; the rest are still yours.`);
+      selected.delete(r.data.seat); refreshState(); renderCart();
+    } else toast(r.data.err || "Payment page failed to open — nothing charged, seats released.");
+    return;
+  }
+  location.href = r.data.url;
+}
+$("#checkoutBtn").addEventListener("click", () => checkout());
+$("#mbGo").addEventListener("click", () => checkout());
+
+/* ---------- accessible booking (terms-gated, $33 + $0 fee) ---------- */
+let pendingWc = null;
+function openTerms(spaceId){
+  if (unavailable.has(spaceId)){ toast("That space is already booked — email us and we'll make room."); return; }
+  pendingWc = spaceId;
+  const comp = { "K-WA": "K-15", "K-WB": "K-5", "K-WC": "K-106", "K-WD": "K-14" }[spaceId];
+  const compOpen = comp && !unavailable.has(comp);
+  $("#wcChoiceBox").innerHTML = `
+    <div class="pay-summary" style="margin:0">
+      <div><span>Wheelchair space ${spaceId.split("-")[1].slice(1)} · row K</span><span>${money(CONFIG.wheelchair.price)} · card fee waived</span></div>
+      ${compOpen ? `<div style="margin-top:4px"><label class="switch" style="font-size:12.5px"><input type="checkbox" id="wcComp" checked> Add companion seat ${comp}</label><span>${money(CONFIG.wheelchair.price)} · fee waived</span></div>`
+                 : `<div><span style="color:var(--dim)">The paired companion seat is taken — email us and we'll seat a companion nearby.</span><span></span></div>`}
+    </div>`;
+  const sc = $("#termsScroll");
+  sc.scrollTop = 0;
+  $("#agreeBtn").disabled = true;
+  $("#scrollHint").style.opacity = 1;
+  $("#scrollHint").textContent = "▼ scroll to the very end to wake the agree button ▼";
+  $("#termsModal").classList.add("open"); $("#veil").classList.add("open");
+  requestAnimationFrame(() => requestAnimationFrame(termsEval));
+}
+function termsEval(){
+  if (!$("#termsModal").classList.contains("open")) return;
+  const el = $("#termsScroll");
+  const fitsWhole = el.scrollHeight - el.clientHeight <= 6;
+  const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 6;
+  if (fitsWhole || atEnd){
+    $("#agreeBtn").disabled = false;
+    $("#scrollHint").style.opacity = .35;
+    $("#scrollHint").textContent = fitsWhole ? "— the full terms fit your screen · agree is awake —" : "— read to the end · agree is awake —";
+  }
+}
+$("#termsScroll").addEventListener("scroll", termsEval);
+window.addEventListener("resize", termsEval);
+$("#agreeBtn").addEventListener("click", () => {
+  if (!pendingWc) return;
+  const comp = { "K-WA": "K-15", "K-WB": "K-5", "K-WC": "K-106", "K-WD": "K-14" }[pendingWc];
+  const seats = [pendingWc];
+  if ($("#wcComp") && $("#wcComp").checked && comp) seats.push(comp);
+  closeOverlays();
+  toast("Opening secure payment for your accessible booking…");
+  checkout(seats);
+});
+$("#openAccessible").addEventListener("click", () => {
+  const open = ["K-WA","K-WB","K-WC","K-WD"].find(id => !unavailable.has(id));
+  if (!open){ toast("All wheelchair spaces are booked — email us and we'll make room."); return; }
+  openTerms(open);
+});
+
+/* ---------- panels / overlays ---------- */
+$$(".cat-btn").forEach(b => b.addEventListener("click", () => {
+  const id = "cat-" + b.dataset.cat;
+  $$(".cat-panel").forEach(p => p.classList.toggle("open", p.id === id ? !p.classList.contains("open") : false));
+}));
+function closeOverlays(){ $("#veil").classList.remove("open"); $$(".modal").forEach(m => m.classList.remove("open")); }
+$("#veil").addEventListener("click", closeOverlays);
+$$("[data-close]").forEach(b => b.addEventListener("click", closeOverlays));
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeOverlays(); });
+
+/* release my holds if I close the tab without paying */
+window.addEventListener("pagehide", () => {
+  if (selected.size && !paying && navigator.sendBeacon)
+    navigator.sendBeacon(CONFIG.api + "/claim-seats",
+      new Blob([JSON.stringify({ holder: HOLDER, seats: [...selected], action: "release" })], { type: "application/json" }));
+});
 
 </script>
 </body>
