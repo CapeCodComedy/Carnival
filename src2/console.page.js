@@ -37,7 +37,17 @@ function boot(initial){
   buildActions();
   apply(initial);
   setInterval(refresh, 6000);
-  $("#proveBtn").addEventListener("click", async () => {
+  $("#wlBtn").addEventListener("click", async () => {
+  $("#wlBox").textContent = "counting…";
+  const r = await call("waitlist");
+  if (!r.ok){ $("#wlBox").textContent = "error: " + JSON.stringify(r.data); return; }
+  const d = r.data;
+  const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`, ""];
+  (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)}  ${e.email}`));
+  if ((d.entries || []).length > 12) lines.push(`… and ${d.entries.length - 12} more`);
+  $("#wlBox").textContent = lines.join("\n");
+});
+$("#proveBtn").addEventListener("click", async () => {
     const r = await call("ledger");
     $("#ledgerBox").textContent = JSON.stringify(r.data, null, 1);
   });

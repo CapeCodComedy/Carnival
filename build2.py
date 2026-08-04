@@ -71,12 +71,30 @@ BANNER = '''<!--
 
 qr = pathlib.Path("/root/carnival/node_modules/qrcodejs2/qrcode.min.js").read_text()
 
-index = f'''<!DOCTYPE html>
+landing = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
-{head("The Cape Cod Comedy Carnival — Reserved Seats · Sagalow & Cannon Live · Sat Aug 29 · Tilden Arts Center",
-      "Pick your exact seat on the live map: Brendan Sagalow and Mike Cannon, one night at Tilden Arts Center, West Barnstable — Sat Aug 29 2026, 7 PM. Every seat reserved, $33 to $88, transparent $3 card fee.",
+{head("The Cape Cod Comedy Carnival — Sagalow & Cannon Live · Sat Aug 29 · Tilden Arts Center, Cape Cod",
+      "Two headline sets, one night: Brendan Sagalow and Mike Cannon with opener Jason Choi — Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved. Tickets on sale now.",
       "index,follow", JSONLD, "https://1140a.com/")}
+</head>
+<body>
+{BANNER}
+{(SRC / "landing.body.html").read_text()}
+<script>
+{(SRC / "landing.page.js").read_text()}
+</script>
+</body>
+</html>
+'''
+(OUT / "index.html").write_text(landing)
+
+tickets = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head("Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center",
+      "The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $35 to $88, transparent $3 card fee.",
+      "index,follow", None, "https://1140a.com/tickets.html")}
 </head>
 <body>
 {BANNER}
@@ -88,7 +106,7 @@ index = f'''<!DOCTYPE html>
 </body>
 </html>
 '''
-(OUT / "index.html").write_text(index)
+(OUT / "tickets.html").write_text(tickets)
 
 admin = f'''<!DOCTYPE html>
 <html lang="en-US">

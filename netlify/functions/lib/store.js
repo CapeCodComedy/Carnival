@@ -201,5 +201,16 @@ async function getOrder(sid) {
 }
 async function onceEvent(eventId, exSec = 86400) { return d.setnx_ex(`evt:${eventId}`, "1", exSec); }
 
+/* singlet waitlist: hash email -> "choice|ts"; one entry per email, latest wins */
+async function waitlistPut(email, choice) {
+  return d.eval(`redis.call('HSET','wl:entries', ARGV[1], ARGV[2]) return 1`, [email, choice + "|" + Date.now()]);
+}
+async function waitlistAll() {
+  const flat = await d.eval(`return redis.call('HGETALL','wl:entries')`, ["_"]);
+  const out = {};
+  for (let i = 0; i < (flat || []).length; i += 2) out[flat[i]] = flat[i + 1];
+  return out;
+}
+
 module.exports = { claim, release, finalize, unsell, purgeExpired, adminHold, adminRelease,
-                   state, putOrder, getOrder, onceEvent, ADMIN, _driver: d };
+                   state, putOrder, getOrder, onceEvent, waitlistPut, waitlistAll, ADMIN, _driver: d };

@@ -79,6 +79,19 @@ exports.handler = async (event) => {
     return ok({ sold: seats, codes: issued });
   }
 
+  if (action === "waitlist") {
+    /* singlet demand poll: totals + per-corner tallies + entries, newest first */
+    const all = await store.waitlistAll();
+    const t = { sagalow: 0, cannon: 0, either: 0 };
+    const entries = Object.entries(all).map(([email, v]) => {
+      const i = String(v).lastIndexOf("|");
+      const choice = String(v).slice(0, i), ts = Number(String(v).slice(i + 1));
+      if (t[choice] !== undefined) t[choice] += 1;
+      return { email, choice, ts };
+    }).sort((a, b) => b.ts - a.ts);
+    return ok({ total: entries.length, ...t, entries });
+  }
+
   if (action === "manifest") {
     /* door list: every sold seat with its code (scans orders) — Phase-1 scale is fine */
     const s = await store.state();

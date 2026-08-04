@@ -12,6 +12,7 @@ const functions = {
   "seats-state": FN("seats-state"), "claim-seats": FN("claim-seats"),
   "create-checkout": FN("create-checkout"), "stripe-webhook": FN("stripe-webhook"),
   "order-status": FN("order-status"), "admin-api": FN("admin-api"), "scan": FN("scan"),
+  "waitlist": FN("waitlist"),
 };
 
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png" };
