@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagalow Solo — waiting list · The Cape Cod Comedy Carnival</title>
+<meta name="description" content="Sagalow's solo set at the Cape Cod Comedy Carnival: not on sale yet. See the live room, join the waiting list — first come, first served.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://1140a.com/sagalow.html">
+<meta property="og:title" content="Sagalow Solo — waiting list · The Cape Cod Comedy Carnival">
+<meta property="og:description" content="Sagalow's solo set at the Cape Cod Comedy Carnival: not on sale yet. See the live room, join the waiting list — first come, first served.">
+<meta property="og:url" content="https://1140a.com/sagalow.html">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#171a2b;        /* auditorium dark */
+  --ink-2:#20243a;      /* raised panel */
+  --line:#31364f;
+  --bone:#d8d3c5;       /* available seats, body text */
+  --dim:#8d8fa3;        /* secondary text */
+  --glow:#f5b445;       /* tungsten amber — selection & CTA */
+  --gilt:#e6c069;       /* gilt ring — carnival accents */
+  --sold:#41465e;       /* receded, spoken-for */
+  --held:#2c3049;       /* blocked / held back */
+  --stock:#f4efe2;      /* ticket-stock cream (the stub) */
+  --stock-ink:#2a2417;
+  --danger:#e2694f;
+  --ok:#7fb069;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;font-size:15px;line-height:1.5}
+::selection{background:var(--glow);color:var(--ink)}
+.mono{font-family:'Spline Sans Mono',monospace}
+.wrap{max-width:1140px;margin:0 auto;padding:20px 16px 120px}
+a{color:var(--glow)}
+
+/* ---------- header ---------- */
+header.site{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:18px}
+.org{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+h1{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:clamp(34px,6vw,60px);letter-spacing:.02em;line-height:.95;color:#fff}
+h1 .amp{color:var(--glow)}
+.when{font-family:'Spline Sans Mono',monospace;font-size:12.5px;color:var(--dim);margin-top:6px}
+.head-left{flex:1 1 320px;min-width:260px}
+.head-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-left:auto}
+.chip{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--dim)}
+.chip.warn{border-color:#6b5320;color:var(--glow)}
+.chip.live{border-color:#3f5a35;color:var(--ok)}
+
+section h2{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:23px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:4px}
+.sub{font-size:13px;color:var(--dim);margin-bottom:14px}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+
+/* ---------- show picker ---------- */
+.shows{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:6px 0 24px}
+.show-card{position:relative;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;cursor:pointer;color:var(--bone);font-family:'Archivo',sans-serif;transition:border-color .15s, transform .15s}
+.show-card:hover{border-color:#57506b}
+.show-card.sel{border-color:var(--glow);box-shadow:0 0 0 1px var(--glow)}
+.show-card.soon{opacity:.55;cursor:default}
+.show-card.soon:hover{border-color:var(--line)}
+.show-card.soon .tick{display:none}
+.show-card h3{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:26px;letter-spacing:.03em;color:#fff;line-height:1}
+.show-card .kicker{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.show-card.carn .kicker{color:var(--gilt)}
+.show-card .meta{font-size:12.5px;color:var(--dim);margin-top:6px;line-height:1.45}
+.show-card .from{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--glow);margin-top:8px}
+.show-card.carn{border-style:solid;background:linear-gradient(160deg,#262038 0%,var(--ink-2) 55%)}
+.show-card .tick{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--ink)}
+.show-card.sel .tick{background:var(--glow);border-color:var(--glow)}
+
+/* ---------- layout ---------- */
+.cols{display:grid;grid-template-columns:1fr 330px;gap:24px;align-items:start}
+.cols>*{min-width:0}   /* let the map column shrink; the map scrolls inside its card */
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+
+/* ---------- seat map ---------- */
+.map-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 8px 10px}
+.map-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.map-scroll svg{display:block;min-width:730px;width:100%;height:auto}
+.seat{cursor:pointer}
+.seat.sold,.seat.blocked,.seat.ga{cursor:default}
+.seat.wc{cursor:pointer}
+.seat:focus{outline:none}
+.seat:focus-visible .shape{stroke:#fff;stroke-width:2}
+@media(prefers-reduced-motion:no-preference){
+  .seat.sel .shape{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.72}}
+}
+.legend{display:flex;flex-wrap:wrap;gap:12px 16px;padding:12px 10px 4px;font-size:12px;color:var(--dim)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend i.sq{border-radius:3px}
+
+/* ---------- GA tiers ---------- */
+.tiers{margin-top:22px;display:grid;gap:14px}
+.tier{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.tier.dashed{border-style:dashed;opacity:.8}
+.tier-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.tier-top h3{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:20px;letter-spacing:.04em;color:#fff}
+.price{font-family:'Spline Sans Mono',monospace;font-size:15px;color:var(--glow);margin-left:auto}
+.tier-note{font-size:12.5px;color:var(--dim);margin-top:2px}
+.bar{height:7px;border-radius:999px;background:var(--line);margin:12px 0 6px;overflow:hidden}
+.bar b{display:block;height:100%;background:linear-gradient(90deg,#b47f2b,var(--glow));border-radius:999px}
+.bar-label{font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--dim)}
+.stepper{display:flex;align-items:center;gap:12px;margin-top:12px}
+.stepper button{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--bone);font-size:18px;cursor:pointer}
+.stepper button:hover:not(:disabled){border-color:var(--glow);color:var(--glow)}
+.stepper button:disabled{opacity:.3;cursor:not-allowed}
+.stepper output{font-family:'Spline Sans Mono',monospace;font-size:16px;min-width:2ch;text-align:center}
+
+/* ---------- the stub (cart) ---------- */
+.stub{position:sticky;top:16px;background:var(--stock);color:var(--stock-ink);border-radius:var(--radius);padding:18px 18px 16px 26px;box-shadow:0 12px 32px rgba(0,0,0,.45)}
+.stub::before{content:"";position:absolute;left:11px;top:10px;bottom:10px;border-left:2px dashed rgba(42,36,23,.35)}
+.stub::after{content:"";position:absolute;left:-8px;top:50%;width:16px;height:16px;border-radius:50%;background:var(--ink);transform:translateY(-50%)}
+.stub h2{color:var(--stock-ink);font-size:20px}
+.stub .sub{color:#6f6552;margin-bottom:10px}
+.stub ul{list-style:none;font-family:'Spline Sans Mono',monospace;font-size:13px;max-height:210px;overflow:auto;margin-bottom:8px}
+.stub li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px dotted rgba(42,36,23,.2)}
+.stub li .tag{font-size:10px;letter-spacing:.06em;color:#6f6552;display:block}
+.stub li button{border:none;background:none;color:#a04b32;cursor:pointer;font-size:13px}
+.empty{font-size:13px;color:#6f6552;padding:12px 0}
+.totals{font-family:'Spline Sans Mono',monospace;font-size:13.5px;margin-top:6px}
+.totals div{display:flex;justify-content:space-between;padding:3px 0}
+.totals .grand{font-size:17px;font-weight:600;border-top:2px solid var(--stock-ink);margin-top:6px;padding-top:8px}
+.hold{font-size:12px;color:#6f6552;margin-top:10px}
+.hold .hold-line{display:flex;justify-content:space-between;align-items:center}
+.hold b{font-family:'Spline Sans Mono',monospace;font-size:13px;color:#a04b32}
+.hold .hbar{height:4px;border-radius:999px;background:rgba(42,36,23,.15);margin-top:6px;overflow:hidden}
+.hold .hbar b{display:block;height:100%;background:#a04b32;border-radius:999px;transition:width 1s linear}
+.cta{width:100%;margin-top:12px;padding:13px;border:none;border-radius:8px;background:var(--stock-ink);color:var(--stock);font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.cta:disabled{opacity:.35;cursor:not-allowed}
+.cta:hover:not(:disabled){background:#000}
+.fee-note{font-size:11.5px;color:#6f6552;margin-top:8px;text-align:center}
+
+/* ---------- mobile mini-bar ---------- */
+#miniBar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;background:var(--stock);color:var(--stock-ink);padding:10px 14px;box-shadow:0 -8px 24px rgba(0,0,0,.5);align-items:center;gap:12px;font-family:'Spline Sans Mono',monospace;font-size:13px}
+#miniBar .mb-total{font-weight:600;font-size:15px}
+#miniBar button{margin-left:auto;padding:9px 16px;border:none;border-radius:8px;background:var(--stock-ink);color:var(--stock);font-family:'Big Shoulders',sans-serif;font-size:16px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+@media(max-width:980px){#miniBar.on{display:flex}}
+
+/* ---------- drawers & modals ---------- */
+#veil{position:fixed;inset:0;background:rgba(10,12,22,.7);display:none;z-index:40}
+#veil.open{display:block}
+.drawer{position:fixed;left:0;right:0;bottom:-110%;z-index:50;background:var(--ink-2);border-top:1px solid var(--line);border-radius:18px 18px 0 0;padding:22px 18px 30px;max-width:700px;margin:0 auto;transition:bottom .25s ease;max-height:88vh;overflow:auto}
+.drawer.open{bottom:0}
+.drawer h2{margin-bottom:2px}
+.close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer}
+.modal{position:fixed;inset:0;z-index:55;display:none;place-items:center;padding:14px}
+.modal.open{display:grid}
+.modal .box{position:relative;background:var(--ink-2);border:1px solid var(--line);border-radius:14px;max-width:560px;width:100%;max-height:88vh;display:flex;flex-direction:column;padding:20px 18px 16px}
+.terms-scroll{overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0;background:var(--ink);font-size:13.5px;flex:1;min-height:200px}
+.terms-scroll h3{font-family:'Big Shoulders',sans-serif;letter-spacing:.05em;font-size:17px;color:#fff;margin:14px 0 4px}
+.terms-scroll h3:first-child{margin-top:0}
+.terms-scroll p{margin-bottom:10px;color:var(--bone)}
+.terms-scroll .notice{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--glow);border:1px dashed #6b5320;border-radius:8px;padding:10px;margin:10px 0}
+.scroll-hint{font-size:11.5px;color:var(--dim);text-align:center;margin-bottom:8px}
+.btn-row{display:flex;gap:10px;justify-content:flex-end}
+.btn{padding:11px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--bone);font-family:'Archivo';font-weight:600;font-size:14px;cursor:pointer}
+.btn:hover{border-color:var(--glow);color:var(--glow)}
+.btn.primary{background:var(--glow);border-color:var(--glow);color:var(--ink)}
+.btn.primary:hover{background:#ffc75e;color:var(--ink)}
+.btn.primary:disabled{opacity:.35;cursor:not-allowed}
+.btn.danger{border-color:#7c3b2b;color:var(--danger)}
+
+/* ---------- checkout drawer ---------- */
+.pay-summary{font-family:'Spline Sans Mono',monospace;font-size:13px;background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0}
+.pay-summary div{display:flex;justify-content:space-between;padding:2px 0}
+.demo-btn{display:block;width:100%;margin-top:10px;padding:11px;border-radius:8px;border:1px dashed #6b5320;background:none;color:var(--glow);font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.06em;cursor:pointer}
+.rail-note{font-size:12px;color:var(--dim);margin-top:12px}
+
+/* ---------- tickets (demo confirmation) ---------- */
+.tix{display:grid;gap:14px;margin:14px 0}
+.ticket{background:var(--stock);color:var(--stock-ink);border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;position:relative;overflow:hidden}
+.ticket::before{content:"";position:absolute;left:96px;top:8px;bottom:8px;border-left:2px dashed rgba(42,36,23,.3)}
+.ticket.carnival{box-shadow:inset 0 0 0 3px var(--gilt)}
+.ticket .qr{width:82px;height:82px;flex:none;background:#fff;border-radius:6px;display:grid;place-items:center}
+.ticket .qr canvas{width:74px;height:74px;image-rendering:pixelated}
+.ticket .t-info{font-family:'Spline Sans Mono',monospace;font-size:12px;line-height:1.5}
+.ticket .t-info b{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.04em;display:block}
+.ticket .t-type{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6552}
+.ticket.carnival .t-type{color:#8a6a1f}
+
+/* ---------- info sections ---------- */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+.info-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.info-card h3{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:19px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:6px}
+.info-card p{font-size:13px;color:var(--bone);margin-bottom:8px}
+.info-card .fine{font-size:12px;color:var(--dim)}
+.mature{border:1px dashed #6b5320;border-radius:var(--radius);padding:16px;margin:26px 0;background:rgba(245,180,69,.04)}
+.mature h3{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.06em;color:var(--glow);margin-bottom:6px}
+.mature p{font-size:13.5px;color:var(--bone);max-width:70ch}
+.contact-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+.cat-btn{text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px;color:var(--bone);cursor:pointer;font-family:'Archivo'}
+.cat-btn:hover{border-color:var(--glow)}
+.cat-btn b{font-family:'Big Shoulders',sans-serif;font-size:18px;letter-spacing:.04em;color:#fff;display:block;margin-bottom:4px}
+.cat-btn span{font-size:12.5px;color:var(--dim)}
+.cat-panel{display:none;margin-top:12px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.cat-panel.open{display:block}
+.cat-panel h3{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.05em;color:#fff;margin-bottom:8px}
+.cat-panel p{font-size:13.5px;margin-bottom:10px}
+.cat-panel .fine{font-size:12px;color:var(--dim)}
+.notice-line{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.05em;color:var(--glow);border:1px dashed #6b5320;border-radius:8px;padding:10px;margin:10px 0}
+
+/* ---------- mailing list ---------- */
+.mailing{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.ml-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.ml-card.buyers{background:linear-gradient(160deg,#262038 0%,var(--ink-2) 55%);border-color:#57506b}
+.ml-card h3{font-family:'Big Shoulders',sans-serif;font-size:20px;letter-spacing:.05em;color:#fff}
+.ml-card .kicker{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.ml-card ul{margin:10px 0 12px 0;list-style:none}
+.ml-card li{font-size:13px;padding:3px 0;color:var(--bone)}
+.ml-card li::before{content:"◆ ";color:var(--glow);font-size:9px;vertical-align:1px}
+.ml-form{display:flex;gap:8px;margin-top:8px}
+.ml-form input{flex:1;padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:13px}
+.ml-form input:focus{outline:none;border-color:var(--glow)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;font-size:12.5px;color:var(--dim)}
+footer .mono{font-size:11px;letter-spacing:.08em}
+footer p{margin-bottom:8px;max-width:80ch}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:var(--stock);color:var(--stock-ink);padding:10px 18px;border-radius:999px;font-size:13.5px;opacity:0;transition:all .25s;z-index:60;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:92vw}
+#toast.show{transform:translate(-50%,0);opacity:1}
+
+/* ---------- password gate ---------- */
+#gate{position:fixed;inset:0;background:var(--ink);z-index:100;display:grid;place-items:center;padding:16px}
+#gate[hidden]{display:none}
+#gate .g-box{max-width:380px;width:100%;text-align:center}
+#gate .org{margin-bottom:10px}
+#gate h1{font-size:44px;margin-bottom:6px}
+#gate p{font-size:13px;color:var(--dim);margin-bottom:16px}
+#gate input{width:100%;padding:13px;border-radius:8px;border:1px solid var(--line);background:var(--ink-2);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:15px;text-align:center;letter-spacing:.1em}
+#gate input:focus{outline:none;border-color:var(--glow)}
+#gate button{width:100%;margin-top:10px;padding:13px;border:none;border-radius:8px;background:var(--glow);color:var(--ink);font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:19px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+#gate .g-err{color:var(--danger);font-size:12.5px;margin-top:8px;min-height:18px}
+
+/* ---------- admin ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.tab{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.tab.on{border-color:var(--glow);color:var(--glow)}
+.pane{display:none}
+.pane.on{display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.stat b{display:block;font-family:'Spline Sans Mono',monospace;font-size:19px;color:var(--glow)}
+.stat span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.stat.money b{color:#fff}
+table.grid{width:100%;border-collapse:collapse;font-family:'Spline Sans Mono',monospace;font-size:12.5px;margin:10px 0 18px}
+@media(max-width:700px){table.grid{display:block;overflow-x:auto;white-space:nowrap}}
+table.grid th,table.grid td{border:1px solid var(--line);padding:7px 10px;text-align:right}
+table.grid th{color:var(--dim);font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px}
+table.grid td:first-child,table.grid th:first-child{text-align:left}
+table.grid td.tot{color:var(--glow)}
+.action-list{display:grid;gap:10px;margin-top:12px}
+.action{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px}
+.action .a-info{flex:1 1 260px}
+.action b{font-size:14px;color:#fff;display:block}
+.action span{font-size:12px;color:var(--dim)}
+.action .mono.delta{color:var(--ok);font-size:12px}
+.switch{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:12px;color:var(--dim)}
+.switch input{appearance:none;width:34px;height:18px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;transition:background .15s;flex:none}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--bone);transition:transform .15s}
+.switch input:checked{background:var(--glow)}
+.switch input:checked::after{transform:translateX(16px);background:var(--ink)}
+.chart-box{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:18px}
+.chart-box h3{font-family:'Big Shoulders',sans-serif;font-size:18px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:10px}
+.seat-tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.seat-tools .tab{font-size:11px;padding:7px 12px}
+textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid var(--line);border-radius:8px;color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:11.5px;padding:10px}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.set-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.set-card label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:8px 0 4px}
+.set-card input[type=text],.set-card input[type=number]{width:100%;padding:9px 10px;border-radius:7px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:13px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:6px}</style>
+</head>
+<body>
+<!--
+  ============================================================
+  THE CAPE COD COMEDY CARNIVAL — RESERVED-SEAT BOX OFFICE (v2)
+  All-Stripe · all-reserved · the map IS the box office.
+  Seat truth lives server-side (Netlify Functions + Upstash).
+  THE SWITCH: CONFIG.gate.enabled (both pages, one line each).
+  ============================================================
+-->
+<header class="top" style="padding:26px 14px 8px;text-align:center">
+  <p class="mono" style="color:#8d8fa3;letter-spacing:.3em;font-size:11px;margin:0 0 8px">THE 1140A CORPORATION PRESENTS</p>
+  <h1 style="font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(34px,7vw,64px);line-height:.95;margin:0"><span id="soloName"></span> <span class="amp">SOLO</span></h1>
+  <p class="mono" style="color:var(--glow);letter-spacing:.14em;font-size:clamp(11px,2.3vw,14px);margin:12px 0 0">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · WEST BARNSTABLE</p>
+</header>
+
+<section style="max-width:760px;margin:22px auto 0;padding:0 14px">
+  <div style="border:2px solid var(--glow);border-radius:12px;padding:20px 18px;background:rgba(245,180,69,.06)">
+    <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 8px">WAITING LIST — FIRST COME, FIRST SERVED</h2>
+    <p class="sub" style="margin:0 0 14px">Solo-set tickets are <b>not on sale yet</b>. The map below is the live room: what's open there today is what solo tickets will draw from, first come, first served, the moment the window opens. Leave your email and you'll hear the instant it does — and we'll warn you when the house passes the halfway mark. If the room fills before solo tickets release, you get first option on the <a href="/tickets.html" style="color:var(--glow)">Double-Header</a> instead. One email address, one purpose, never shared.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input id="wlEmail" type="email" placeholder="your@email.com" autocomplete="email"
+             style="flex:1;min-width:200px;padding:12px;border-radius:8px;border:1px solid #31365f;background:#171a2b;color:var(--bone);font-family:'Archivo';font-size:15px">
+      <input id="wlHp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+      <button id="wlGo" type="button"
+              style="padding:12px 22px;border-radius:8px;border:0;background:var(--glow);color:#171a2b;font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer;font-weight:800">GET IN LINE</button>
+    </div>
+    <p id="wlMsg" class="mono" style="min-height:20px;margin:10px 0 0;font-size:13px;color:#a6c99a"></p>
+  </div>
+  <p class="sub" style="margin:16px 0 0;text-align:center">Want the whole night now? The <a href="/tickets.html" style="color:var(--glow)">Double-Header — SAGALOW + CANNON — is on sale</a>.</p>
+</section>
+
+<section class="map-card" style="max-width:1080px;margin:26px auto 40px;padding:0 8px">
+  <h2 style="padding:0 10px">The room, live</h2>
+  <p class="sub" style="padding:0 10px">Dark seats are spoken for. Open seats are what first-come-first-served will draw from when solo tickets open — this map refreshes itself.</p>
+  <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
+  <p class="sub mono" id="liveNote" style="padding:6px 10px 14px;font-size:12px"></p>
+</section>
+
+<p class="sub" style="text-align:center;padding:0 14px 34px;font-size:13px">Questions, wheelchair &amp; assistance, ASL — <span class="mono">info@1140A.com</span> · Tilden Arts Center, Cape Cod Community College, 2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668</p>
+
+<div id="toast" class="toast"></div>
+
+<script>
+window.SINGLET = { name: "SAGALOW", choice: "sagalow" };
+/* ==================================================================
+   CARNIVAL BOX OFFICE v2 — shared core (buyer + console)
+   All-reserved, all-Stripe. The map IS the box office (spec §0).
+   Seat state comes ONLY from /api/seats-state — never guessed locally.
+   ================================================================== */
+const CONFIG = {
+  event: {
+    org: "THE 1140A CORPORATION PRESENTS",
+    title: 'THE CAPE COD <span class="amp">COMEDY CARNIVAL</span>',
+    plainTitle: "The Cape Cod Comedy Carnival",
+    when: "SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER",
+    venue: "Tilden Arts Center, Cape Cod Community College",
+    address: "2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668",
+    contactEmail: "info@1140A.com",
+    url: "https://1140a.com"
+  },
+  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
+  fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
+  wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
+  currency: "$",
+  maxPerOrder: 10,
+  zones: {
+    orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
+    t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
+    t2:   { name: "TIER 2",    desc: "Rows K–Q — the cross-aisle back half" },
+    balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
+  },
+  softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
+  pollMs: 8000,            // map repaint cadence (matches CDN cache window)
+  api: "/api",
+  gate: { enabled: false, password: "pitrow" }   // THE SWITCH — false = public
+};
+
+/* ---------- house layout (venue chart — geometry only; state lives server-side) ---------- */
+const CEN = [115,114,113,112,111,110,109,108,107,106,105,104,103,102,101];
+const LAYOUT = [
+  {row:"TA",zone:"orch",l:[5,3,1],c:CEN,pit:true},
+  {row:"TB",zone:"orch",l:[7,5,3,1],c:CEN,pit:true},
+  {row:"C",zone:"orch",l:[9,7,5,3,1],c:CEN,close:true},
+  {row:"D",zone:"t1",l:[11,9,7,5,3,1],c:CEN},
+  {row:"E",zone:"t1",l:[13,11,9,7,5,3,1],c:CEN},
+  {row:"F",zone:"t1",l:[15,13,11,9,7,5,3,1],c:CEN},
+  {row:"G",zone:"t1",l:[17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"H",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"I",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"J",zone:"t1",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"K",zone:"t2",l:[19,17,15,"WA","WB",5,3,1],c:[115,114,113,112,111,110,"WC",106,105,104,103,102,101]},
+  {row:"L",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"M",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"N",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"O",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"P",zone:"t2",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
+  {row:"Q",zone:"t2",l:null,c:CEN,ext:{row:"TQ",hi:20}},
+  {row:"AA",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"BB",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"CC",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
+  {row:"DD",zone:"balc",l:[11,9,7,5,3,1],c:[114,113,112,111],booth:true,hiEven:28},
+  {row:"EE",zone:"balc",l:[11,9,7,5,3,1],c:[115,114,113],booth:true,hiEven:28}
+];
+/* Even-side (house-right) blocks are generated from the venue chart's
+   high seat per row — 2 up to that even — so the map and the chart
+   can never disagree on a hand-typed list. */
+const EVENS_HI = { TA:6, TB:8, C:10, D:12, E:14, F:16, G:18, H:20, I:20, J:20, L:18, M:18, N:18, O:18 };
+LAYOUT.forEach(R => {
+  if (R.row in EVENS_HI){
+    R.r = []; for (let n=2; n<=EVENS_HI[R.row]; n+=2) R.r.push(n);
+  } else if (R.row === "K"){
+    R.r = [2,4,6,"WD",14,16,18];             // WD spans the missing 8-10-12
+  } else if (R.hiEven){
+    R.r = []; for (let n=2; n<=R.hiEven; n+=2) R.r.push(n);
+  } else R.r = [];
+  if (R.ext){ R.ext.seats = []; for (let n=2; n<=R.ext.hi; n+=2) R.ext.seats.push(n); }
+});
+const WCSPAN = { WA:2, WB:2, WC:3, WD:3 };
+
+/* zone + wheelchair lookup derived from the layout walk */
+const seatZone = {}, WC_IDS = new Set();
+LAYOUT.forEach(R => {
+  const put = (row, n) => {
+    const id = `${row}-${n}`;
+    seatZone[id] = R.zone;
+    if (typeof n === "string") WC_IDS.add(id);
+  };
+  (Array.isArray(R.l) ? R.l : []).forEach(n => put(R.row, n));
+  (R.c || []).forEach(n => put(R.row, n));
+  (Array.isArray(R.r) ? R.r : []).forEach(n => put(R.row, n));
+  if (R.ext) R.ext.seats.forEach(n => put(R.ext.row, n));
+});
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const money = n => CONFIG.currency + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toFixed(2));
+function holdWords(msLeft){
+  const m = Math.ceil(msLeft / 60000);
+  if (msLeft <= 0) return "expired";
+  if (m <= 1) return "under a minute";
+  return m + " min";
+}
+if (typeof CanvasRenderingContext2D !== "undefined" && !CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    r = Math.min(r, w/2, h/2);
+    this.moveTo(x+r,y); this.arcTo(x+w,y,x+w,y+h,r); this.arcTo(x+w,y+h,x,y+h,r);
+    this.arcTo(x,y+h,x,y,r); this.arcTo(x,y,x+w,y,r); this.closePath(); return this;
+  };
+}
+let toastT = null;
+function toast(msg){
+  const t = $("#toast"); if (!t) return;
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3800);
+}
+
+/* ---------- seat-map renderer (geometry from the venue chart) ---------- */
+function buildSeatMap(svg, opts){
+  const NS = "http://www.w3.org/2000/svg";
+  const G = 23, AISLE = 20, ROW_H = 27, R = 8.2;
+  const CGRID = 15;                       // centre slots (115..101)
+  const MARG_L = 7.5*G + AISLE + 10*G + 46;
+  const MARG_R = 7.5*G + AISLE + (CGRID - 1)*G + 62;   // widest right block: balcony evens to 28
+  const CX = MARG_L;                      // x of house centreline
+  const W = MARG_L + MARG_R;
+  const centerStart = CX - (CGRID/2)*G;
+  const aisleL = centerStart - AISLE;
+  const aisleR = centerStart + CGRID*G + AISLE;
+
+  const el = (name, attrs, parent) => {
+    const e = document.createElementNS(NS, name);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  };
+  const mono = t => { t.style.fontFamily = "'Spline Sans Mono',monospace"; return t; };
+
+  /* vertical plan — TA/TB sit in the pit, C a breath behind, then the house */
+  const STAGE_H = 56;
+  let y = STAGE_H + 22;
+  const rowY = {};
+  LAYOUT.forEach(Rw => {
+    if (Rw.row === "C") y += 7;
+    if (Rw.row === "D") y += 17;
+    if (Rw.row === "K") y += 27;
+    if (Rw.row === "AA") y += 58;
+    rowY[Rw.row] = y;
+    y += ROW_H;
+  });
+  const H = y + 18;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  /* stage + tungsten wash */
+  const defs = el("defs", {});
+  const gid = "wash-" + (opts.mode||"m");
+  const grad = el("radialGradient", {id:gid, cx:"50%", cy:"0%", r:"78%"}, defs);
+  el("stop",{offset:"0%","stop-color":"#f5b445","stop-opacity":"0.18"},grad);
+  el("stop",{offset:"55%","stop-color":"#f5b445","stop-opacity":"0.05"},grad);
+  el("stop",{offset:"100%","stop-color":"#f5b445","stop-opacity":"0"},grad);
+  el("rect",{x:0,y:0,width:W,height:Math.min(H,720),fill:`url(#${gid})`});
+  el("path",{d:`M ${CX-W*0.36} ${STAGE_H} Q ${CX} ${STAGE_H-40} ${CX+W*0.36} ${STAGE_H}`,fill:"none",stroke:"#f5b445","stroke-width":"2","stroke-opacity":"0.85"});
+  const st = mono(el("text",{x:CX,y:STAGE_H-13,"text-anchor":"middle",fill:"#f5b445","font-size":"13","letter-spacing":"6"}));
+  st.textContent = "STAGE";
+
+  /* balcony rule */
+  mono(el("text",{x:CX,y:rowY["AA"]-26,"text-anchor":"middle",fill:"#8d8fa3","font-size":"11.5","letter-spacing":"5"})).textContent="BALCONY";
+  el("line",{x1:40,x2:W-40,y1:rowY["AA"]-40,y2:rowY["AA"]-40,stroke:"#31364f","stroke-dasharray":"5 7"});
+
+  const seatEls = new Map();
+  const centerXFor = n => centerStart + (115 - n + 0.5) * G;
+
+  const makeSeat = (id, x, cy, span) => {
+    const isWC = span !== undefined;
+    const g = el("g",{class:"seat","data-id":id,tabindex:0,role:"button"});
+    let shape, label;
+    if (isWC){
+      const w = span*G - 6;
+      shape = el("rect",{x:x-w/2,y:cy-R-2.5,width:w,height:(R+2.5)*2,rx:5,class:"shape",fill:"var(--held)",stroke:"#7f96d9","stroke-width":"1.4"},g);
+      const t = mono(el("text",{x:x,y:cy+3.8,"text-anchor":"middle","font-size":"10",fill:"#9db1e8","pointer-events":"none"},g));
+      t.textContent = "♿ " + id.split("-")[1].slice(1);
+      label = t;
+    } else {
+      shape = el("circle",{cx:x,cy,r:R,class:"shape",fill:"var(--bone)"},g);
+      label = mono(el("text",{x, y:cy+2.8, "text-anchor":"middle","font-size":"6.8","fill":"#171a2b","pointer-events":"none",opacity:0},g));
+      label.textContent = id.split("-")[1];
+    }
+    seatEls.set(id, {g, shape, label, isWC});
+    g.addEventListener("click", () => opts.onSeat && opts.onSeat(id));
+    g.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); opts.onSeat && opts.onSeat(id);} });
+  };
+
+  LAYOUT.forEach(Rw => {
+    const cy = rowY[Rw.row];
+
+    /* left block — from the aisle outward */
+    if (Array.isArray(Rw.l)){
+      let d = 0;
+      const BOFF = -(2*G + AISLE);                                       // balcony left edge flush with the floor's left edge
+      const anchL = (Rw.zone === "balc") ? centerStart + BOFF - 2*G : aisleL;   // balcony passages run two seats wide
+      [...Rw.l].reverse().forEach(n => {                 // reversed: seat 1 first, outward
+        const span = (typeof n === "string") ? WCSPAN[n] : 1;
+        const x = anchL - (d + span/2) * G;
+        makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
+        d += span;
+      });
+      mono(el("text",{x:anchL - (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    } else {
+      mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    }
+
+    /* centre block — pinned to the 115→101 grid; balcony rows anchor to the
+       centre section's LEFT edge per the venue chart (114 starts where 115 would) */
+    if (Rw.c){
+      let bi = 0;
+      Rw.c.forEach(n => {
+        if (typeof n === "string"){                      // WC space C spans 109-107
+          const x = centerStart + ((115-109) + WCSPAN[n]/2) * G;
+          makeSeat(`${Rw.row}-${n}`, x, cy, WCSPAN[n]);
+        } else if (Rw.zone === "balc"){
+          makeSeat(`${Rw.row}-${n}`, centerStart - (2*G + AISLE) + (bi + 0.5) * G, cy);
+          bi += 1;
+        } else {
+          makeSeat(`${Rw.row}-${n}`, centerXFor(n), cy);
+        }
+      });
+    }
+
+    /* right block — from the aisle outward (2,4,6…) */
+    if (Array.isArray(Rw.r) && Rw.r.length){
+      let d = 0;
+      const anchR = (Rw.zone === "balc") ? centerStart - (2*G + AISLE) + (CGRID + 1)*G : aisleR;   // centre narrower up top; passage two wide
+      Rw.r.forEach(n => {
+        const span = (typeof n === "string") ? WCSPAN[n] : 1;
+        const x = anchR + (d + span/2) * G;
+        makeSeat(`${Rw.row}-${n}`, x, cy, span>1||typeof n==="string" ? span : undefined);
+        d += span;
+      });
+      if (!Rw.ext) mono(el("text",{x:anchR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    } else if (!Rw.ext){
+      mono(el("text",{x:aisleR + 12, y:cy+3.6,"text-anchor":"start",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+    }
+
+    /* temporary flank rows TP / TQ */
+    if (Rw.ext){
+      mono(el("text",{x:aisleR - 8, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
+      let d = 0.6;
+      Rw.ext.seats.forEach(n => {
+        makeSeat(`${Rw.ext.row}-${n}`, aisleR + (d + 0.5) * G, cy);
+        d += 1;
+      });
+      mono(el("text",{x:aisleR + (d + 0.9)*G, y:cy+3.6,"text-anchor":"middle",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.ext.row;
+    }
+  });
+
+  /* booth footprints */
+  const pY = rowY["P"], qY = rowY["Q"];
+  el("rect",{x:aisleL - 10*G, y:pY-12, width:8.6*G, height:(qY-pY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
+  mono(el("text",{x:aisleL - 10*G + 4.3*G, y:(pY+qY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="CONTROL BOOTH";
+  const dY = rowY["DD"], eY = rowY["EE"];
+  el("rect",{x:centerXFor(110)-G/2, y:dY-12, width:9.2*G, height:(eY-dY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
+  mono(el("text",{x:centerXFor(110)-G/2 + 4.6*G, y:(dY+eY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="PROJECTION BOOTH";
+
+
+  /* ---------- paint (v2: all-reserved; state injected, never guessed) ---------- */
+  const HOLD_COLORS = { sponsor:"#e6c069", comp:"#8fd9c9", marketing:"#f5b445", companion:"#7f96d9",
+                        volunteer:"#7fb069", charity:"#c07fb0", wheelchair:"#7f96d9", house:"#8d8fa3" };
+
+  function update(view){
+    /* view: { unavailable:Set, selected:Set, cats?:Object(id->category), buyerHeld?:Set } */
+    const isBuyer = opts.mode === "buyer";
+    seatEls.forEach((els, id) => {
+      const zone = seatZone[id];
+      els.g.classList.remove("sold","blocked","sel");
+      if (els.isWC){
+        /* wheelchair space: bookable via accessible flow unless sold/held */
+        const gone = view.unavailable.has(id);
+        els.shape.setAttribute("fill", gone ? "var(--sold)" : "var(--held)");
+        els.shape.setAttribute("stroke", gone ? "#4a4e63" : "#7f96d9");
+        els.g.classList.add("wc");
+        els.g.setAttribute("aria-label", gone ? `Wheelchair space — unavailable` : `Wheelchair space — tap for accessible booking`);
+        return;
+      }
+      const sel = view.selected && view.selected.has(id);
+      if (sel){
+        els.g.classList.add("sel");
+        els.shape.setAttribute("fill", "var(--glow)");
+        els.shape.setAttribute("stroke-width", "0");
+        els.label.setAttribute("opacity", .95);
+        els.g.setAttribute("aria-label", `Seat ${id} — in your stub`);
+        return;
+      }
+      els.label.setAttribute("opacity", 0);
+      if (view.unavailable.has(id)){
+        els.g.classList.add(isBuyer ? "sold" : "blocked");
+        els.shape.setAttribute("fill", isBuyer ? "var(--sold)" : (view.cats && view.cats[id] ? "var(--held)" : "var(--sold)"));
+        if (!isBuyer && view.cats && view.cats[id]){
+          els.shape.setAttribute("stroke", HOLD_COLORS[view.cats[id]] || HOLD_COLORS.house);
+          els.shape.setAttribute("stroke-width", "1.7");
+        } else if (!isBuyer && view.buyerHeld && view.buyerHeld.has(id)){
+          els.shape.setAttribute("stroke", "#ffffff");
+          els.shape.setAttribute("stroke-width", "1.4");
+        } else els.shape.setAttribute("stroke-width", "0");
+        els.g.setAttribute("aria-label", `Seat ${id} — sold`);
+        return;
+      }
+      /* open */
+      els.shape.setAttribute("fill", "var(--bone)");
+      els.g.setAttribute("aria-label", `Seat ${id}, ${CONFIG.zones[zone].name} — available, ${money(CONFIG.prices[zone])}`);
+      if (zone === "orch"){ els.shape.setAttribute("stroke", "var(--gilt)"); els.shape.setAttribute("stroke-width", "1.5"); }
+      else els.shape.setAttribute("stroke-width", "0");
+    });
+  }
+  return { update, seatEls };
+}
+
+/* Solo-set page — live look at the room + the waiting list. No selling here:
+   seats are view-only; clicks route to the list. SINGLET is injected at build. */
+(function(){
+  const S = window.SINGLET;                       // { name: "SAGALOW", choice: "sagalow" }
+  $("#soloName").textContent = S.name;
+  document.title = S.name + " Solo — The Cape Cod Comedy Carnival";
+
+  let unavailable = new Set();
+  let map = null;
+
+  function paint(){ map && map.update({ unavailable, selected: new Set() }); }
+
+  async function refreshState(){
+    try {
+      const r = await fetch(CONFIG.api + "/seats-state", { cache: "no-store" });
+      const s = await r.json();
+      unavailable = new Set(s.unavailable || []);
+      paint();
+      $("#liveNote").textContent = "Live map · refreshes automatically · solo tickets not on sale yet";
+    } catch(e){}
+  }
+
+  map = buildSeatMap($("#map"), { mode: "buyer", getShow: () => "all",
+    onSeat: () => toast("Solo-set seats aren't on sale yet — get in line above and you'll hear first.") });
+  refreshState();
+  setInterval(() => { if (!document.hidden) refreshState(); }, CONFIG.pollMs + 1500);
+
+  $("#wlGo").addEventListener("click", async () => {
+    const email = $("#wlEmail").value.trim();
+    const msg = $("#wlMsg");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ msg.style.color = "#e08a7a"; msg.textContent = "That email doesn't look right."; return; }
+    $("#wlGo").disabled = true;
+    try {
+      const r = await fetch("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, choice: S.choice, hp: $("#wlHp").value }) });
+      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line for " + S.name + " solo. You'll hear the moment the window opens."; $("#wlEmail").value = ""; }
+      else { const d = await r.json().catch(() => ({})); msg.style.color = "#e08a7a"; msg.textContent = d.err || "Something hiccuped — try again."; }
+    } catch(e){ msg.style.color = "#e08a7a"; msg.textContent = "Can't reach the box office — check your connection."; }
+    $("#wlGo").disabled = false;
+  });
+})();
+
+</script>
+</body>
+</html>

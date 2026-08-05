@@ -1,0 +1,32 @@
+<header class="top" style="padding:26px 14px 8px;text-align:center">
+  <p class="mono" style="color:#8d8fa3;letter-spacing:.3em;font-size:11px;margin:0 0 8px">THE 1140A CORPORATION PRESENTS</p>
+  <h1 style="font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(34px,7vw,64px);line-height:.95;margin:0"><span id="soloName"></span> <span class="amp">SOLO</span></h1>
+  <p class="mono" style="color:var(--glow);letter-spacing:.14em;font-size:clamp(11px,2.3vw,14px);margin:12px 0 0">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · WEST BARNSTABLE</p>
+</header>
+
+<section style="max-width:760px;margin:22px auto 0;padding:0 14px">
+  <div style="border:2px solid var(--glow);border-radius:12px;padding:20px 18px;background:rgba(245,180,69,.06)">
+    <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 8px">WAITING LIST — FIRST COME, FIRST SERVED</h2>
+    <p class="sub" style="margin:0 0 14px">Solo-set tickets are <b>not on sale yet</b>. The map below is the live room: what's open there today is what solo tickets will draw from, first come, first served, the moment the window opens. Leave your email and you'll hear the instant it does — and we'll warn you when the house passes the halfway mark. If the room fills before solo tickets release, you get first option on the <a href="/tickets.html" style="color:var(--glow)">Double-Header</a> instead. One email address, one purpose, never shared.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input id="wlEmail" type="email" placeholder="your@email.com" autocomplete="email"
+             style="flex:1;min-width:200px;padding:12px;border-radius:8px;border:1px solid #31365f;background:#171a2b;color:var(--bone);font-family:'Archivo';font-size:15px">
+      <input id="wlHp" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+      <button id="wlGo" type="button"
+              style="padding:12px 22px;border-radius:8px;border:0;background:var(--glow);color:#171a2b;font-family:'Big Shoulders','Archivo',sans-serif;font-size:18px;letter-spacing:.06em;cursor:pointer;font-weight:800">GET IN LINE</button>
+    </div>
+    <p id="wlMsg" class="mono" style="min-height:20px;margin:10px 0 0;font-size:13px;color:#a6c99a"></p>
+  </div>
+  <p class="sub" style="margin:16px 0 0;text-align:center">Want the whole night now? The <a href="/tickets.html" style="color:var(--glow)">Double-Header — SAGALOW + CANNON — is on sale</a>.</p>
+</section>
+
+<section class="map-card" style="max-width:1080px;margin:26px auto 40px;padding:0 8px">
+  <h2 style="padding:0 10px">The room, live</h2>
+  <p class="sub" style="padding:0 10px">Dark seats are spoken for. Open seats are what first-come-first-served will draw from when solo tickets open — this map refreshes itself.</p>
+  <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
+  <p class="sub mono" id="liveNote" style="padding:6px 10px 14px;font-size:12px"></p>
+</section>
+
+<p class="sub" style="text-align:center;padding:0 14px 34px;font-size:13px">Questions, wheelchair &amp; assistance, ASL — <span class="mono">info@1140A.com</span> · Tilden Arts Center, Cape Cod Community College, 2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668</p>
+
+<div id="toast" class="toast"></div>

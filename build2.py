@@ -87,8 +87,61 @@ landing = f'''<!DOCTYPE html>
 </body>
 </html>
 '''
-# landing withdrawn pending owner art — map is the front door
-(OUT / "landing-hold.html").write_text(landing)
+poster_page = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head("The Cape Cod Comedy Carnival 2026 — Sagalow · Cannon · Choi · Sat Aug 29 · Tilden Arts Center, Cape Cod",
+      "One night only: Brendan Sagalow and Mike Cannon, featuring Jason Choi — Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable, Cape Cod. Click for tickets: every seat reserved.",
+      "index,follow", JSONLD, "https://1140a.com/")}
+<style>html,body{{margin:0;background:rgb(239,216,188);min-height:100vh}} body{{display:flex;align-items:center;justify-content:center}}</style>
+</head>
+<body>
+{BANNER}
+<a href="/shows.html" style="display:block;line-height:0" aria-label="CLICK HERE FOR TICKETS — The Cape Cod Comedy Carnival, Sagalow and Cannon, Sat Aug 29">
+  <img src="/poster.jpg" alt="CLICK HERE FOR TICKETS — The Cape Cod Comedy Carnival 2026: Brendan Sagalow and Mike Cannon, featuring Jason Choi. One night only, Sat Aug 29, 7:00 PM, Tilden Arts Center at Cape Cod Community College." style="max-width:100vw;max-height:100vh;width:auto;height:auto;display:block;cursor:pointer">
+</a>
+</body>
+</html>
+'''
+(OUT / "index.html").write_text(poster_page)
+import shutil as _sh
+_sh.copyfile(SRC / "poster.jpg", OUT / "poster.jpg")
+
+shows = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head("Tickets — The Cape Cod Comedy Carnival · Double-Header on sale · Solo sets waiting list",
+      "Pick your show: the Sagalow + Cannon Double-Header is on sale now with every seat reserved. Sagalow and Cannon solo sets: waiting list open, first come first served.",
+      "index,follow", None, "https://1140a.com/shows.html")}
+</head>
+<body>
+{BANNER}
+{(SRC / "shows.body.html").read_text()}
+</body>
+</html>
+'''
+(OUT / "shows.html").write_text(shows)
+
+for _name, _choice in (("SAGALOW", "sagalow"), ("CANNON", "cannon")):
+    solo = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head(_name.title() + " Solo — waiting list · The Cape Cod Comedy Carnival",
+      _name.title() + "'s solo set at the Cape Cod Comedy Carnival: not on sale yet. See the live room, join the waiting list — first come, first served.",
+      "index,follow", None, "https://1140a.com/" + _choice + ".html")}
+</head>
+<body>
+{BANNER}
+{(SRC / "singlet.body.html").read_text()}
+<script>
+window.SINGLET = {{ name: "{_name}", choice: "{_choice}" }};
+{core2}
+{(SRC / "singlet.page.js").read_text()}
+</script>
+</body>
+</html>
+'''
+    (OUT / (_choice + ".html")).write_text(solo)
 
 tickets = f'''<!DOCTYPE html>
 <html lang="en-US">
@@ -108,7 +161,6 @@ tickets = f'''<!DOCTYPE html>
 </html>
 '''
 (OUT / "tickets.html").write_text(tickets)
-(OUT / "index.html").write_text(tickets.replace('href="/tickets.html', 'href="/'))
 
 admin = f'''<!DOCTYPE html>
 <html lang="en-US">
