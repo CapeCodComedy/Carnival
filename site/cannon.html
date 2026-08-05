@@ -289,12 +289,25 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   <p class="mono" style="color:#8d8fa3;letter-spacing:.3em;font-size:11px;margin:0 0 8px">THE 1140A CORPORATION PRESENTS</p>
   <h1 style="font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(34px,7vw,64px);line-height:.95;margin:0"><span id="soloName"></span> <span class="amp">SOLO</span></h1>
   <p class="mono" style="color:var(--glow);letter-spacing:.14em;font-size:clamp(11px,2.3vw,14px);margin:12px 0 0">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · WEST BARNSTABLE</p>
+  <p class="mono" style="color:var(--bone);letter-spacing:.06em;font-size:clamp(14px,2.8vw,18px);margin:12px 0 0">ORCHESTRA <b style="color:var(--glow)">$55</b> · TIER 1 <b style="color:var(--glow)">$44</b> · TIER 2 <b style="color:var(--glow)">$33</b> · BALCONY <b style="color:var(--glow)">$24</b></p>
+  <p class="sub" style="font-size:12px;margin:6px 0 0">per seat, plus the $3 per-seat card processor fee at checkout</p>
 </header>
+<style>
+  .wl-tier{padding:10px 14px;border-radius:8px;border:1px solid #31365f;background:transparent;color:var(--bone);font-family:'Big Shoulders','Archivo',sans-serif;font-size:17px;letter-spacing:.05em;cursor:pointer}
+  .wl-tier.on{border-color:var(--glow);color:var(--glow);background:rgba(245,180,69,.08)}
+</style>
 
 <section style="max-width:760px;margin:22px auto 0;padding:0 14px">
   <div style="border:2px solid var(--glow);border-radius:12px;padding:20px 18px;background:rgba(245,180,69,.06)">
     <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 8px">WAITING LIST — FIRST COME, FIRST SERVED</h2>
-    <p class="sub" style="margin:0 0 14px">Solo-set tickets are <b>not on sale yet</b>. The map below is the live room: what's open there today is what solo tickets will draw from, first come, first served, the moment the window opens. Leave your email and you'll hear the instant it does — and we'll warn you when the house passes the halfway mark. If the room fills before solo tickets release, you get first option on the <a href="/tickets.html" style="color:var(--glow)">Double-Header</a> instead. One email address, one purpose, never shared.</p>
+    <p class="sub" style="margin:0 0 14px">Solo-set tickets are <b>not on sale yet</b>. The map below is the live room: what's open there today is what solo tickets will draw from, first come, first served, the moment the window opens. Tell us the section you're after, leave your email, and you'll hear the instant it does. If the room fills before solo tickets release, you get first option on the <a href="/tickets.html" style="color:var(--glow)">Double-Header</a> instead. One email address, one purpose, never shared.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px" role="group" aria-label="Pick your section">
+      <button type="button" class="wl-tier on" data-tier="any">ANY SEAT</button>
+      <button type="button" class="wl-tier" data-tier="orch">ORCHESTRA $55</button>
+      <button type="button" class="wl-tier" data-tier="t1">TIER 1 $44</button>
+      <button type="button" class="wl-tier" data-tier="t2">TIER 2 $33</button>
+      <button type="button" class="wl-tier" data-tier="balc">BALCONY $24</button>
+    </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <input id="wlEmail" type="email" placeholder="your@email.com" autocomplete="email"
              style="flex:1;min-width:200px;padding:12px;border-radius:8px;border:1px solid #31365f;background:#171a2b;color:var(--bone);font-family:'Archivo';font-size:15px">
@@ -336,7 +349,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, balc: 38 },     // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
@@ -639,6 +652,14 @@ function buildSeatMap(svg, opts){
   $("#soloName").textContent = S.name;
   document.title = S.name + " Solo — The Cape Cod Comedy Carnival";
 
+  /* section pick — feeds the demand poll; ANY is the default */
+  const TIER_NAMES = { orch: "ORCHESTRA", t1: "TIER 1", t2: "TIER 2", balc: "BALCONY" };
+  let tier = "any";
+  $$(".wl-tier").forEach(b => b.addEventListener("click", () => {
+    tier = b.dataset.tier;
+    $$(".wl-tier").forEach(x => x.classList.toggle("on", x === b));
+  }));
+
   let unavailable = new Set();
   let map = null;
 
@@ -666,8 +687,8 @@ function buildSeatMap(svg, opts){
     $("#wlGo").disabled = true;
     try {
       const r = await fetch("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, choice: S.choice, hp: $("#wlHp").value }) });
-      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line for " + S.name + " solo. You'll hear the moment the window opens."; $("#wlEmail").value = ""; }
+        body: JSON.stringify({ email, choice: S.choice, tier, hp: $("#wlHp").value }) });
+      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line for " + S.name + " solo" + (tier !== "any" ? " — " + TIER_NAMES[tier] : "") + ". You'll hear the moment the window opens."; $("#wlEmail").value = ""; }
       else { const d = await r.json().catch(() => ({})); msg.style.color = "#e08a7a"; msg.textContent = d.err || "Something hiccuped — try again."; }
     } catch(e){ msg.style.color = "#e08a7a"; msg.textContent = "Can't reach the box office — check your connection."; }
     $("#wlGo").disabled = false;

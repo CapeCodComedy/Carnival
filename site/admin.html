@@ -367,7 +367,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, balc: 35 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, balc: 38 },     // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
@@ -707,8 +707,12 @@ function boot(initial){
   const r = await call("waitlist");
   if (!r.ok){ $("#wlBox").textContent = "error: " + JSON.stringify(r.data); return; }
   const d = r.data;
-  const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`, ""];
-  (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)}  ${e.email}`));
+  const fmtSec = s => `orch ${s.orch} · t1 ${s.t1} · t2 ${s.t2} · balc ${s.balc} · any ${s.any}`;
+  const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`];
+  if (d.sections) lines.push(`sections — ${fmtSec(d.sections)}`);
+  if (d.cross) ["sagalow", "cannon", "either"].forEach(k => { if (d[k]) lines.push(`${k.toUpperCase().padEnd(8)} ${fmtSec(d.cross[k])}`); });
+  lines.push("");
+  (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)} ${String(e.tier || "any").toUpperCase().padEnd(5)} ${e.email}`));
   if ((d.entries || []).length > 12) lines.push(`… and ${d.entries.length - 12} more`);
   $("#wlBox").textContent = lines.join("\n");
 });

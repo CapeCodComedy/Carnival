@@ -42,8 +42,12 @@ function boot(initial){
   const r = await call("waitlist");
   if (!r.ok){ $("#wlBox").textContent = "error: " + JSON.stringify(r.data); return; }
   const d = r.data;
-  const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`, ""];
-  (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)}  ${e.email}`));
+  const fmtSec = s => `orch ${s.orch} · t1 ${s.t1} · t2 ${s.t2} · balc ${s.balc} · any ${s.any}`;
+  const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`];
+  if (d.sections) lines.push(`sections — ${fmtSec(d.sections)}`);
+  if (d.cross) ["sagalow", "cannon", "either"].forEach(k => { if (d[k]) lines.push(`${k.toUpperCase().padEnd(8)} ${fmtSec(d.cross[k])}`); });
+  lines.push("");
+  (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)} ${String(e.tier || "any").toUpperCase().padEnd(5)} ${e.email}`));
   if ((d.entries || []).length > 12) lines.push(`… and ${d.entries.length - 12} more`);
   $("#wlBox").textContent = lines.join("\n");
 });

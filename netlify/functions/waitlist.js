@@ -12,7 +12,9 @@ exports.handler = async (event) => {
   const choice = String(body.choice || "");
   if (email.length > 200 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return resp(400, { err: "real email required" });
   if (!["sagalow", "cannon", "either"].includes(choice)) return resp(400, { err: "pick a corner" });
-  await store.waitlistPut(email, choice);
+  const tier = body.tier === undefined ? "any" : String(body.tier);          // old clients send none — that's ANY
+  if (!["any", "orch", "t1", "t2", "balc"].includes(tier)) return resp(400, { err: "pick a real section" });
+  await store.waitlistPut(email, choice, tier);
   return resp(200, { ok: true });
 };
 const resp = (c, o) => ({ statusCode: c, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(o) });

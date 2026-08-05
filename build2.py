@@ -147,7 +147,7 @@ tickets = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
 {head("Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center",
-      "The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $35 to $88, transparent $3 card fee.",
+      "The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $38 to $88, transparent $3 card fee.",
       "index,follow", None, "https://1140a.com/tickets.html")}
 </head>
 <body>

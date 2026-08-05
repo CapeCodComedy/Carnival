@@ -5,6 +5,14 @@
   $("#soloName").textContent = S.name;
   document.title = S.name + " Solo — The Cape Cod Comedy Carnival";
 
+  /* section pick — feeds the demand poll; ANY is the default */
+  const TIER_NAMES = { orch: "ORCHESTRA", t1: "TIER 1", t2: "TIER 2", balc: "BALCONY" };
+  let tier = "any";
+  $$(".wl-tier").forEach(b => b.addEventListener("click", () => {
+    tier = b.dataset.tier;
+    $$(".wl-tier").forEach(x => x.classList.toggle("on", x === b));
+  }));
+
   let unavailable = new Set();
   let map = null;
 
@@ -32,8 +40,8 @@
     $("#wlGo").disabled = true;
     try {
       const r = await fetch("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, choice: S.choice, hp: $("#wlHp").value }) });
-      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line for " + S.name + " solo. You'll hear the moment the window opens."; $("#wlEmail").value = ""; }
+        body: JSON.stringify({ email, choice: S.choice, tier, hp: $("#wlHp").value }) });
+      if (r.ok){ msg.style.color = "#a6c99a"; msg.textContent = "You're in line for " + S.name + " solo" + (tier !== "any" ? " — " + TIER_NAMES[tier] : "") + ". You'll hear the moment the window opens."; $("#wlEmail").value = ""; }
       else { const d = await r.json().catch(() => ({})); msg.style.color = "#e08a7a"; msg.textContent = d.err || "Something hiccuped — try again."; }
     } catch(e){ msg.style.color = "#e08a7a"; msg.textContent = "Can't reach the box office — check your connection."; }
     $("#wlGo").disabled = false;

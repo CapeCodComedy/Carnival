@@ -80,16 +80,23 @@ exports.handler = async (event) => {
   }
 
   if (action === "waitlist") {
-    /* singlet demand poll: totals + per-corner tallies + entries, newest first */
+    /* singlet demand poll: per-corner + per-section tallies + entries, newest first.
+       Rows are "choice|tier|ts"; legacy rows "choice|ts" read as tier ANY. */
     const all = await store.waitlistAll();
     const t = { sagalow: 0, cannon: 0, either: 0 };
+    const blank = () => ({ orch: 0, t1: 0, t2: 0, balc: 0, any: 0 });
+    const sections = blank();
+    const cross = { sagalow: blank(), cannon: blank(), either: blank() };
     const entries = Object.entries(all).map(([email, v]) => {
-      const i = String(v).lastIndexOf("|");
-      const choice = String(v).slice(0, i), ts = Number(String(v).slice(i + 1));
+      const p = String(v).split("|");
+      const choice = p[0], rawTier = p.length >= 3 ? p[1] : "any", ts = Number(p[p.length - 1]);
+      const tier = sections[rawTier] !== undefined ? rawTier : "any";
       if (t[choice] !== undefined) t[choice] += 1;
-      return { email, choice, ts };
+      sections[tier] += 1;
+      if (cross[choice]) cross[choice][tier] += 1;
+      return { email, choice, tier, ts };
     }).sort((a, b) => b.ts - a.ts);
-    return ok({ total: entries.length, ...t, entries });
+    return ok({ total: entries.length, ...t, sections, cross, entries });
   }
 
   if (action === "manifest") {

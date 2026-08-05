@@ -201,9 +201,10 @@ async function getOrder(sid) {
 }
 async function onceEvent(eventId, exSec = 86400) { return d.setnx_ex(`evt:${eventId}`, "1", exSec); }
 
-/* singlet waitlist: hash email -> "choice|ts"; one entry per email, latest wins */
-async function waitlistPut(email, choice) {
-  return d.eval(`redis.call('HSET','wl:entries', ARGV[1], ARGV[2]) return 1`, [email, choice + "|" + Date.now()]);
+/* singlet waitlist: hash email -> "choice|tier|ts"; one entry per email, latest wins.
+   Legacy rows are "choice|ts" — readers treat the missing tier as "any". */
+async function waitlistPut(email, choice, tier) {
+  return d.eval(`redis.call('HSET','wl:entries', ARGV[1], ARGV[2]) return 1`, [email, choice + "|" + (tier || "any") + "|" + Date.now()]);
 }
 async function waitlistAll() {
   const flat = await d.eval(`return redis.call('HGETALL','wl:entries')`, ["_"]);
