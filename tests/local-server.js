@@ -15,7 +15,7 @@ const functions = {
   "waitlist": FN("waitlist"),
 };
 
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".pdf": "application/pdf" };
 
 async function deliverWebhook(type, sid, payment_intent){
   const payload = JSON.stringify({ id: "evt_" + Math.random().toString(36).slice(2), type,
@@ -71,7 +71,8 @@ const server = http.createServer(async (req, res) => {
 
   /* static site */
   let p = url.pathname === "/" ? "/index.html" : url.pathname;
-  const file = path.join(__dirname, "..", "site", p);
+  let file = path.join(__dirname, "..", "site", p);
+  if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, "index.html");   // /press -> /press/index.html (Netlify does this in prod)
   if (fs.existsSync(file) && fs.statSync(file).isFile()){
     res.writeHead(200, { "Content-Type": MIME[path.extname(file)] || "text/plain" });
     res.end(fs.readFileSync(file)); return;

@@ -197,5 +197,25 @@ success = f'''<!DOCTYPE html>
 '''
 (OUT / "success.html").write_text(success)
 
+# ---------- press & media: /press/ — downloads for journalists ----------
+press = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head("Press & Media — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center",
+      "Press kit for The Cape Cod Comedy Carnival: high-res poster, headshots and bios for Brendan Sagalow, Mike Cannon and Jason Choi. Sat Aug 29 2026, Tilden Arts Center, West Barnstable.",
+      "index,follow", JSONLD, "https://1140a.com/press/")}
+</head>
+<body>
+{BANNER}
+{(SRC / "press.body.html").read_text()}
+</body>
+</html>
+'''
+(OUT / "press").mkdir(exist_ok=True)
+(OUT / "press" / "index.html").write_text(press)
+for _f in sorted((SRC / "press").iterdir()):
+    _sh.copyfile(_f, OUT / "press" / _f.name)
+
 print("built:", sorted(p.name for p in OUT.iterdir()))
-print("sizes:", {p.name: p.stat().st_size for p in sorted(OUT.iterdir())})
+print("press:", sorted(p.name for p in (OUT / "press").iterdir()))
+print("sizes:", {p.name: p.stat().st_size for p in sorted(OUT.iterdir()) if p.is_file()})
