@@ -76,7 +76,7 @@ exports.handler = async (event) => {
     await store.putOrder("comp_" + holder, { holder, seats, status: "sold", codes: issued, comp: true, soldAt: Date.now() });
     for (const [seatId, code] of Object.entries(issued))          // door-scan index — comps scan like any sale
       await store.putOrder("code_" + code, { seat: seatId, sid: "comp_" + holder });
-    return ok({ sold: seats, codes: issued });
+    return ok({ sold: seats, codes: issued, sid: "comp_" + holder });   // sid → /success.html?sid=… is the printable ticket
   }
 
   if (action === "waitlist") {

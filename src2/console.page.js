@@ -94,7 +94,13 @@ async function onSeat(id){
   let r;
   if (tool === "release")  r = await call("release", { seats: [id] });
   else if (tool === "unsell") r = await call("unsell", { seats: [id] });
-  else if (tool === "marksold") r = await call("marksold", { seats: [id] });
+  else if (tool === "marksold") {
+    r = await call("marksold", { seats: [id] });
+    if (r.ok && r.data.sid){
+      $("#seatMsg").innerHTML = `${id} — COMP issued. <a href="/success.html?sid=${encodeURIComponent(r.data.sid)}" target="_blank" style="color:var(--glow)">OPEN THE TICKET</a> — print it (Ctrl+P) or copy that page's address to forward it.`;
+      refresh(); return;
+    }
+  }
   else r = await call("hold", { seats: [id], category: tool });
   msg(r.ok ? `${id} — ${tool} done.` : `${id} — failed: ${r.data.err || r.status}`);
   refresh();

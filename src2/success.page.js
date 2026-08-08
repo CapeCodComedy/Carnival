@@ -56,6 +56,11 @@ function render(o){
     box.appendChild(div);
     drawQR(div.querySelector("canvas"), code);
   });
+  if (o.totalCents == null){   // house comp — issued from the booth, no charge, no fee line
+    document.getElementById("recap").innerHTML =
+      `<div class="grand" style="border-color:var(--bone)"><span>COMPLIMENTARY — issued by the box office</span><span>$0.00</span></div>`;
+    return;
+  }
   const tickets = (o.totalCents - o.feeCents) / 100, fee = o.feeCents / 100;
   document.getElementById("recap").innerHTML =
     `<div><span>Tickets</span><span>$${tickets.toFixed(2)}</span></div>
