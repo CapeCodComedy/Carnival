@@ -21,7 +21,7 @@ console.log('cart:', cart); ok('cart itemizes seat + $3 fee + total', cart.inclu
 const held = await page.evaluate(() => fetch('/api/seats-state').then(r => r.json()));
 ok('server confirms the hold (buyer-blind)', held.unavailable.includes('H-101'));
 const landHtml = await (await fetch(B + '/')).text();
-ok('landing: the big sell + the ticket door', /25 MILLION/.test(landHtml) && /640,000/.test(landHtml) && /NATIONALLY TOURING HEADLINERS/.test(landHtml) && !/Comedy Cellar/i.test(landHtml) && /DOUBLE-HEADER<\/span> ON CAPE COD/.test(landHtml) && /TICKETS FROM \$38/.test(landHtml) && /href="\/shows\.html"/.test(landHtml) && /BUY TICKETS/.test(landHtml));
+ok('landing: the big sell + the ticket door', /25 MILLION/.test(landHtml) && /640,000/.test(landHtml) && /NATIONALLY TOURING HEADLINERS/.test(landHtml) && !/Comedy Cellar/i.test(landHtml) && /THE ONLY COMEDY DOUBLE-HEADER<\/span><br>ON CAPE COD/.test(landHtml) && /TICKETS FROM \$38/.test(landHtml) && /href="\/shows\.html"/.test(landHtml) && /BUY TICKETS/.test(landHtml));
 ok('landing: comics with faces, poster for the radio crowd, solo tease at $24', /BRENDAN SAGALOW/.test(landHtml) && /MIKE CANNON/.test(landHtml) && /JASON CHOI/.test(landHtml) && /press\/thumb-sagalow\.jpg/.test(landHtml) && /poster\.jpg/.test(landHtml) && /FROM \$24/i.test(landHtml) && /WAITING LIST OPEN/i.test(landHtml));
 const posterHtml = await (await fetch(B + '/poster.html')).text();
 ok('pure poster page survives as a side door', /CLICK HERE FOR TICKETS/.test(posterHtml) && /poster\.jpg/.test(posterHtml));
