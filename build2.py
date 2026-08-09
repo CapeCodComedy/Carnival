@@ -103,7 +103,23 @@ poster_page = f'''<!DOCTYPE html>
 </body>
 </html>
 '''
-(OUT / "index.html").write_text(poster_page)
+(OUT / "poster.html").write_text(poster_page)   # the pure-poster page keeps a side door
+
+# ---------- the real-deal landing: the card is the bait, this page is the hook ----------
+landing2 = f'''<!DOCTYPE html>
+<html lang="en-US">
+<head>
+{head("The Cape Cod Comedy Carnival — Two Nationally Touring Headliners, One Night · Sat Aug 29 · Tilden Arts Center",
+      "25 million+ views on YouTube. Two nationally touring headliners — Brendan Sagalow and Mike Cannon, with Jason Choi opening. The only comedy double-header on Cape Cod: Sat Aug 29 2026, 7 PM, Tilden Arts Center. Every seat reserved, from $38.",
+      "index,follow", JSONLD, "https://1140a.com/")}
+</head>
+<body>
+{BANNER}
+{(SRC / "landing2.body.html").read_text()}
+</body>
+</html>
+'''
+(OUT / "index.html").write_text(landing2)
 import shutil as _sh
 _sh.copyfile(SRC / "poster.jpg", OUT / "poster.jpg")
 
