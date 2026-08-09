@@ -9,6 +9,11 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "POST" };
   let body;
   try { body = JSON.parse(event.body || "{}"); } catch { return { statusCode: 400, body: "bad json" }; }
+  /* door word: crew-only gate, separate from the owner's ADMIN_TOKEN.
+     Unset DOOR_TOKEN = open (so a deploy never bricks the door); set it and every scan must carry it. */
+  const DOOR = process.env.DOOR_TOKEN || "";
+  if (DOOR && String(body.door || "").trim() !== DOOR)
+    return resp({ verdict: "LOCKED", why: "door word missing or wrong — enter it at the top of the scanner" });
   const code = String(body.code || "").trim().toUpperCase();
   if (!codes.valid(code)) return resp({ verdict: "VOID", why: "fails checksum — copied or mistyped" });
   const rec = await store.getOrder("code_" + code);

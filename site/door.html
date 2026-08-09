@@ -49,6 +49,8 @@
   <p class="sub">One credential type for the whole house — every ticket is a reserved seat. First scan admits and shows the seat; re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
 
   <div class="panel">
+    <label for="doorWord">Door word (crew only — ask Max)</label>
+    <input id="doorWord" placeholder="word of the night" autocomplete="off" style="margin-bottom:10px">
     <label for="codeIn">Scan result / ticket code</label>
     <input id="codeIn" placeholder="CCC-XXXX-XXXXX" autocomplete="off">
     <div class="btn-row">
@@ -102,10 +104,11 @@ async function check(raw){
   if (!code) return;
   if (!checksumOk(code)){ show("bad", "VOID", code, "fails the checksum — copied or mistyped"); return; }
   try {
-    const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }) });
+    const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, door: document.getElementById("doorWord").value.trim() }) });
     const v = await r.json();
     if (v.verdict === "VALID") show("ok", "VALID — ADMIT", "SEAT " + v.seat);
     else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", "SEAT " + v.seat, "fine at re-entry, fishy at first entry");
+    else if (v.verdict === "LOCKED") show("bad", "LOCKED", "", v.why || "door word missing or wrong");
     else show("bad", "VOID", code, v.why || "not issued by this box office");
   } catch (e) {
     /* offline fallback: checksum passed; enforce single-scan on this device only */
@@ -113,6 +116,9 @@ async function check(raw){
     else { localScanned.set(code, new Date().toLocaleTimeString()); show("ok", "VALID (offline mode)", code, "checksum OK — server unreachable; duplicate protection is this-device-only until it returns"); }
   }
 }
+const dw = document.getElementById("doorWord");
+dw.value = localStorage.getItem("doorWord") || "";
+dw.addEventListener("change", () => localStorage.setItem("doorWord", dw.value.trim()));
 document.getElementById("checkBtn").addEventListener("click", () => check(document.getElementById("codeIn").value));
 document.getElementById("codeIn").addEventListener("keydown", e => { if (e.key === "Enter") check(e.target.value); });
 

@@ -689,8 +689,9 @@ function buildSeatMap(svg, opts){
   el("rect",{x:aisleL - 10*G, y:pY-12, width:8.6*G, height:(qY-pY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
   mono(el("text",{x:aisleL - 10*G + 4.3*G, y:(pY+qY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="CONTROL BOOTH";
   const dY = rowY["DD"], eY = rowY["EE"];
-  el("rect",{x:centerXFor(110)-G/2, y:dY-12, width:9.2*G, height:(eY-dY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
-  mono(el("text",{x:centerXFor(110)-G/2 + 4.6*G, y:(dY+eY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="PROJECTION BOOTH";
+  const boothX = centerXFor(110) - G/2 - (2*G + AISLE);   // balcony centre block sits flush-left with the floor edge — the booth rides with it
+  el("rect",{x:boothX, y:dY-12, width:9.2*G, height:(eY-dY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
+  mono(el("text",{x:boothX + 4.6*G, y:(dY+eY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="PROJECTION BOOTH";
 
 
   /* ---------- paint (v2: all-reserved; state injected, never guessed) ---------- */
