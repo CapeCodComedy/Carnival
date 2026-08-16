@@ -342,7 +342,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
         <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Radio code or fundraiser code? Enter it here:</label>
         <input id="stationCode" placeholder="Y101 · FRANK · PIXY · your organization" autocomplete="off" spellcheck="false" maxlength="16"
                style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace;letter-spacing:.12em;text-transform:uppercase">
-        <div id="orgNote" style="display:none;margin:8px 0 0;border:1px solid #3f4a3a;background:rgba(127,176,105,.1);border-radius:8px;padding:10px 12px;color:#a6c99a;font-size:14px;line-height:1.45"></div>
+        <div id="orgNote" style="display:none;margin:8px 0 0;border:2px solid #15803d;border-radius:8px;padding:10px 12px;color:#15803d;font-size:14px;line-height:1.45"></div>
       </div>
       <div class="hold" id="holdRow" hidden>
         <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
@@ -805,6 +805,7 @@ async function refreshState(first){
     const s = await r.json();
     if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
     if (s.orgPerTicket) ORG_PER = s.orgPerTicket;
+    if (s.orgColors && typeof s.orgColors === "object") ORG_COLORS = s.orgColors;
     unavailable = new Set(s.unavailable || []);
     selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
     paint();
@@ -887,6 +888,9 @@ function renderCart(){
   if (orgNote){
     if (oc && ids.length){
       const elig = ids.filter(id => seatZone[id] !== "balc").length;
+      const ink = ORG_COLORS[oc] || ORG_INK_DEFAULT;
+      orgNote.style.borderColor = ink;
+      orgNote.style.color = ink;
       orgNote.style.display = "block";
       orgNote.innerHTML = elig > 0
         ? `<b>${oc} FUNDRAISER</b> — <b>$${elig * ORG_PER}</b> of this order goes straight to them.`
@@ -917,6 +921,8 @@ function stationCode(){
 /* ---------- org fundraiser codes (v3.18): tracking only — price and fee untouched ---------- */
 let ORG_CODES = [];
 let ORG_PER = 20;
+let ORG_COLORS = {};              // per-org ink override (school colours); default ink below
+const ORG_INK_DEFAULT = "#15803d"; // dark green — money ink on the ticket-stock stub
 function orgCode(){
   const el = $("#stationCode");
   if (!el) return "";
