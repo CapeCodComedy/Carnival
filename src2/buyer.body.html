@@ -52,9 +52,10 @@
       <div class="empty" id="cartEmpty">Nothing claimed yet — tap any open seat on the map.</div>
       <div class="totals" id="totals"></div>
       <div id="stationRow" style="margin:10px 0 2px">
-        <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Heard us on the radio? Your station's code drops the card fee:</label>
-        <input id="stationCode" placeholder="Y101 · FRANK · PIXY" autocomplete="off" spellcheck="false" maxlength="8"
+        <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Radio code or fundraiser code? Enter it here:</label>
+        <input id="stationCode" placeholder="Y101 · FRANK · PIXY · your organization" autocomplete="off" spellcheck="false" maxlength="16"
                style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace;letter-spacing:.12em;text-transform:uppercase">
+        <div class="hint" id="orgNote" style="display:none;margin:6px 0 0;color:#a6c99a"></div>
       </div>
       <div class="hold" id="holdRow" hidden>
         <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>

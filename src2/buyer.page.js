@@ -49,6 +49,7 @@ async function refreshState(first){
   try {
     const r = await fetch(CONFIG.api + "/seats-state", { cache: "no-store" });
     const s = await r.json();
+    if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
     unavailable = new Set(s.unavailable || []);
     selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
     paint();
@@ -126,6 +127,13 @@ function renderCart(){
   list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
   const sc = stationCode();
   const fee = sc ? 0 : ids.length * CONFIG.fee;
+  const oc = orgCode();
+  const orgElig = oc ? ids.filter(id => seatZone[id] !== "balc").length : 0;
+  const orgNote = $("#orgNote");
+  if (orgNote){
+    if (oc && orgElig > 0){ orgNote.style.display = "block"; orgNote.textContent = `${oc} applied — this order counts toward their fundraiser.`; }
+    else orgNote.style.display = "none";
+  }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
   $("#totals").innerHTML = ids.length ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
@@ -147,6 +155,26 @@ function stationCode(){
   return STATION_CODES.includes(v) ? v : "";
 }
 
+/* ---------- org fundraiser codes (v3.18): tracking only — price and fee untouched ---------- */
+let ORG_CODES = [];
+function orgCode(){
+  const el = $("#stationCode");
+  if (!el) return "";
+  const v = (el.value || "").trim().toUpperCase();
+  return (!STATION_CODES.includes(v) && ORG_CODES.includes(v)) ? v : "";
+}
+function rawCode(){
+  const el = $("#stationCode");
+  return el ? (el.value || "").trim() : "";
+}
+
+/* ---------- src tag (?src=ig) — remembered for the session, stamped on the payment ---------- */
+try { const _s = new URLSearchParams(location.search).get("src"); if (_s) sessionStorage.setItem("cccc_src", _s); } catch (e) {}
+function srcTag(){
+  try { return new URLSearchParams(location.search).get("src") || sessionStorage.getItem("cccc_src") || ""; }
+  catch (e) { return new URLSearchParams(location.search).get("src") || ""; }
+}
+
 /* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
 async function checkout(accessibleSeats){
   const seats = accessibleSeats || [...selected];
@@ -154,7 +182,7 @@ async function checkout(accessibleSeats){
   paying = true;
   $("#checkoutBtn").disabled = true;
   $("#checkoutBtn").textContent = "Locking your seats…";
-  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: stationCode() });
+  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: rawCode(), src: srcTag() });
   if (!r.ok){
     paying = false;
     $("#checkoutBtn").textContent = "Pay & lock seats";

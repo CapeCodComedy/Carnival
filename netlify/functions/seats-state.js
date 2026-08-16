@@ -4,6 +4,7 @@
    CDN-cached ~8s so a radio-spike of viewers costs ~1 origin hit per
    interval, not one per person (free-tier economics, walls-first item). */
 const store = require("./lib/store");
+const { HOUSE } = require("./lib/house");
 
 exports.handler = async () => {
   const s = await store.state();
@@ -15,6 +16,6 @@ exports.handler = async () => {
       "Cache-Control": "public, max-age=0, must-revalidate",
       "Netlify-CDN-Cache-Control": "public, s-maxage=8, stale-while-revalidate=30",
     },
-    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts }),
+    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: HOUSE.orgCodes || [] }),
   };
 };

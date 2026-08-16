@@ -339,9 +339,10 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
       <div class="empty" id="cartEmpty">Nothing claimed yet — tap any open seat on the map.</div>
       <div class="totals" id="totals"></div>
       <div id="stationRow" style="margin:10px 0 2px">
-        <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Heard us on the radio? Your station's code drops the card fee:</label>
-        <input id="stationCode" placeholder="Y101 · FRANK · PIXY" autocomplete="off" spellcheck="false" maxlength="8"
+        <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Radio code or fundraiser code? Enter it here:</label>
+        <input id="stationCode" placeholder="Y101 · FRANK · PIXY · your organization" autocomplete="off" spellcheck="false" maxlength="16"
                style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace;letter-spacing:.12em;text-transform:uppercase">
+        <div class="hint" id="orgNote" style="display:none;margin:6px 0 0;color:#a6c99a"></div>
       </div>
       <div class="hold" id="holdRow" hidden>
         <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
@@ -802,6 +803,7 @@ async function refreshState(first){
   try {
     const r = await fetch(CONFIG.api + "/seats-state", { cache: "no-store" });
     const s = await r.json();
+    if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
     unavailable = new Set(s.unavailable || []);
     selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
     paint();
@@ -879,6 +881,13 @@ function renderCart(){
   list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
   const sc = stationCode();
   const fee = sc ? 0 : ids.length * CONFIG.fee;
+  const oc = orgCode();
+  const orgElig = oc ? ids.filter(id => seatZone[id] !== "balc").length : 0;
+  const orgNote = $("#orgNote");
+  if (orgNote){
+    if (oc && orgElig > 0){ orgNote.style.display = "block"; orgNote.textContent = `${oc} applied — this order counts toward their fundraiser.`; }
+    else orgNote.style.display = "none";
+  }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
   $("#totals").innerHTML = ids.length ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
@@ -900,6 +909,26 @@ function stationCode(){
   return STATION_CODES.includes(v) ? v : "";
 }
 
+/* ---------- org fundraiser codes (v3.18): tracking only — price and fee untouched ---------- */
+let ORG_CODES = [];
+function orgCode(){
+  const el = $("#stationCode");
+  if (!el) return "";
+  const v = (el.value || "").trim().toUpperCase();
+  return (!STATION_CODES.includes(v) && ORG_CODES.includes(v)) ? v : "";
+}
+function rawCode(){
+  const el = $("#stationCode");
+  return el ? (el.value || "").trim() : "";
+}
+
+/* ---------- src tag (?src=ig) — remembered for the session, stamped on the payment ---------- */
+try { const _s = new URLSearchParams(location.search).get("src"); if (_s) sessionStorage.setItem("cccc_src", _s); } catch (e) {}
+function srcTag(){
+  try { return new URLSearchParams(location.search).get("src") || sessionStorage.getItem("cccc_src") || ""; }
+  catch (e) { return new URLSearchParams(location.search).get("src") || ""; }
+}
+
 /* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
 async function checkout(accessibleSeats){
   const seats = accessibleSeats || [...selected];
@@ -907,7 +936,7 @@ async function checkout(accessibleSeats){
   paying = true;
   $("#checkoutBtn").disabled = true;
   $("#checkoutBtn").textContent = "Locking your seats…";
-  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: stationCode() });
+  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: rawCode(), src: srcTag() });
   if (!r.ok){
     paying = false;
     $("#checkoutBtn").textContent = "Pay & lock seats";
