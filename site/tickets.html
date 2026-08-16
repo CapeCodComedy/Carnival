@@ -319,7 +319,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     <div>
       <section class="map-card">
         <h2 style="padding:0 10px">Pick your seats</h2>
-        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$28</b> — plus $3 per seat card processor fee*</p>
+        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Tier 3 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$44</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$28</b> — plus $3 per seat card processor fee*</p>
         <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
         <div class="legend">
           <span><i style="background:var(--bone)"></i>Available</span>
@@ -455,7 +455,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, balc: 28 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },  // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
@@ -463,7 +463,8 @@ const CONFIG = {
   zones: {
     orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
     t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
-    t2:   { name: "TIER 2",    desc: "Rows K–Q — the cross-aisle back half" },
+    t2:   { name: "TIER 2",    desc: "Rows K–M — just past the cross-aisle" },
+    t3:   { name: "TIER 3",    desc: "Rows N–Q — the back half of the floor, still downstairs" },
     balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
@@ -488,10 +489,10 @@ const LAYOUT = [
   {row:"K",zone:"t2",l:[19,17,15,"WA","WB",5,3,1],c:[115,114,113,112,111,110,"WC",106,105,104,103,102,101]},
   {row:"L",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
   {row:"M",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"N",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"O",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"P",zone:"t2",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
-  {row:"Q",zone:"t2",l:null,c:CEN,ext:{row:"TQ",hi:20}},
+  {row:"N",zone:"t3",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"O",zone:"t3",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"P",zone:"t3",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
+  {row:"Q",zone:"t3",l:null,c:CEN,ext:{row:"TQ",hi:20}},
   {row:"AA",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
   {row:"BB",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
   {row:"CC",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
@@ -894,7 +895,7 @@ function renderCart(){
       orgNote.style.display = "block";
       orgNote.innerHTML = elig > 0
         ? `<b>${oc} FUNDRAISER</b> — <b>$${elig * ORG_PER}</b> of this order goes straight to them.`
-        : `${oc} FUNDRAISER EARNS <b>$${ORG_PER}</b> FOR EVERY ORCHESTRA, TIER 1, OR TIER 2 SEAT.`;
+        : `${oc} FUNDRAISER EARNS <b>$${ORG_PER}</b> FOR EVERY ORCHESTRA, TIER 1, TIER 2, OR TIER 3 SEAT.`;
     } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";

@@ -34,7 +34,7 @@ exports.handler = async (event) => {
   if (!priced.ok) return resp(400, { err: priced.err });
 
   /* org eligibility count (never blocks a purchase; balcony-only = zero, silently) */
-  const ORG_TIERS = new Set(["orch", "t1", "t2"]);
+  const ORG_TIERS = new Set(["orch", "t1", "t2", "t3"]);
   let orgEligible = 0; const _tc = {};
   if (org && !accessible) for (const id of seats) {
     const s = seat(id);

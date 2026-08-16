@@ -367,7 +367,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, balc: 28 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },  // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
@@ -375,7 +375,8 @@ const CONFIG = {
   zones: {
     orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
     t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
-    t2:   { name: "TIER 2",    desc: "Rows K–Q — the cross-aisle back half" },
+    t2:   { name: "TIER 2",    desc: "Rows K–M — just past the cross-aisle" },
+    t3:   { name: "TIER 3",    desc: "Rows N–Q — the back half of the floor, still downstairs" },
     balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
@@ -400,10 +401,10 @@ const LAYOUT = [
   {row:"K",zone:"t2",l:[19,17,15,"WA","WB",5,3,1],c:[115,114,113,112,111,110,"WC",106,105,104,103,102,101]},
   {row:"L",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
   {row:"M",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"N",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"O",zone:"t2",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
-  {row:"P",zone:"t2",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
-  {row:"Q",zone:"t2",l:null,c:CEN,ext:{row:"TQ",hi:20}},
+  {row:"N",zone:"t3",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"O",zone:"t3",l:[19,17,15,13,11,9,7,5,3,1],c:CEN},
+  {row:"P",zone:"t3",l:"BOOTH",c:CEN,ext:{row:"TP",hi:12}},
+  {row:"Q",zone:"t3",l:null,c:CEN,ext:{row:"TQ",hi:20}},
   {row:"AA",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
   {row:"BB",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
   {row:"CC",zone:"balc",l:[11,9,7,5,3,1],c:CEN.slice(1),hiEven:28},
@@ -733,7 +734,7 @@ function apply(s){
   map.update(lastState);
   const heldN = Object.keys(cats).filter(id => !WC_IDS.has(id)).length;
   $("#countChip").textContent = `${soldSet.size} SOLD · ${buyerHeld.size} IN CARTS · ${heldN} HELD`;
-  const zoneSold = { orch: 0, t1: 0, t2: 0, balc: 0 }; let rev = 0;
+  const zoneSold = { orch: 0, t1: 0, t2: 0, t3: 0, balc: 0 }; let rev = 0;
   soldSet.forEach(id => { const z = seatZone[id]; if (z && !WC_IDS.has(id)){ zoneSold[z]++; rev += CONFIG.prices[z]; } });
   $("#statTiles").innerHTML = `
     <div class="stat money"><b>${money(rev)}</b><span>Ticket revenue (est · Stripe is truth)</span></div>
@@ -741,6 +742,7 @@ function apply(s){
     <div class="stat"><b>${zoneSold.orch}</b><span>Orchestra</span></div>
     <div class="stat"><b>${zoneSold.t1}</b><span>Tier 1</span></div>
     <div class="stat"><b>${zoneSold.t2}</b><span>Tier 2</span></div>
+    <div class="stat"><b>${zoneSold.t3}</b><span>Tier 3</span></div>
     <div class="stat"><b>${zoneSold.balc}</b><span>Balcony</span></div>`;
 }
 
