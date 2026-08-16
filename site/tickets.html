@@ -894,7 +894,7 @@ function renderCart(){
       orgNote.style.display = "block";
       orgNote.innerHTML = elig > 0
         ? `<b>${oc} FUNDRAISER</b> — <b>$${elig * ORG_PER}</b> of this order goes straight to them.`
-        : `<b>CODE ACCEPTED</b> — ${oc}'s fundraiser earns <b>$${ORG_PER}</b> for every Orchestra, Tier 1 or Tier 2 seat.`;
+        : `${oc} FUNDRAISER EARNS <b>$${ORG_PER}</b> FOR EVERY ORCHESTRA, TIER 1, OR TIER 2 SEAT.`;
     } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
