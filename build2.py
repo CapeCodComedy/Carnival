@@ -97,7 +97,7 @@ poster_page = f'''<!DOCTYPE html>
 </head>
 <body>
 {BANNER}
-<a href="/shows.html" style="display:block;line-height:0" aria-label="CLICK HERE FOR TICKETS — The Cape Cod Comedy Carnival, Sagalow and Cannon, Sat Aug 29">
+<a href="/tickets.html" style="display:block;line-height:0" aria-label="CLICK HERE FOR TICKETS — The Cape Cod Comedy Carnival, Sagalow and Cannon, Sat Aug 29">
   <img src="/poster.jpg" alt="CLICK HERE FOR TICKETS — The Cape Cod Comedy Carnival 2026: Brendan Sagalow and Mike Cannon, featuring Jason Choi. One night only, Sat Aug 29, 7:00 PM, Tilden Arts Center at Cape Cod Community College." style="max-width:100vw;max-height:100vh;width:auto;height:auto;display:block;cursor:pointer">
 </a>
 </body>
@@ -126,13 +126,18 @@ _sh.copyfile(SRC / "poster.jpg", OUT / "poster.jpg")
 shows = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
-{head("Tickets — The Cape Cod Comedy Carnival · Sagalow + Cannon Double-Header · Sat Aug 29",
-      "The Sagalow + Cannon Double-Header is on sale now: both headline sets, one ticket, every seat reserved. Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable.",
-      "index,follow", None, "https://1140a.com/shows.html")}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tickets — The Cape Cod Comedy Carnival</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://1140a.com/tickets.html">
+<meta http-equiv="refresh" content="0; url=/tickets.html">
 </head>
-<body>
+<body style="background:#171a2b;color:#efe6d8;font-family:sans-serif;text-align:center;padding-top:20vh">
 {BANNER}
-{(SRC / "shows.body.html").read_text()}
+<p>One show, one ticket, the whole night — pick your exact seats on the live map.</p>
+<p><a href="/tickets.html" style="color:#f5b445">To the seat map →</a></p>
+<script>location.replace("/tickets.html");</script>
 </body>
 </html>
 '''
