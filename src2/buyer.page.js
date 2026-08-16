@@ -50,6 +50,7 @@ async function refreshState(first){
     const r = await fetch(CONFIG.api + "/seats-state", { cache: "no-store" });
     const s = await r.json();
     if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
+    if (s.orgPerTicket) ORG_PER = s.orgPerTicket;
     unavailable = new Set(s.unavailable || []);
     selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
     paint();
@@ -128,11 +129,15 @@ function renderCart(){
   const sc = stationCode();
   const fee = sc ? 0 : ids.length * CONFIG.fee;
   const oc = orgCode();
-  const orgElig = oc ? ids.filter(id => seatZone[id] !== "balc").length : 0;
   const orgNote = $("#orgNote");
   if (orgNote){
-    if (oc && orgElig > 0){ orgNote.style.display = "block"; orgNote.textContent = `${oc} applied — this order counts toward their fundraiser.`; }
-    else orgNote.style.display = "none";
+    if (oc && ids.length){
+      const elig = ids.filter(id => seatZone[id] !== "balc").length;
+      orgNote.style.display = "block";
+      orgNote.innerHTML = elig > 0
+        ? `<b>${oc} FUNDRAISER</b> — <b>$${elig * ORG_PER}</b> of this order goes straight to them.`
+        : `<b>CODE ACCEPTED</b> — ${oc}'s fundraiser earns <b>$${ORG_PER}</b> for every Orchestra, Tier 1 or Tier 2 seat.`;
+    } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
   $("#totals").innerHTML = ids.length ? `
@@ -157,6 +162,7 @@ function stationCode(){
 
 /* ---------- org fundraiser codes (v3.18): tracking only — price and fee untouched ---------- */
 let ORG_CODES = [];
+let ORG_PER = 20;
 function orgCode(){
   const el = $("#stationCode");
   if (!el) return "";
