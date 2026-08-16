@@ -616,6 +616,8 @@ function buildSeatMap(svg, opts){
   /* ---------- paint (v2: all-reserved; state injected, never guessed) ---------- */
   const HOLD_COLORS = { sponsor:"#e6c069", comp:"#8fd9c9", marketing:"#f5b445", companion:"#7f96d9",
                         volunteer:"#7fb069", charity:"#c07fb0", wheelchair:"#7f96d9", house:"#8d8fa3" };
+  /* tier rims on open seats — gold, silver, copper, teal down the ladder; balcony rides plain */
+  const ZONE_RIM = { orch: "var(--gilt)", t1: "#b9c2d6", t2: "#c98a5b", t3: "#6fa79b" };
 
   function update(view){
     /* view: { unavailable:Set, selected:Set, cats?:Object(id->category), buyerHeld?:Set } */
@@ -655,10 +657,10 @@ function buildSeatMap(svg, opts){
         els.g.setAttribute("aria-label", `Seat ${id} — sold`);
         return;
       }
-      /* open */
+      /* open — every tier wears its own subtle rim (orchestra keeps the heaviest) */
       els.shape.setAttribute("fill", "var(--bone)");
       els.g.setAttribute("aria-label", `Seat ${id}, ${CONFIG.zones[zone].name} — available, ${money(CONFIG.prices[zone])}`);
-      if (zone === "orch"){ els.shape.setAttribute("stroke", "var(--gilt)"); els.shape.setAttribute("stroke-width", "1.5"); }
+      if (ZONE_RIM[zone]){ els.shape.setAttribute("stroke", ZONE_RIM[zone]); els.shape.setAttribute("stroke-width", zone === "orch" ? "1.5" : "1.2"); }
       else els.shape.setAttribute("stroke-width", "0");
     });
   }
