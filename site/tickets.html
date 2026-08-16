@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center</title>
-<meta name="description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $38 to $88, transparent $3 card fee.">
+<meta name="description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $28 to $88, transparent $3 card fee.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://1140a.com/tickets.html">
 <meta property="og:title" content="Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center">
-<meta property="og:description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $38 to $88, transparent $3 card fee.">
+<meta property="og:description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $28 to $88, transparent $3 card fee.">
 <meta property="og:url" content="https://1140a.com/tickets.html">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -319,7 +319,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     <div>
       <section class="map-card">
         <h2 style="padding:0 10px">Pick your seats</h2>
-        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$38</b> — plus $3 per seat card processor fee*</p>
+        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$28</b> — plus $3 per seat card processor fee*</p>
         <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
         <div class="legend">
           <span><i style="background:var(--bone)"></i>Available</span>
@@ -338,6 +338,11 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
       <ul id="cartList"></ul>
       <div class="empty" id="cartEmpty">Nothing claimed yet — tap any open seat on the map.</div>
       <div class="totals" id="totals"></div>
+      <div id="stationRow" style="margin:10px 0 2px">
+        <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Heard us on the radio? Your station's code drops the card fee:</label>
+        <input id="stationCode" placeholder="Y101 · FRANK · PIXY" autocomplete="off" spellcheck="false" maxlength="8"
+               style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace;letter-spacing:.12em;text-transform:uppercase">
+      </div>
       <div class="hold" id="holdRow" hidden>
         <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
         <div class="hbar"><b id="holdBar" style="width:100%"></b></div>
@@ -449,7 +454,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, balc: 38 },     // ticket price per zone (owner-locked)
+  prices: { orch: 88, t1: 66, t2: 55, balc: 28 },     // ticket price per zone (owner-locked)
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
   currency: "$",
@@ -872,17 +877,27 @@ function renderCart(){
     list.appendChild(li);
   });
   list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
-  const fee = ids.length * CONFIG.fee;
+  const sc = stationCode();
+  const fee = sc ? 0 : ids.length * CONFIG.fee;
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
   $("#totals").innerHTML = ids.length ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
-    <div><span>Card processing fee — passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
+    <div><span>${sc ? `Card processing fee — on us, ${sc} listener` : "Card processing fee — passed through at cost, we keep none of it"}</span><span>${money(fee)}</span></div>
     <div class="grand"><span>Total</span><span>${money(tickets + fee)}</span></div>` : "";
   $("#checkoutBtn").disabled = !ids.length;
   const mb = $("#miniBar");
   if (ids.length){ mb.classList.add("on"); $("#mbCount").textContent = "the stub"; $("#mbTotal").textContent = money(tickets + fee); }
   else mb.classList.remove("on");
   if (!ids.length && holdTimer){ clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true; }
+}
+
+/* ---------- station codes (radio buy, v3.15): a valid code waives the card fee ---------- */
+const STATION_CODES = ["Y101", "FRANK", "PIXY"];
+function stationCode(){
+  const el = $("#stationCode");
+  if (!el) return "";
+  const v = (el.value || "").trim().toUpperCase();
+  return STATION_CODES.includes(v) ? v : "";
 }
 
 /* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
@@ -892,7 +907,7 @@ async function checkout(accessibleSeats){
   paying = true;
   $("#checkoutBtn").disabled = true;
   $("#checkoutBtn").textContent = "Locking your seats…";
-  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats });
+  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: stationCode() });
   if (!r.ok){
     paying = false;
     $("#checkoutBtn").textContent = "Pay & lock seats";
@@ -907,6 +922,8 @@ async function checkout(accessibleSeats){
 }
 $("#checkoutBtn").addEventListener("click", () => checkout());
 $("#mbGo").addEventListener("click", () => checkout());
+const _scEl = $("#stationCode");
+if (_scEl) _scEl.addEventListener("input", () => renderCart());
 
 /* ---------- accessible booking (terms-gated, $33 + $0 fee) ---------- */
 let pendingWc = null;

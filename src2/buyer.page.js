@@ -124,17 +124,27 @@ function renderCart(){
     list.appendChild(li);
   });
   list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
-  const fee = ids.length * CONFIG.fee;
+  const sc = stationCode();
+  const fee = sc ? 0 : ids.length * CONFIG.fee;
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
   $("#totals").innerHTML = ids.length ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
-    <div><span>Card processing fee — passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
+    <div><span>${sc ? `Card processing fee — on us, ${sc} listener` : "Card processing fee — passed through at cost, we keep none of it"}</span><span>${money(fee)}</span></div>
     <div class="grand"><span>Total</span><span>${money(tickets + fee)}</span></div>` : "";
   $("#checkoutBtn").disabled = !ids.length;
   const mb = $("#miniBar");
   if (ids.length){ mb.classList.add("on"); $("#mbCount").textContent = "the stub"; $("#mbTotal").textContent = money(tickets + fee); }
   else mb.classList.remove("on");
   if (!ids.length && holdTimer){ clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true; }
+}
+
+/* ---------- station codes (radio buy, v3.15): a valid code waives the card fee ---------- */
+const STATION_CODES = ["Y101", "FRANK", "PIXY"];
+function stationCode(){
+  const el = $("#stationCode");
+  if (!el) return "";
+  const v = (el.value || "").trim().toUpperCase();
+  return STATION_CODES.includes(v) ? v : "";
 }
 
 /* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
@@ -144,7 +154,7 @@ async function checkout(accessibleSeats){
   paying = true;
   $("#checkoutBtn").disabled = true;
   $("#checkoutBtn").textContent = "Locking your seats…";
-  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats });
+  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: stationCode() });
   if (!r.ok){
     paying = false;
     $("#checkoutBtn").textContent = "Pay & lock seats";
@@ -159,6 +169,8 @@ async function checkout(accessibleSeats){
 }
 $("#checkoutBtn").addEventListener("click", () => checkout());
 $("#mbGo").addEventListener("click", () => checkout());
+const _scEl = $("#stationCode");
+if (_scEl) _scEl.addEventListener("input", () => renderCart());
 
 /* ---------- accessible booking (terms-gated, $33 + $0 fee) ---------- */
 let pendingWc = null;

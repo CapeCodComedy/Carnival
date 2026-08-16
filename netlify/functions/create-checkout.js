@@ -12,6 +12,10 @@ exports.handler = async (event) => {
   try { body = JSON.parse(event.body || "{}"); } catch { return { statusCode: 400, body: "bad json" }; }
   const { holder, seats, accessible } = body;
   if (!holder || !Array.isArray(seats) || !seats.length) return resp(400, { err: "holder+seats required" });
+  /* station codes (radio buy, v3.15): a valid code waives the card fee, order tags the station */
+  const STATION_CODES = new Set(["Y101", "FRANK", "PIXY"]);
+  const _raw = String(body.code || "").trim().toUpperCase();
+  const station = STATION_CODES.has(_raw) ? _raw : null;
   if (seats.length > HOUSE.maxPerOrder) return resp(400, { err: `max ${HOUSE.maxPerOrder} per order` });
 
   /* wheelchair spaces only purchasable through the accessible (terms-gated) flow */
@@ -51,11 +55,12 @@ exports.handler = async (event) => {
         product_data: { name: `${zoneName} — Seat ${id}${seat(id).wc ? " (wheelchair space)" : ""}` },
       },
     }));
-    if (priced.feeCents > 0) line_items.push({
+    const feeCents = station ? 0 : priced.feeCents;
+    if (feeCents > 0) line_items.push({
       quantity: seats.length,
       price_data: {
         currency: "usd",
-        unit_amount: Math.round(priced.feeCents / seats.length),
+        unit_amount: Math.round(feeCents / seats.length),
         product_data: { name: "Card processing fee (passed through at cost — the 1140A Corporation keeps none of it)" },
       },
     });
@@ -66,12 +71,12 @@ exports.handler = async (event) => {
       expires_at: Math.floor(Date.now() / 1000) + HOUSE.stripeSessionSec,
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/?canceled=1`,
-      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0" },
+      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "" },
     });
 
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
-      totalCents: priced.totalCents, feeCents: priced.feeCents,
+      totalCents: priced.ticketCents + feeCents, feeCents, station,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });

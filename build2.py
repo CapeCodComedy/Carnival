@@ -41,7 +41,7 @@ JSONLD = {
       "addressLocality": "West Barnstable", "addressRegion": "MA", "postalCode": "02668", "addressCountry": "US" } },
   "performer": [ {"@type": "Person", "name": "Brendan Sagalow"}, {"@type": "Person", "name": "Mike Cannon"}, {"@type": "Person", "name": "Jason Choi"} ],
   "organizer": {"@type": "Organization", "name": "The 1140A Corporation", "url": "https://1140A.com"},
-  "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": 33, "highPrice": 88,
+  "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": 28, "highPrice": 88,
              "url": "https://1140a.com", "availability": "https://schema.org/InStock",
              "validFrom": "2026-07-29T10:00:00-04:00"}
 }
@@ -110,7 +110,7 @@ landing2 = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
 {head("The Cape Cod Comedy Carnival — Two Nationally Touring Headliners, One Night · Sat Aug 29 · Tilden Arts Center",
-      "25 million+ views on YouTube. Two nationally touring headliners — Brendan Sagalow and Mike Cannon, with Jason Choi opening. The only comedy double-header on Cape Cod: Sat Aug 29 2026, 7 PM, Tilden Arts Center. Every seat reserved, from $38.",
+      "25 million+ views on YouTube. Two nationally touring headliners — Brendan Sagalow and Mike Cannon, with Jason Choi opening. The only comedy double-header on Cape Cod: Sat Aug 29 2026, 7 PM, Tilden Arts Center. Every seat reserved, from $28.",
       "index,follow", JSONLD, "https://1140a.com/")}
 </head>
 <body>
@@ -126,8 +126,8 @@ _sh.copyfile(SRC / "poster.jpg", OUT / "poster.jpg")
 shows = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
-{head("Tickets — The Cape Cod Comedy Carnival · Double-Header on sale · Solo sets waiting list",
-      "Pick your show: the Sagalow + Cannon Double-Header is on sale now with every seat reserved. Sagalow and Cannon solo sets: waiting list open, first come first served.",
+{head("Tickets — The Cape Cod Comedy Carnival · Sagalow + Cannon Double-Header · Sat Aug 29",
+      "The Sagalow + Cannon Double-Header is on sale now: both headline sets, one ticket, every seat reserved. Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable.",
       "index,follow", None, "https://1140a.com/shows.html")}
 </head>
 <body>
@@ -138,22 +138,23 @@ shows = f'''<!DOCTYPE html>
 '''
 (OUT / "shows.html").write_text(shows)
 
+# ---------- solo-set waiting list retired (v3.15): old URLs forward to the seat map ----------
 for _name, _choice in (("SAGALOW", "sagalow"), ("CANNON", "cannon")):
     solo = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
-{head(_name.title() + " Solo — waiting list · The Cape Cod Comedy Carnival",
-      _name.title() + "'s solo set at the Cape Cod Comedy Carnival: not on sale yet. See the live room, join the waiting list — first come, first served.",
-      "index,follow", None, "https://1140a.com/" + _choice + ".html")}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tickets — The Cape Cod Comedy Carnival</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://1140a.com/tickets.html">
+<meta http-equiv="refresh" content="0; url=/tickets.html">
 </head>
-<body>
+<body style="background:#171a2b;color:#efe6d8;font-family:sans-serif;text-align:center;padding-top:20vh">
 {BANNER}
-{(SRC / "singlet.body.html").read_text()}
-<script>
-window.SINGLET = {{ name: "{_name}", choice: "{_choice}" }};
-{core2}
-{(SRC / "singlet.page.js").read_text()}
-</script>
+<p>{_name.title()}'s set is part of the Double-Header — one ticket covers the whole night.</p>
+<p><a href="/tickets.html" style="color:#f5b445">Pick your seats on the live map →</a></p>
+<script>location.replace("/tickets.html");</script>
 </body>
 </html>
 '''
@@ -163,7 +164,7 @@ tickets = f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
 {head("Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center",
-      "The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $38 to $88, transparent $3 card fee.",
+      "The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $28 to $88, transparent $3 card fee.",
       "index,follow", None, "https://1140a.com/tickets.html")}
 </head>
 <body>
@@ -229,8 +230,9 @@ press = f'''<!DOCTYPE html>
 '''
 (OUT / "press").mkdir(exist_ok=True)
 (OUT / "press" / "index.html").write_text(press)
-for _f in sorted((SRC / "press").iterdir()):
-    _sh.copyfile(_f, OUT / "press" / _f.name)
+if (SRC / "press").exists():
+    for _f in sorted((SRC / "press").iterdir()):
+        _sh.copyfile(_f, OUT / "press" / _f.name)
 
 print("built:", sorted(p.name for p in OUT.iterdir()))
 print("press:", sorted(p.name for p in (OUT / "press").iterdir()))
