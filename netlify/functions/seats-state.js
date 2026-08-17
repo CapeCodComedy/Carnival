@@ -16,6 +16,6 @@ exports.handler = async () => {
       "Cache-Control": "public, max-age=0, must-revalidate",
       "Netlify-CDN-Cache-Control": "public, s-maxage=8, stale-while-revalidate=30",
     },
-    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: HOUSE.orgCodes || [], orgPerTicket: HOUSE.orgPerTicket || 20, orgColors: HOUSE.orgColors || {} }),
+    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: HOUSE.orgCodes || [], orgShare: HOUSE.orgShare || 0.5, orgColors: HOUSE.orgColors || {}, merch: HOUSE.merch || null }),
   };
 };

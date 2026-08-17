@@ -21,6 +21,14 @@ exports.handler = async (event) => {
   const ORG_CODES = new Set((HOUSE.orgCodes || []).map(c => String(c).toUpperCase()));
   const org = (!station && ORG_CODES.has(_raw)) ? _raw : null;
   const src = String(body.src || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32) || null;
+  /* tee add-on (v3.30): bundle-priced merch line that exists only inside a ticket purchase */
+  const MERCH = HOUSE.merch || {};
+  let tee = null;
+  if (body.tee && MERCH.teeBundleCents) {
+    const _q = parseInt(body.tee.qty, 10) || 0;
+    const _size = String(body.tee.size || "").toUpperCase();
+    if (_q > 0 && _q <= 10 && (MERCH.teeSizes || []).includes(_size)) tee = { qty: _q, size: _size };
+  }
   if (seats.length > HOUSE.maxPerOrder) return resp(400, { err: `max ${HOUSE.maxPerOrder} per order` });
 
   /* wheelchair spaces only purchasable through the accessible (terms-gated) flow */
@@ -33,14 +41,20 @@ exports.handler = async (event) => {
   const priced = priceCart(seats, !!accessible);
   if (!priced.ok) return resp(400, { err: priced.err });
 
-  /* org eligibility count (never blocks a purchase; balcony-only = zero, silently) */
+  /* org eligibility + owed (half the ticket price per eligible seat — v3.27;
+     never blocks a purchase; balcony-only = zero, silently) */
   const ORG_TIERS = new Set(["orch", "t1", "t2", "t3"]);
-  let orgEligible = 0; const _tc = {};
+  const ORG_SHARE = HOUSE.orgShare || 0.5;
+  let orgEligible = 0, orgOwedCents = 0; const _tc = {};
   if (org && !accessible) for (const id of seats) {
     const s = seat(id);
-    if (!s.wc && ORG_TIERS.has(s.zone)) { orgEligible++; _tc[s.zone] = (_tc[s.zone] || 0) + 1; }
+    if (!s.wc && ORG_TIERS.has(s.zone)) {
+      orgEligible++; _tc[s.zone] = (_tc[s.zone] || 0) + 1;
+      orgOwedCents += Math.round(HOUSE.prices[s.zone] * 100 * ORG_SHARE);
+    }
   }
   const orgTiers = org ? Object.entries(_tc).map(([z, n]) => z + ":" + n).join(",") : "";
+  const orgOwed = org ? (orgOwedCents / 100).toFixed(2) : "";
 
   /* accessible flow may include the paired companion seat: release its
      console hold just-in-time so the atomic claim can take it */
@@ -69,7 +83,7 @@ exports.handler = async (event) => {
         product_data: { name: `${zoneName} — Seat ${id}${seat(id).wc ? " (wheelchair space)" : ""}` },
       },
     }));
-    const feeCents = station ? 0 : priced.feeCents;
+    const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only — fee charged normally */
     if (feeCents > 0) line_items.push({
       quantity: seats.length,
       price_data: {
@@ -79,20 +93,29 @@ exports.handler = async (event) => {
       },
     });
 
+    if (tee) line_items.push({
+      quantity: tee.qty,
+      price_data: {
+        currency: "usd",
+        unit_amount: MERCH.teeBundleCents,
+        product_data: { name: `${MERCH.teeName || "Show tee"} — size ${tee.size} (ticket-bundle price) — claimed at will-call` },
+      },
+    });
+
     const session = await stripe.createSession({
       mode: "payment",
       line_items,
       expires_at: Math.floor(Date.now() / 1000) + HOUSE.stripeSessionSec,
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/?canceled=1`,
-      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, src: src || "" },
-      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, src: src || "" } },
+      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" },
+      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" } },
     });
 
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
-      totalCents: priced.ticketCents + feeCents, feeCents, station,
-      org, orgEligible, orgTiers, src,
+      totalCents: priced.ticketCents + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
+      org, orgEligible, orgTiers, orgOwedCents, src, tee,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });

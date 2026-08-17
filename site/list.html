@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The 1140A List — The Cape Cod Comedy Carnival</title>
+<meta name="description" content="First word on the next 1140A shows on Cape Cod — presales, exclusive offers, and the occasional good joke.">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800&family=Archivo:wght@400;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#171a2b; --bone:#d8d3c5; --glow:#f5b445; --dim:#8d8fa3; }
+  body{ margin:0; background:var(--ink); color:var(--bone); font-family:'Archivo',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; }
+  .card{ max-width:520px; width:100%; border:1px solid #31365f; border-radius:14px; padding:34px 30px; background:rgba(255,255,255,.02); }
+  .org{ font-family:'Spline Sans Mono',monospace; font-size:11px; letter-spacing:.3em; color:var(--dim); margin:0 0 10px; }
+  h1{ font-family:'Big Shoulders','Archivo',sans-serif; font-weight:800; font-size:clamp(34px,7vw,46px); line-height:1; margin:0 0 12px; }
+  h1 .amp{ color:var(--glow); }
+  p{ line-height:1.55; margin:0 0 18px; }
+  input[type=email], input[type=text]{ width:100%; box-sizing:border-box; background:rgba(255,255,255,.05); border:1px solid #31365f; border-radius:8px; color:var(--bone); padding:12px; font-family:'Spline Sans Mono',monospace; font-size:15px; margin:0 0 10px; }
+  button{ width:100%; background:var(--glow); color:var(--ink); border:0; border-radius:8px; padding:13px; font-family:'Big Shoulders','Archivo',sans-serif; font-weight:800; font-size:20px; letter-spacing:.08em; cursor:pointer; }
+  .fine{ font-size:12.5px; color:var(--dim); margin:14px 0 0; }
+  .thanks{ display:none; border:2px solid var(--glow); border-radius:10px; padding:14px; text-align:center; font-weight:600; margin:0 0 16px; }
+  .hidden-field{ display:none; }
+</style></head>
+<body>
+  <div class="card">
+    <p class="org">THE 1140A CORPORATION · CAPE COD</p>
+    <h1>THE 1140A <span class="amp">LIST</span></h1>
+    <div class="thanks" id="thanks">You're on the list. First word, every time.</div>
+    <p>First word on the next shows — presales before the public, exclusive offers, and nothing else. We write when there's something worth writing about, which is the whole trick.</p>
+    <form name="mailing-list" method="POST" action="/list.html?joined=1" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="mailing-list">
+      <p class="hidden-field"><label>Leave this empty: <input name="bot-field"></label></p>
+      <input type="text" name="name" placeholder="first name (optional)" autocomplete="given-name">
+      <input type="email" name="email" placeholder="your email" required autocomplete="email">
+      <button type="submit">PUT ME ON THE LIST</button>
+    </form>
+    <p class="fine">The 1140A Corporation is a Massachusetts nonprofit bringing top touring comedy back to Cape Cod at prices locals can afford. We never sell or share your address. · <a href="/" style="color:var(--glow)">1140A.com</a></p>
+  </div>
+  <script>
+    try{ if (new URLSearchParams(location.search).get("joined")) document.getElementById("thanks").style.display = "block"; }catch(e){}
+    try{ var _s=new URLSearchParams(location.search).get("src"); if(_s) sessionStorage.setItem("cccc_src",_s); }catch(e){}
+  </script>
+</body></html>
