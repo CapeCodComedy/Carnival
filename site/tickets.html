@@ -348,7 +348,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
         <div id="orgNote" style="display:none;margin:8px 0 0;border:2px solid #15803d;border-radius:8px;padding:10px 12px;color:#15803d;font-size:14px;line-height:1.45"></div>
       </div>
       <div id="teeRow" style="display:none;margin:10px 0 2px">
-        <label class="hint" style="display:block;margin:0 0 4px">Add the limited-edition show tee — <b id="teePrice"></b> each with your ticket · claimed at will-call:</label>
+        <label class="hint" style="display:block;margin:0 0 4px">Add the limited-edition show tee — <b id="teePrice"></b> each with your ticket · claimed at will-call on show night:</label>
         <div style="display:flex;gap:8px">
           <select id="teeQty" aria-label="Tee quantity" style="flex:1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:8px 10px;font-family:'Spline Sans Mono',monospace"></select>
           <select id="teeSize" aria-label="Tee size" style="flex:1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:8px 10px;font-family:'Spline Sans Mono',monospace"></select>
@@ -905,7 +905,7 @@ function renderCart(){
       orgNote.style.borderColor = STATION_INK;
       orgNote.style.color = STATION_INK;
       orgNote.style.display = "block";
-      orgNote.innerHTML = `<b>CODE ${sc} APPLIED</b> — free limited-edition show tee with this order, claimed at will-call.`;
+      orgNote.innerHTML = `<b>CODE ${sc} APPLIED</b> — free limited-edition show tee with this order, claimed at will-call on show night.`;
     } else if (oc && ids.length){
       const eligIds = ids.filter(id => seatZone[id] !== "balc");
       const owed = eligIds.reduce((s, id) => s + CONFIG.prices[seatZone[id]] * ORG_SHARE, 0);
@@ -923,7 +923,7 @@ function renderCart(){
   const teeCost = _tee ? _tee.qty * (MERCH.teeBundleCents / 100) : 0;
   $("#totals").innerHTML = ids.length ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
-    ${_tee ? `<div><span>Show tee × ${_tee.qty} (${_tee.size}) — ticket-bundle price, at will-call</span><span>${money(teeCost)}</span></div>` : ""}
+    ${_tee ? `<div><span>Show tee × ${_tee.qty} (${_tee.size}) — ticket-bundle price · will-call on show night</span><span>${money(teeCost)}</span></div>` : ""}
     <div><span>Card processing fee — passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
     <div class="grand"><span>Total</span><span>${money(tickets + teeCost + fee)}</span></div>` : "";
   $("#checkoutBtn").disabled = !ids.length;

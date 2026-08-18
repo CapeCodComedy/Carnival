@@ -98,7 +98,7 @@ exports.handler = async (event) => {
       price_data: {
         currency: "usd",
         unit_amount: MERCH.teeBundleCents,
-        product_data: { name: `${MERCH.teeName || "Show tee"} — size ${tee.size} (ticket-bundle price) — claimed at will-call` },
+        product_data: { name: `${MERCH.teeName || "Show tee"} — size ${tee.size} (ticket-bundle price) — claimed at will-call on show night` },
       },
     });
 
