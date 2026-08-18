@@ -944,6 +944,14 @@ function teeChoice(){
 function initTeeRow(){
   const row = $("#teeRow");
   if (!row || row.dataset.ready || !MERCH.teeBundleCents) return;
+  /* v3.36: the $11 bundle lives behind the tee doorway ONLY — arrivals from /tee carry ?tee=1.
+     Everyone else gets a clean ticket checkout with no tee offer. */
+  let wants = false;
+  try {
+    if (new URLSearchParams(location.search).get("tee")) { sessionStorage.setItem("cccc_tee", "1"); wants = true; }
+    else if (sessionStorage.getItem("cccc_tee") === "1") wants = true;
+  } catch (e) {}
+  if (!wants) return;
   row.dataset.ready = "1";
   $("#teePrice").textContent = money(MERCH.teeBundleCents / 100);
   const qs = $("#teeQty");
@@ -952,7 +960,7 @@ function initTeeRow(){
   qs.addEventListener("change", () => renderCart());
   $("#teeSize").addEventListener("change", () => renderCart());
   row.style.display = "block";
-  try { if (new URLSearchParams(location.search).get("tee")) { qs.value = "1"; renderCart(); } } catch (e) {}
+  try { if (!(parseInt(qs.value, 10) > 0)) { qs.value = "1"; renderCart(); } } catch (e) {}
 }
 
 /* ---------- station codes (radio buy, v3.15): a valid code waives the card fee ---------- */
