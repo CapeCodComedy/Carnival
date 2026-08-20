@@ -828,21 +828,16 @@ async function refreshState(first){
   }
 }
 
-/* ---------- steppers (one kind per checkout — the standing house rule) ---------- */
+/* ---------- steppers (v3.55: kinds mix freely in one order — ten total) ---------- */
 function bump(kind, delta){
   if (paying) return;
-  const other = kind === "house" ? "splash" : "house";
   if (delta > 0){
-    if (qty[other] > 0){
-      qty[other] = 0;
-      toast("One kind per checkout — house rules. Lock these in, then come back for the other.");
-    }
-    if (qty[kind] >= CONFIG.maxPerOrder){
+    if (qty.house + qty.splash >= CONFIG.maxPerOrder){
       toast("Orders cap at ten — for a bigger crew, use the Groups line below."); return;
     }
     const free = freeUnits(kind).length;
     if (qty[kind] >= free){
-      toast(free ? `Only ${free} left at ${CONFIG.zones[kind].name}.` : `${CONFIG.zones[kind].name} is spoken for — the other kind may still have room.`);
+      toast(free ? `Only ${free} left at ${CONFIG.zones[kind].name}.` : `${CONFIG.zones[kind].name} is spoken for.`);
       return;
     }
   }
@@ -969,13 +964,18 @@ function srcTag(){
 
 /* ---------- checkout: pick free units, claim hard, ride to Stripe ---------- */
 function pickUnits(){
-  const kind = qty.house > 0 ? "house" : "splash";
-  const n = qty[kind];
-  const pool = freeUnits(kind);
-  if (pool.length < n) return null;
-  /* random start offset so simultaneous buyers rarely collide on the same units */
-  const start = Math.floor(Math.random() * Math.max(1, pool.length - n + 1));
-  return pool.slice(start, start + n);
+  /* v3.55: mixed orders — gather each kind's share, one combined claim */
+  const out = [];
+  for (const kind of ["house", "splash"]){
+    const n = qty[kind];
+    if (!n) continue;
+    const pool = freeUnits(kind);
+    if (pool.length < n) return null;
+    /* random start offset so simultaneous buyers rarely collide on the same units */
+    const start = Math.floor(Math.random() * Math.max(1, pool.length - n + 1));
+    out.push(...pool.slice(start, start + n));
+  }
+  return out.length ? out : null;
 }
 async function checkout(){
   const count = qty.house + qty.splash;

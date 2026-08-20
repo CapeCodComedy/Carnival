@@ -6,14 +6,17 @@ const seat = id => HOUSE.seats[id] || null;
 const isWc = id => { const s = seat(id); return !!(s && s.wc); };
 
 function tierOf(ids) {
-  let zone = null;
+  /* v3.55: unreserved room — HOUSE and SPLASH mix freely in one order
+     (the one-tier law was a reserved-map rule; tierage exclusivity retired).
+     Unknown seats still hard-fail. */
+  let zone = null, mixed = false;
   for (const id of ids) {
     const s = seat(id);
     if (!s) return { ok: false, err: `unknown seat ${id}` };
-    if (zone && s.zone !== zone) return { ok: false, err: "one tier per transaction (spec §6.1)" };
+    if (zone && s.zone !== zone) mixed = true;
     zone = s.zone;
   }
-  return { ok: true, zone };
+  return { ok: true, zone: mixed ? "mixed" : zone };
 }
 
 /* price a cart; accessible carts (wheelchair space ± companion) waive the fee */

@@ -74,14 +74,14 @@ exports.handler = async (event) => {
   }
 
   const siteUrl = process.env.SITE_URL || "";
-  const zoneName = HOUSE.zones[priced.zone];
   try {
+    /* v3.55: mixed orders — each line item carries its own kind's name */
     const line_items = seats.map(id => ({
       quantity: 1,
       price_data: {
         currency: "usd",
         unit_amount: (seat(id).wc || accessible) ? HOUSE.wheelchair.price * 100 : HOUSE.prices[seat(id).zone] * 100,
-        product_data: { name: `${zoneName} — unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
+        product_data: { name: `${HOUSE.zones[seat(id).zone]} — unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
       },
     }));
     const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only — fee charged normally */
