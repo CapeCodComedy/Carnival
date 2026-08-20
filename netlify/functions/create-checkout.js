@@ -42,8 +42,9 @@ exports.handler = async (event) => {
   if (!priced.ok) return resp(400, { err: priced.err });
 
   /* org eligibility + owed (half the ticket price per eligible seat — v3.27;
-     never blocks a purchase; balcony-only = zero, silently) */
-  const ORG_TIERS = new Set(["orch", "t1", "t2", "t3"]);
+     never blocks a purchase; v3.38: balcony pays the half too — every seat
+     in the house counts; the accessible flow stays out) */
+  const ORG_TIERS = new Set(["orch", "t1", "t2", "t3", "balc"]);
   const ORG_SHARE = HOUSE.orgShare || 0.5;
   let orgEligible = 0, orgOwedCents = 0; const _tc = {};
   if (org && !accessible) for (const id of seats) {

@@ -907,15 +907,13 @@ function renderCart(){
       orgNote.style.display = "block";
       orgNote.innerHTML = `<b>CODE ${sc} APPLIED</b> — free limited-edition show tee with this order, claimed at will-call on show night.`;
     } else if (oc && ids.length){
-      const eligIds = ids.filter(id => seatZone[id] !== "balc");
-      const owed = eligIds.reduce((s, id) => s + CONFIG.prices[seatZone[id]] * ORG_SHARE, 0);
+      /* v3.38: every seat in the house pays the half — balcony included */
+      const owed = ids.reduce((s, id) => s + CONFIG.prices[seatZone[id]] * ORG_SHARE, 0);
       const ink = ORG_COLORS[oc] || ORG_INK_DEFAULT;
       orgNote.style.borderColor = ink;
       orgNote.style.color = ink;
       orgNote.style.display = "block";
-      orgNote.innerHTML = eligIds.length > 0
-        ? `<b>${oc} FUNDRAISER</b> — <b>${money(owed)}</b> of this order goes straight to them.`
-        : `${oc} FUNDRAISER EARNS <b>HALF THE PRICE</b> OF EVERY ORCHESTRA, TIER 1, TIER 2, OR TIER 3 SEAT.`;
+      orgNote.innerHTML = `<b>${oc} FUNDRAISER</b> — <b>${money(owed)}</b> of this order goes straight to them.`;
     } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = ids.length ? "none" : "block";
