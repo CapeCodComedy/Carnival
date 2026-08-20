@@ -317,18 +317,16 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
   <!-- v3.39: BEST SEATS IN THE HOUSE — the default door; the map stays one glance below -->
   <section class="map-card" id="quickPick" style="padding:16px 14px 18px;margin:0 0 18px">
-    <h2 style="margin:0 0 6px">Best seats in the house</h2>
-    <p class="sub" style="margin:0 0 12px;line-height:1.55">Pick your price and how many of you — the house seats you together, centre first, the best open seats at that price.</p>
-    <div id="qpTiers" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px"></div>
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="hint" style="margin:0;white-space:nowrap">How many of you</span>
-        <button id="qpMinus" type="button" aria-label="Fewer seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
-        <b id="qpQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">2</b>
-        <button id="qpPlus" type="button" aria-label="More seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">+</button>
-      </div>
-      <button class="cta" id="qpGo" type="button" style="flex:1;min-width:170px;margin:0" disabled>Seat us</button>
+    <h2 style="margin:0 0 6px">House seats</h2>
+    <p class="sub" style="margin:0 0 12px;line-height:1.55">Tell us how many of you and your price — the house puts you in the best seats open, together, centre first. Three taps and you're in.</p>
+    <div style="display:flex;align-items:center;gap:10px;margin:0 0 12px">
+      <span class="hint" style="margin:0;white-space:nowrap">How many of you</span>
+      <button id="qpMinus" type="button" aria-label="Fewer seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
+      <b id="qpQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">2</b>
+      <button id="qpPlus" type="button" aria-label="More seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">+</button>
     </div>
+    <div id="qpTiers" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px"></div>
+    <button class="cta" id="qpGo" type="button" style="width:100%;margin:0" disabled>Seat us</button>
   </section>
 
   <div class="cols">
@@ -356,7 +354,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
       <div id="housePick" style="display:none;margin:0 0 10px;border:2px solid var(--glow);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.5"></div>
       <p class="sub">Seats hold for a short spell while you decide — then they're locked to you all through payment.</p>
       <ul id="cartList"></ul>
-      <div class="empty" id="cartEmpty">Nothing claimed yet — pick a price above and the house seats you, or tap any open seat on the map.</div>
+      <div class="empty" id="cartEmpty">Nothing claimed yet — HOUSE SEATS above seats you in three taps, or tap any open seat on the map.</div>
       <div class="totals" id="totals"></div>
       <div id="stationRow" style="margin:10px 0 2px">
         <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Radio code or fundraiser code? Enter it here:</label>
@@ -1092,7 +1090,7 @@ function qpWhere(ids){
 
 function qpBanner(ids){
   const n = $("#housePick"); if (!n) return;
-  n.innerHTML = `<b>YOUR SEATS — ${qpWhere(ids)}</b> · ${ids.join(", ")}<br>` +
+  n.innerHTML = `<b>HOUSE SEATS — ${qpWhere(ids)}</b> · ${ids.join(", ")}<br>` +
     `<span class="hint" style="margin:4px 0 0;display:inline-block">Rather sit elsewhere? Tap any open seat on the map to swap.</span>`;
   n.style.display = "block";
 }
