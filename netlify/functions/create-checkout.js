@@ -17,9 +17,9 @@ exports.handler = async (event) => {
   const _raw = String(body.code || "").trim().toUpperCase();
   const station = STATION_CODES.has(_raw) ? _raw : null;
   /* org fundraiser codes (v3.18): pure tracking — price untouched, fee untouched.
-     Eligible tiers orch/t1/t2 only; balcony and accessible orders record zero eligible. */
+     v3.51: every seat pays the half; orgCodesEnabled=false in house.json closes the offer. */
   const ORG_CODES = new Set((HOUSE.orgCodes || []).map(c => String(c).toUpperCase()));
-  const org = (!station && ORG_CODES.has(_raw)) ? _raw : null;
+  const org = (HOUSE.orgCodesEnabled !== false && !station && ORG_CODES.has(_raw)) ? _raw : null;
   const src = String(body.src || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32) || null;
   /* tee add-on (v3.30): bundle-priced merch line that exists only inside a ticket purchase */
   const MERCH = HOUSE.merch || {};
@@ -42,9 +42,9 @@ exports.handler = async (event) => {
   if (!priced.ok) return resp(400, { err: priced.err });
 
   /* org eligibility + owed (half the ticket price per eligible seat — v3.27;
-     never blocks a purchase; v3.38: balcony pays the half too — every seat
-     in the house counts; the accessible flow stays out) */
-  const ORG_TIERS = new Set(["orch", "t1", "t2", "t3", "balc"]);
+     v3.51: the 160-seat room — HOUSE and SPLASH both pay the half;
+     the accessible flow stays out) */
+  const ORG_TIERS = new Set(["house", "splash"]);
   const ORG_SHARE = HOUSE.orgShare || 0.5;
   let orgEligible = 0, orgOwedCents = 0; const _tc = {};
   if (org && !accessible) for (const id of seats) {
@@ -81,7 +81,7 @@ exports.handler = async (event) => {
       price_data: {
         currency: "usd",
         unit_amount: (seat(id).wc || accessible) ? HOUSE.wheelchair.price * 100 : HOUSE.prices[seat(id).zone] * 100,
-        product_data: { name: `${zoneName} — Seat ${id}${seat(id).wc ? " (wheelchair space)" : ""}` },
+        product_data: { name: `${zoneName} — unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
       },
     }));
     const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only — fee charged normally */

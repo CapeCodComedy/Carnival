@@ -367,17 +367,21 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },  // ticket price per zone (owner-locked)
+  /* v3.51 — the 160-seat room: one price, unreserved, plus THE SPLASH ZONE.
+     Legacy zone keys stay below so the console's old-room map still renders. */
+  prices: { house: 66, splash: 88, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
-  wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
+  wheelchair: { price: 33, fee: 0 },                   // accessible: arranged by email, fee waived
   currency: "$",
   maxPerOrder: 10,
   zones: {
-    orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
-    t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
-    t2:   { name: "TIER 2",    desc: "Rows K–M — just past the cross-aisle" },
-    t3:   { name: "TIER 3",    desc: "Rows N–Q — the back half of the floor, still downstairs" },
-    balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
+    house:  { name: "HOUSE",           desc: "Unreserved — arrive, sit where you like" },
+    splash: { name: "THE SPLASH ZONE", desc: "Ten chairs on the open floor, dribble-distance from the comics" },
+    orch: { name: "ORCHESTRA", desc: "legacy — old room" },
+    t1:   { name: "TIER 1",    desc: "legacy — old room" },
+    t2:   { name: "TIER 2",    desc: "legacy — old room" },
+    t3:   { name: "TIER 3",    desc: "legacy — old room" },
+    balc: { name: "BALCONY",   desc: "legacy — old room" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
   pollMs: 8000,            // map repaint cadence (matches CDN cache window)

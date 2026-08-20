@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center</title>
-<meta name="description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $28 to $88, transparent $3 card fee.">
+<meta name="description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat $66, the Splash Zone $88, transparent $3 card fee.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://1140a.com/tickets.html">
 <meta property="og:title" content="Pick Your Seats — The Cape Cod Comedy Carnival · Sat Aug 29 · Tilden Arts Center">
-<meta property="og:description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat reserved, $28 to $88, transparent $3 card fee.">
+<meta property="og:description" content="The live seat map: Brendan Sagalow and Mike Cannon with opener Jason Choi, Sat Aug 29 2026, 7 PM, Tilden Arts Center, West Barnstable. Every seat $66, the Splash Zone $88, transparent $3 card fee.">
 <meta property="og:url" content="https://1140a.com/tickets.html">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -306,55 +306,56 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     </div>
     <div class="head-right">
       <span class="chip warn" id="modeChip">TEST MODE · BEHIND PASSWORD</span>
-      <span class="chip">EVERY SEAT RESERVED · LIVE MAP</span>
+      <span class="chip">AN INTIMATE 160-SEAT ROOM</span>
     </div>
   </header>
 
   <section>
-    <h2>One ticket. The whole night. Your exact seat.</h2>
-    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI, one evening, one ticket. Every seat in the house is reserved: tap the seats you want, and they're yours the moment you pay. The map is live — what you see is what's actually available right now.</p>
+    <h2>One ticket. The whole night. One price.</h2>
+    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI, one evening, one ticket, in an intimate 160-seat room at the Tilden Arts Center. Unreserved seating: arrive, sit where you like. <b>The cheaper seats are all gone.</b></p>
   </section>
 
-  <!-- v3.39: BEST SEATS IN THE HOUSE — the default door; the map stays one glance below -->
-  <section class="map-card" id="quickPick" style="padding:16px 14px 18px;margin:0 0 18px">
-    <h2 style="margin:0 0 6px">House seats</h2>
-    <p class="sub" style="margin:0 0 12px;line-height:1.55">Tell us how many of you and your price — the house puts you in the best seats open, together, centre first. Three taps and you're in.</p>
-    <div style="display:flex;align-items:center;gap:10px;margin:0 0 12px">
-      <span class="hint" style="margin:0;white-space:nowrap">How many of you</span>
-      <button id="qpMinus" type="button" aria-label="Fewer seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
-      <b id="qpQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">2</b>
-      <button id="qpPlus" type="button" aria-label="More seats" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">+</button>
-    </div>
-    <div id="qpTiers" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px"></div>
-    <button class="cta" id="qpGo" type="button" style="width:100%;margin:0" disabled>Seat us</button>
-  </section>
-
+  <!-- v3.51: the 160-seat room — two kinds, quantity, pay. No chart; the room is the chart. -->
   <div class="cols">
     <div>
-      <section class="map-card">
-        <h2 style="padding:0 10px">Pick your seats</h2>
-        <p class="sub" style="padding:0 10px;line-height:2">Orchestra <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> · Tier 1 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · Tier 2 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$55</b> · Tier 3 <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$44</b> · Balcony <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$28</b> — plus $3 per seat card processor fee*</p>
-        <div class="map-scroll"><svg id="map" role="group" aria-label="Live seat map of the Tilden Arts Center"></svg></div>
-        <div class="legend">
-          <span><i style="background:var(--bone)"></i>Available</span>
-          <span><i style="background:var(--glow)"></i>Yours (held)</span>
-          <span><i style="background:var(--sold)"></i>Spoken for</span>
-          <span><i style="background:var(--bone);box-shadow:0 0 0 2px var(--gilt)"></i>Orchestra</span>
-          <span><i style="background:var(--bone);box-shadow:0 0 0 2px #b9c2d6"></i>Tier 1</span>
-          <span><i style="background:var(--bone);box-shadow:0 0 0 2px #c98a5b"></i>Tier 2</span>
-          <span><i style="background:var(--bone);box-shadow:0 0 0 2px #6fa79b"></i>Tier 3</span>
-          <span><i class="sq" style="background:var(--held);box-shadow:0 0 0 1.5px #7f96d9"></i>Wheelchair space</span>
+      <section class="map-card" style="padding:16px 14px 18px">
+        <h2 style="margin:0 0 4px">Tickets</h2>
+        <p class="sub" style="margin:0 0 14px;line-height:1.7">Every seat <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · THE SPLASH ZONE <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b> — plus $3 per seat card processor fee*</p>
+
+        <div style="border:1px solid #31365f;border-radius:10px;padding:14px;margin:0 0 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="min-width:180px"><b>HOUSE</b> <b class="mono" style="color:var(--glow)">$66</b><br><span class="hint" style="margin:0">Unreserved — arrive, sit where you like.</span></div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button id="houseMinus" type="button" aria-label="Fewer house tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
+              <b id="houseQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">0</b>
+              <button id="housePlus" type="button" aria-label="More house tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">+</button>
+            </div>
+          </div>
         </div>
-        <p class="hint" style="padding:0 10px 8px" id="liveNote">Map refreshes automatically.</p>
+
+        <div style="border:1px solid #31365f;border-radius:10px;padding:14px;margin:0 0 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="min-width:180px"><b>THE SPLASH ZONE</b> <b class="mono" style="color:var(--glow)">$88</b><br><span class="hint" style="margin:0">Ten chairs on the open floor, dribble-distance from the comics.</span></div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button id="splashMinus" type="button" aria-label="Fewer Splash Zone tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
+              <b id="splashQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">0</b>
+              <button id="splashPlus" type="button" aria-label="More Splash Zone tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">+</button>
+            </div>
+          </div>
+          <div style="margin:10px 0 0;border:2px dashed var(--glow);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.55">
+            <b>⚠ WARNING</b> — The Splash Zone is the front row of the open floor: the closest seats in the house, dribble-distance from a working stand-up comedian. The sightlines are wonderful. The anonymity is zero. Expect eye contact, crowd work, and weather. What gets said to this row cannot be unsaid. The 1140A Corporation salutes you.
+          </div>
+        </div>
+
+        <p class="hint" style="margin:6px 0 0" id="liveNote">Live box office.</p>
       </section>
     </div>
 
     <aside class="stub" aria-label="Your order" id="stubBox">
       <h2>Your stub</h2>
-      <div id="housePick" style="display:none;margin:0 0 10px;border:2px solid var(--glow);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.5"></div>
-      <p class="sub">Seats hold for a short spell while you decide — then they're locked to you all through payment.</p>
+      <p class="sub">Your tickets lock to you the moment you pay — the QR codes on the next page are your entry.</p>
       <ul id="cartList"></ul>
-      <div class="empty" id="cartEmpty">Nothing claimed yet — HOUSE SEATS above seats you in three taps, or tap any open seat on the map.</div>
+      <div class="empty" id="cartEmpty">Nothing claimed yet — set a count and lock them in.</div>
       <div class="totals" id="totals"></div>
       <div id="stationRow" style="margin:10px 0 2px">
         <label for="stationCode" class="hint" style="display:block;margin:0 0 4px">Radio code or fundraiser code? Enter it here:</label>
@@ -369,12 +370,8 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
           <select id="teeSize" aria-label="Tee size" style="flex:1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:8px 10px;font-family:'Spline Sans Mono',monospace"></select>
         </div>
       </div>
-      <div class="hold" id="holdRow" hidden>
-        <div class="hold-line"><span>Seats held for</span><b id="holdClock">3 min</b></div>
-        <div class="hbar"><b id="holdBar" style="width:100%"></b></div>
-      </div>
       <button class="cta" id="checkoutBtn" disabled>Lock them in</button>
-      <div class="fee-note" id="feeNote">Checkout is a secure Stripe payment page. Your seats stay held the whole time you're paying.</div>
+      <div class="fee-note" id="feeNote">Checkout is a secure Stripe payment page. Your tickets are claimed for you the whole time you're paying.</div>
     </aside>
   </div>
 
@@ -391,27 +388,24 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   <section id="access">
     <h2>Access, groups &amp; getting hold of us</h2>
     <div class="contact-cats">
-      <button class="cat-btn" data-cat="groups"><b>Groups of more than ten</b><span>Eleven or more and we'll block-seat the whole gang together — tell us your headcount.</span></button>
-      <button class="cat-btn" data-cat="wheelchair"><b>Wheelchair &amp; special assistance</b><span>Dedicated spaces with companion seats, $33 with the card fee waived — book right here.</span></button>
+      <button class="cat-btn" data-cat="groups"><b>Groups of more than ten</b><span>Eleven or more and we'll look after the whole gang — tell us your headcount.</span></button>
+      <button class="cat-btn" data-cat="wheelchair"><b>Wheelchair &amp; special assistance</b><span>Dedicated space with a companion seat, $33 with the card fee waived — arranged personally by email.</span></button>
       <button class="cat-btn" data-cat="asl"><b>ASL interpreter</b><span>Gladly arranged on request, no charge.</span></button>
     </div>
 
     <div class="cat-panel" id="cat-groups">
       <h3>Bringing the whole crew?</h3>
-      <p>Orders cap at ten seats. For eleven or more we hand-pick a block so nobody sits alone. Email us with your headcount and a phone number; we confirm seats before anything is charged.</p>
+      <p>Orders cap at ten tickets. For eleven or more, email us with your headcount and a phone number; we confirm everything before a card is charged.</p>
       <a class="btn primary" id="mailGroups" href="#">Email the box office</a>
     </div>
 
     <div class="cat-panel" id="cat-wheelchair">
       <h3>Wheelchair &amp; companion seating</h3>
-      <p>Dedicated wheelchair spaces sit on the <b>Tier 2 cross-aisle (row K)</b>, marked ♿ on the map, each pairable with an adjacent companion seat. Both price at $33 with the $3 card fee waived — access never costs extra here. Tap a ♿ space on the map (or the button below), read the short terms, and pay — same live, instant reservation as every other seat.</p>
+      <p>A dedicated space for a wheelchair or mobility device, with an adjacent companion seat — both <b>$33</b> with the $3 card fee waived. Access never costs extra here. The room is intimate and we seat you personally: email us and it's arranged the same day, sightlines and all.</p>
       <p class="fine">A kind reminder for the night: if you park in the Special Access lot, please display your accessible-parking placard or plate where it can be seen.</p>
       <div class="notice-line">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
       <p class="fine">"May" means exactly that — a possibility, and if it happens, a polite request from a volunteer.</p>
-      <div class="btn-row" style="justify-content:flex-start;margin-top:12px">
-        <button class="btn primary" id="openAccessible">Book a wheelchair space</button>
-        <a class="btn" id="mailWheel" href="#">Questions? Email us</a>
-      </div>
+      <a class="btn primary" id="mailWheel" href="#">Email us — we'll arrange it</a>
     </div>
 
     <div class="cat-panel" id="cat-asl">
@@ -424,7 +418,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   </section>
 
   <footer>
-    <p><b>The 1140A Corporation</b> is a Massachusetts non-profit. Every seat is reserved and sold by this site directly — the map you see is the box office itself, live.</p>
+    <p><b>The 1140A Corporation</b> is a Massachusetts non-profit. Tickets are sold by this site directly — the live count you see is the box office itself.</p>
     <p>Your ticket's QR code is your <b>entry credential</b> — one of a kind, scanned at the door, dead on arrival if copied. Keep it on your phone or printed.</p>
     <p>Questions, accommodations, anything: <span class="mono" id="mailPlain3"></span> · <span class="mono">1140A.com</span></p>
     <p class="mono" style="opacity:.55">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · CAPE COD COMMUNITY COLLEGE · WEST BARNSTABLE, MA</p>
@@ -434,32 +428,6 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 <div id="miniBar"><span id="mbCount"></span><span class="mb-total" id="mbTotal"></span><button id="mbGo">Pay</button></div>
 
 <div id="veil"></div>
-
-<div class="modal" id="termsModal" role="dialog" aria-modal="true" aria-label="Wheelchair seating terms">
-  <div class="box">
-    <button class="close" data-close="termsModal" aria-label="Close">×</button>
-    <h2 style="font-family:'Big Shoulders';letter-spacing:.04em">Wheelchair seating — the short terms</h2>
-    <p class="sub">Three terms, in plain English. When the end of the terms is on your screen, the agree button wakes.</p>
-    <div class="terms-scroll" id="termsScroll">
-      <h3>What you're booking</h3>
-      <p>A dedicated wheelchair space on the Tier 2 cross-aisle (row K), sized for a wheelchair or mobility device, with clear sightlines and an aisle-side approach. Each space can pair with one adjacent <b>companion seat</b>. Both price at the ordinary Tier 2 rate with the card fee waived — access never costs extra here.</p>
-      <h3>The terms</h3>
-      <p><b>1.</b> Wheelchair spaces exist for patrons who attend in a wheelchair or mobility device. Booking one is your statement that it's for such a patron in your party. Nobody will ever ask you for proof of disability — not at checkout, not at the door.</p>
-      <p><b>2.</b> The space itself is the seat: it fits a wheelchair, and it is where the wheelchair parks for the show.</p>
-      <p><b>3.</b> A ticket obtained by <b>misrepresentation</b> is <b>void and non-refundable</b> — the wheelchair space and its paired companion seat are both forfeit (just the single seat, if booked alone). There is nothing to chase and nothing to dispute: the ticket is simply void, on terms you read right here.</p>
-      <h3>Parking, while we have you</h3>
-      <div class="notice">ALL VEHICLES ENTERING THE SPECIAL ACCESS PARKING LOT WILL BE CHECKED FOR A VALID DISABILITY PARKING PLACARD OR PLATE. YOU MAY BE ASKED TO SHOW YOUR TICKET.</div>
-      <p>A kind request, not a demand: display your placard or plate where the volunteer can spot it. "May be asked" means exactly that.</p>
-      <p class="fine" style="color:var(--dim)">— end of terms. Thanks for actually reading.</p>
-    </div>
-    <div class="scroll-hint" id="scrollHint">▼ scroll to the very end to wake the agree button ▼</div>
-    <div style="margin-bottom:10px" id="wcChoiceBox"></div>
-    <div class="btn-row">
-      <button class="btn" data-close="termsModal">Not now</button>
-      <button class="btn primary" id="agreeBtn" disabled>I agree — book it</button>
-    </div>
-  </div>
-</div>
 
 <div id="toast" role="status"></div>
 
@@ -480,17 +448,21 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  prices: { orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },  // ticket price per zone (owner-locked)
+  /* v3.51 — the 160-seat room: one price, unreserved, plus THE SPLASH ZONE.
+     Legacy zone keys stay below so the console's old-room map still renders. */
+  prices: { house: 66, splash: 88, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
-  wheelchair: { price: 33, fee: 0 },                   // accessible flow: standard T2 price, fee waived
+  wheelchair: { price: 33, fee: 0 },                   // accessible: arranged by email, fee waived
   currency: "$",
   maxPerOrder: 10,
   zones: {
-    orch: { name: "ORCHESTRA", desc: "Rows TA, TB & C — the pit rows, right on the stage" },
-    t1:   { name: "TIER 1",    desc: "Rows D–J — heart of the house" },
-    t2:   { name: "TIER 2",    desc: "Rows K–M — just past the cross-aisle" },
-    t3:   { name: "TIER 3",    desc: "Rows N–Q — the back half of the floor, still downstairs" },
-    balc: { name: "BALCONY",   desc: "Rows AA–EE — the high view" }
+    house:  { name: "HOUSE",           desc: "Unreserved — arrive, sit where you like" },
+    splash: { name: "THE SPLASH ZONE", desc: "Ten chairs on the open floor, dribble-distance from the comics" },
+    orch: { name: "ORCHESTRA", desc: "legacy — old room" },
+    t1:   { name: "TIER 1",    desc: "legacy — old room" },
+    t2:   { name: "TIER 2",    desc: "legacy — old room" },
+    t3:   { name: "TIER 3",    desc: "legacy — old room" },
+    balc: { name: "BALCONY",   desc: "legacy — old room" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
   pollMs: 8000,            // map repaint cadence (matches CDN cache window)
@@ -780,7 +752,11 @@ function buildSeatMap(svg, opts){
   return { update, seatEls };
 }
 
-/* ================= BUYER BOX OFFICE LOGIC (v2 — all-Stripe) ================= */
+/* ================= BUYER BOX OFFICE LOGIC (v3.51 — the 160-seat room) =================
+   Unreserved: two kinds (HOUSE $66 / THE SPLASH ZONE $88), quantity steppers, no chart.
+   Capacity still lives server-side as invisible units (H-1..H-150, S-1..S-10):
+   checkout picks free units and the atomic claim + Stripe flow runs unchanged, so
+   codes, tees, station stamps, src tags, door scan, and will-call all survive. */
 
 /* ---------- gate ---------- */
 (function gate(){
@@ -802,8 +778,18 @@ function buildSeatMap(svg, opts){
 /* ---------- state ---------- */
 const HOLDER = "b_" + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now());
 let unavailable = new Set();          // from the server — the only truth
-const selected = new Set();           // my held seats (also appear server-side as held)
-let map = null, pollT = null, holdTimer = null, holdEndsAt = null, paying = false;
+const qty = { house: 0, splash: 0 };  // the whole order is a pair of counts now
+let paying = false, pollT = null;
+
+/* the invisible inventory — mirrors house.json exactly.
+   v3.52 fail-safe caps while the room's true free count is tallied:
+   110 house units on sale; 6 splash units (the other floor chairs are
+   handled off-web, by email). Raising either cap = one line here + house.json. */
+const UNITS = {
+  house: Array.from({ length: 110 }, (_, i) => "H-" + (i + 1)),
+  splash: Array.from({ length: 6 }, (_, i) => "S-" + (i + 1))
+};
+const freeUnits = k => UNITS[k].filter(id => !unavailable.has(id));
 
 const api = (path, body) => fetch(CONFIG.api + path, body ? {
   method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body)
@@ -815,17 +801,16 @@ function boot(){
   $("#evWhen").textContent = CONFIG.event.when + " · WEST BARNSTABLE, CAPE COD";
   ["#mailPlain2","#mailPlain3"].forEach(id => { const n = $(id); if (n) n.textContent = CONFIG.event.contactEmail; });
   const M = CONFIG.event.contactEmail, EV = CONFIG.event.plainTitle + " (Sat Aug 29)";
-  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (eleven or more):\nSeating section you fancy:\nPhone:\n\nWe'll confirm a block together before anything is charged.")}`;
+  $("#mailGroups").href = `mailto:${M}?subject=${encodeURIComponent("GROUP · " + EV)}&body=${encodeURIComponent("Name:\nParty size (eleven or more):\nPhone:\n\nWe'll confirm everything together before anything is charged.")}`;
   $("#mailWheel").href  = `mailto:${M}?subject=${encodeURIComponent("WHEELCHAIR & ASSISTANCE · " + EV)}`;
   $("#mailAsl").href    = `mailto:${M}?subject=${encodeURIComponent("ASL INTERPRETER · " + EV)}`;
 
-  map = buildSeatMap($("#map"), { mode: "buyer", getShow: () => "all", onSeat: onSeatClick });
-  initQuickPick();
+  initSteppers();
   refreshState(true);
   pollT = setInterval(() => { if (!document.hidden) refreshState(); }, CONFIG.pollMs + Math.floor(Math.random() * 1500));
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshState(); });
   if (new URLSearchParams(location.search).get("canceled"))
-    toast("No charge — your seats release back to the house in a few minutes.");
+    toast("No charge — nothing was taken.");
 }
 
 async function refreshState(first){
@@ -837,95 +822,67 @@ async function refreshState(first){
     if (s.orgColors && typeof s.orgColors === "object") ORG_COLORS = s.orgColors;
     if (s.merch && typeof s.merch === "object") { MERCH = s.merch; initTeeRow(); }
     unavailable = new Set(s.unavailable || []);
-    selected.forEach(id => unavailable.delete(id));   // my own holds render as mine, not as gone
-    paint();
-    $("#liveNote").textContent = `Live map · ${s.sold} seats sold · refreshes automatically`;
+    $("#liveNote").textContent = `Live box office · ${s.sold} spoken for`;
   } catch (e) {
     if (first) toast("Can't reach the box office — check your connection and refresh.");
   }
 }
-const paint = () => map && map.update({ unavailable, selected });
 
-/* ---------- selection (soft holds — real server holds, spec §5.1) ---------- */
-async function onSeatClick(id){
+/* ---------- steppers (one kind per checkout — the standing house rule) ---------- */
+function bump(kind, delta){
   if (paying) return;
-  if (WC_IDS.has(id)){ openTerms(id); return; }
-  qpHideBanner();   /* v3.39: hand on the map = the house-pick banner steps aside */
-  if (selected.has(id)){
-    selected.delete(id); paint(); renderCart();
-    api("/claim-seats", { holder: HOLDER, seats: [id], action: "release" });
-    return;
-  }
-  if (unavailable.has(id)){ toast("Gone — that one's spoken for."); return; }
-  if (selected.size >= CONFIG.maxPerOrder){
-    toast("Orders cap at ten seats — for a bigger crew, use the Groups line below."); return;
-  }
-  const zone = seatZone[id];
-  const existingZone = selected.size ? seatZone[[...selected][0]] : null;
-  if (existingZone && existingZone !== zone){
-    toast(`One section per checkout — finish your ${CONFIG.zones[existingZone].name} seats first (or clear the stub), then come back for ${CONFIG.zones[zone].name}.`);
-    return;
-  }
-  const r = await api("/claim-seats", { holder: HOLDER, seats: [id], action: "hold" });
-  if (!r.ok){
-    toast(r.status === 409 ? "Someone just took that one — pick another." : (r.data.err || "Couldn't hold that seat."));
-    refreshState(); return;
-  }
-  selected.add(id);
-  bumpHold(); paint(); renderCart();
-}
-
-/* ---------- hold countdown (words only — house rule) ---------- */
-function bumpHold(){
-  holdEndsAt = Date.now() + CONFIG.softHoldSec * 1000;
-  if (!holdTimer) holdTimer = setInterval(tickHold, 900);
-  $("#holdRow").hidden = false;
-  tickHold();
-}
-function tickHold(){
-  const left = holdEndsAt - Date.now();
-  if (left <= 0){
-    clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true;
-    if (selected.size && !paying){
-      api("/claim-seats", { holder: HOLDER, seats: [...selected], action: "release" });
-      selected.clear(); paint(); renderCart();
-      toast("Hold expired — seats released back to the house. No harm done.");
+  const other = kind === "house" ? "splash" : "house";
+  if (delta > 0){
+    if (qty[other] > 0){
+      qty[other] = 0;
+      toast("One kind per checkout — house rules. Lock these in, then come back for the other.");
     }
-    return;
+    if (qty[kind] >= CONFIG.maxPerOrder){
+      toast("Orders cap at ten — for a bigger crew, use the Groups line below."); return;
+    }
+    const free = freeUnits(kind).length;
+    if (qty[kind] >= free){
+      toast(free ? `Only ${free} left at ${CONFIG.zones[kind].name}.` : `${CONFIG.zones[kind].name} is spoken for — the other kind may still have room.`);
+      return;
+    }
   }
-  $("#holdClock").textContent = holdWords(left);
-  $("#holdBar").style.width = (100 * left / (CONFIG.softHoldSec * 1000)).toFixed(1) + "%";
+  qty[kind] = Math.max(0, qty[kind] + delta);
+  renderCart();
+}
+function initSteppers(){
+  $("#houseMinus").addEventListener("click", () => bump("house", -1));
+  $("#housePlus").addEventListener("click", () => bump("house", 1));
+  $("#splashMinus").addEventListener("click", () => bump("splash", -1));
+  $("#splashPlus").addEventListener("click", () => bump("splash", 1));
 }
 
 /* ---------- cart + fee transparency (spec §9: itemized, labeled, framed) ---------- */
 function renderCart(){
+  $("#houseQty").textContent = qty.house;
+  $("#splashQty").textContent = qty.splash;
   const list = $("#cartList"); list.innerHTML = "";
-  const ids = [...selected].sort();
-  let tickets = 0;
-  ids.forEach(id => {
-    const zone = seatZone[id];
-    const p = CONFIG.prices[zone];
-    tickets += p;
+  let tickets = 0, count = 0;
+  ["house", "splash"].forEach(k => {
+    if (!qty[k]) return;
+    const p = CONFIG.prices[k];
+    tickets += p * qty[k]; count += qty[k];
     const li = document.createElement("li");
-    li.innerHTML = `<span>Seat ${id}<span class="tag">${CONFIG.zones[zone].name} · reserved</span></span>
-      <span>${money(p)} <button aria-label="Remove ${id}" data-id="${id}">✕</button></span>`;
+    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span></span>
+      <span>${money(p * qty[k])}</span>`;
     list.appendChild(li);
   });
-  list.querySelectorAll("button").forEach(b => b.addEventListener("click", () => onSeatClick(b.dataset.id)));
   const sc = stationCode();
-  const fee = ids.length * CONFIG.fee;   /* v3.28: station codes no longer waive the fee — the tee is the offer */
+  const fee = count * CONFIG.fee;
   const oc = orgCode();
   const orgNote = $("#orgNote");
   if (orgNote){
-    if (sc && ids.length){
-      /* station code (v3.29): visible confirmation — a mute code reads as a broken code */
+    if (sc && count){
       orgNote.style.borderColor = STATION_INK;
       orgNote.style.color = STATION_INK;
       orgNote.style.display = "block";
       orgNote.innerHTML = `<b>CODE ${sc} APPLIED</b> — free limited-edition show tee with this order, claimed at will-call on show night.`;
-    } else if (oc && ids.length){
-      /* v3.38: every seat in the house pays the half — balcony included */
-      const owed = ids.reduce((s, id) => s + CONFIG.prices[seatZone[id]] * ORG_SHARE, 0);
+    } else if (oc && count){
+      const owed = tickets * ORG_SHARE;
       const ink = ORG_COLORS[oc] || ORG_INK_DEFAULT;
       orgNote.style.borderColor = ink;
       orgNote.style.color = ink;
@@ -933,20 +890,18 @@ function renderCart(){
       orgNote.innerHTML = `<b>${oc} FUNDRAISER</b> — <b>${money(owed)}</b> of this order goes straight to them.`;
     } else orgNote.style.display = "none";
   }
-  $("#cartEmpty").style.display = ids.length ? "none" : "block";
-  if (!ids.length) qpHideBanner();
+  $("#cartEmpty").style.display = count ? "none" : "block";
   const _tee = teeChoice();
   const teeCost = _tee ? _tee.qty * (MERCH.teeBundleCents / 100) : 0;
-  $("#totals").innerHTML = ids.length ? `
+  $("#totals").innerHTML = count ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
     ${_tee ? `<div><span>Show tee × ${_tee.qty} (${_tee.size}) — ticket-bundle price · will-call on show night</span><span>${money(teeCost)}</span></div>` : ""}
     <div><span>Card processing fee — passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
     <div class="grand"><span>Total</span><span>${money(tickets + teeCost + fee)}</span></div>` : "";
-  $("#checkoutBtn").disabled = !ids.length;
+  $("#checkoutBtn").disabled = !count;
   const mb = $("#miniBar");
-  if (ids.length){ mb.classList.add("on"); $("#mbCount").textContent = "the stub"; $("#mbTotal").textContent = money(tickets + teeCost + fee); }
+  if (count){ mb.classList.add("on"); $("#mbCount").textContent = "the stub"; $("#mbTotal").textContent = money(tickets + teeCost + fee); }
   else mb.classList.remove("on");
-  if (!ids.length && holdTimer){ clearInterval(holdTimer); holdTimer = null; $("#holdRow").hidden = true; }
 }
 
 /* ---------- tee add-on (v3.30): bundle price lives only inside a ticket purchase ---------- */
@@ -979,7 +934,7 @@ function initTeeRow(){
   try { if (!(parseInt(qs.value, 10) > 0)) { qs.value = "1"; renderCart(); } } catch (e) {}
 }
 
-/* ---------- station codes (radio buy, v3.15): a valid code waives the card fee ---------- */
+/* ---------- station codes (radio buy): attribution + the free tee ---------- */
 const STATION_CODES = ["Y101", "FRANK", "PIXY"];
 function stationCode(){
   const el = $("#stationCode");
@@ -988,9 +943,9 @@ function stationCode(){
   return STATION_CODES.includes(v) ? v : "";
 }
 
-/* ---------- org fundraiser codes (v3.18): tracking only — price and fee untouched ---------- */
+/* ---------- org fundraiser codes: tracking only — price and fee untouched ---------- */
 let ORG_CODES = [];
-let ORG_SHARE = 0.5;              // half of every eligible ticket goes to the org (server mirrors this)
+let ORG_SHARE = 0.5;              // half of every ticket goes to the org (server mirrors this)
 let ORG_COLORS = {};              // per-org ink override (school colours); default ink below
 const ORG_INK_DEFAULT = "#15803d"; // dark green — money ink on the ticket-stock stub
 const STATION_INK = "#1d3557";     // dark navy — station-code confirmation ink
@@ -1012,158 +967,35 @@ function srcTag(){
   catch (e) { return new URLSearchParams(location.search).get("src") || ""; }
 }
 
-/* ---------- best seats in the house (v3.39): the default door — price + party size,
-   the house picks centre-first, front-first, together; the map stays for swappers.
-   Uses the same holds, cart, and checkout as the map — this is a chooser, not a new path. ---------- */
-const QP_ZONES = ["orch", "t1", "t2", "t3", "balc"];
-let qpZone = "", qpQty = 2;
-
-function qpFind(zone, want){
-  /* walk LAYOUT front row first; within a row, banks in visual order with aisle gaps;
-     collect contiguous runs of open seats in the requested zone (wheelchair spaces stay out) */
-  const runs = [];
-  let rowIdx = 0;
-  LAYOUT.forEach(R => {
-    rowIdx++;
-    const num = a => (a || []).filter(n => typeof n === "number");
-    const banks = [
-      { bank: "left",   row: R.row, seats: num(Array.isArray(R.l) ? R.l : []) },
-      { bank: "centre", row: R.row, seats: num(R.c) },
-      { bank: "right",  row: R.row, seats: num(Array.isArray(R.r) ? R.r : []) }
-    ];
-    if (R.ext) banks.push({ bank: "side", row: R.ext.row, seats: num(R.ext.seats) });
-    let pos = 0;
-    banks.forEach(b => { b.start = pos; pos += b.seats.length + 3; });   /* +3 ≈ the aisle */
-    const rowCentre = pos / 2;
-    banks.forEach(b => {
-      let run = [];
-      const flush = () => {
-        if (run.length) runs.push({ rowIdx, row: b.row, bank: b.bank, rowCentre,
-          ids: run.map(x => x.id), ps: run.map(x => x.p) });
-        run = [];
-      };
-      b.seats.forEach((n, i) => {
-        const id = `${b.row}-${n}`, p = b.start + i;
-        const open = seatZone[id] === zone && !unavailable.has(id) && !WC_IDS.has(id) && !selected.has(id);
-        if (open) run.push({ id, p }); else flush();
-      });
-      flush();
-    });
-  });
-  const score = (r, c) => r.rowIdx * 1000 + Math.abs(c - r.rowCentre);
-  runs.sort((a, b) => score(a, (a.ps[0] + a.ps[a.ps.length - 1]) / 2) - score(b, (b.ps[0] + b.ps[b.ps.length - 1]) / 2));
-  /* exact contiguous fit first — slide a window of `want`, keep the slice nearest the row centre */
-  let best = null, bestScore = Infinity;
-  for (const r of runs){
-    if (r.ids.length < want) continue;
-    for (let i = 0; i + want <= r.ids.length; i++){
-      const c = (r.ps[i] + r.ps[i + want - 1]) / 2;
-      const s = score(r, c);
-      if (s < bestScore){ bestScore = s; best = r.ids.slice(i, i + want); }
-    }
-    if (best) break;   /* runs are sorted — the first row with a fit holds the winner */
-  }
-  if (best) return best;
-  /* fallback — the room is nearly full at this price: gather the best remaining seats, closest runs first */
-  const got = [];
-  for (const r of runs){
-    for (const id of r.ids){ if (got.length < want) got.push(id); }
-    if (got.length >= want) break;
-  }
-  return got.length === want ? got : [];
+/* ---------- checkout: pick free units, claim hard, ride to Stripe ---------- */
+function pickUnits(){
+  const kind = qty.house > 0 ? "house" : "splash";
+  const n = qty[kind];
+  const pool = freeUnits(kind);
+  if (pool.length < n) return null;
+  /* random start offset so simultaneous buyers rarely collide on the same units */
+  const start = Math.floor(Math.random() * Math.max(1, pool.length - n + 1));
+  return pool.slice(start, start + n);
 }
-
-function qpWhere(ids){
-  const rows = [], banks = [];
-  ids.forEach(id => {
-    for (const R of LAYOUT){
-      const hit = (arr, bank, row) => (arr || []).some(n => `${row}-${n}` === id) && (rows.push(row), banks.push(bank), true);
-      if (hit(Array.isArray(R.l) ? R.l : [], "left", R.row)) return;
-      if (hit(R.c, "centre", R.row)) return;
-      if (hit(Array.isArray(R.r) ? R.r : [], "right", R.row)) return;
-      if (R.ext && hit(R.ext.seats, "side", R.ext.row)) return;
-    }
-  });
-  const ur = [...new Set(rows)], ub = [...new Set(banks)];
-  return (ur.length === 1 ? `ROW ${ur[0]}` : `ROWS ${ur.join(" + ")}`) + (ub.length === 1 ? `, ${ub[0].toUpperCase()}` : "");
-}
-
-function qpBanner(ids){
-  const n = $("#housePick"); if (!n) return;
-  n.innerHTML = `<b>HOUSE SEATS — ${qpWhere(ids)}</b> · ${ids.join(", ")}<br>` +
-    `<span class="hint" style="margin:4px 0 0;display:inline-block">Rather sit elsewhere? Tap any open seat on the map to swap.</span>`;
-  n.style.display = "block";
-}
-function qpHideBanner(){ const n = $("#housePick"); if (n) n.style.display = "none"; }
-
-async function qpSeat(){
-  if (!qpZone || paying) return;
-  const btn = $("#qpGo");
-  btn.disabled = true; btn.textContent = "Finding your seats…";
-  try {
-    if (selected.size){
-      await api("/claim-seats", { holder: HOLDER, seats: [...selected], action: "release" });
-      selected.clear(); paint(); renderCart();
-    }
-    let pick = qpFind(qpZone, qpQty);
-    if (pick.length){
-      let r = await api("/claim-seats", { holder: HOLDER, seats: pick, action: "hold" });
-      if (!r.ok){
-        await refreshState();               /* someone beat us to one — re-pick once with fresh truth */
-        pick = qpFind(qpZone, qpQty);
-        r = pick.length ? await api("/claim-seats", { holder: HOLDER, seats: pick, action: "hold" }) : { ok: false };
-        if (!r.ok) pick = [];
-      }
-    }
-    if (!pick.length){
-      toast(`Nearly gone at ${CONFIG.zones[qpZone].name} — the map shows what's open right now.`);
-      return;
-    }
-    pick.forEach(id => selected.add(id));
-    bumpHold(); paint(); renderCart(); qpBanner(pick);
-    const sb = $("#stubBox"); if (sb) sb.scrollIntoView({ behavior: "smooth", block: "start" });
-  } finally {
-    btn.textContent = "Seat us";
-    btn.disabled = !qpZone;
-  }
-}
-
-function initQuickPick(){
-  const wrap = $("#qpTiers"); if (!wrap || wrap.dataset.ready) return;
-  wrap.dataset.ready = "1";
-  const base = "border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);border-radius:8px;padding:9px 12px;cursor:pointer;font-family:inherit;font-size:14px";
-  wrap.innerHTML = QP_ZONES.map(z =>
-    `<button type="button" data-z="${z}" style="${base}">${CONFIG.zones[z].name} <b class="mono" style="color:var(--glow)">${money(CONFIG.prices[z])}</b></button>`
-  ).join("");
-  wrap.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
-    qpZone = b.dataset.z;
-    wrap.querySelectorAll("button").forEach(x => {
-      x.style.borderColor = x === b ? "var(--glow)" : "#31365f";
-      x.style.boxShadow = x === b ? "0 0 0 1px var(--glow)" : "none";
-    });
-    $("#qpGo").disabled = false;
-  }));
-  $("#qpMinus").addEventListener("click", () => { qpQty = Math.max(1, qpQty - 1); $("#qpQty").textContent = qpQty; });
-  $("#qpPlus").addEventListener("click", () => { qpQty = Math.min(CONFIG.maxPerOrder, qpQty + 1); $("#qpQty").textContent = qpQty; });
-  $("#qpGo").addEventListener("click", qpSeat);
-}
-
-/* ---------- checkout (hard hold + Stripe happen server-side) ---------- */
-async function checkout(accessibleSeats){
-  const seats = accessibleSeats || [...selected];
-  if (!seats.length) return;
+async function checkout(){
+  const count = qty.house + qty.splash;
+  if (!count || paying) return;
   paying = true;
   $("#checkoutBtn").disabled = true;
-  $("#checkoutBtn").textContent = "Locking your seats…";
-  const r = await api("/create-checkout", { holder: HOLDER, seats, accessible: !!accessibleSeats, code: rawCode(), src: srcTag(), tee: teeChoice() || undefined });
+  $("#checkoutBtn").textContent = "Locking your tickets…";
+  let seats = pickUnits();
+  let r = seats ? await api("/create-checkout", { holder: HOLDER, seats, code: rawCode(), src: srcTag(), tee: teeChoice() || undefined }) : { ok: false, status: 409, data: {} };
+  if (!r.ok && r.status === 409){
+    await refreshState();               /* someone landed on the same units — re-pick with fresh truth */
+    seats = pickUnits();
+    r = seats ? await api("/create-checkout", { holder: HOLDER, seats, code: rawCode(), src: srcTag(), tee: teeChoice() || undefined }) : { ok: false, data: {} };
+  }
   if (!r.ok){
     paying = false;
     $("#checkoutBtn").textContent = "Lock them in";
-    $("#checkoutBtn").disabled = !selected.size;
-    if (r.status === 409){
-      toast(`Seat ${r.data.seat} was just taken — it's out of your stub; the rest are still yours.`);
-      selected.delete(r.data.seat); refreshState(); renderCart();
-    } else toast(r.data.err || "Payment page failed to open — nothing charged, seats released.");
+    renderCart();
+    toast(r.data.err || "That count just sold past us — lower it a notch, or refresh and try again. Nothing was charged.");
+    refreshState();
     return;
   }
   location.href = r.data.url;
@@ -1173,55 +1005,6 @@ $("#mbGo").addEventListener("click", () => checkout());
 const _scEl = $("#stationCode");
 if (_scEl) _scEl.addEventListener("input", () => renderCart());
 
-/* ---------- accessible booking (terms-gated, $33 + $0 fee) ---------- */
-let pendingWc = null;
-function openTerms(spaceId){
-  if (unavailable.has(spaceId)){ toast("That space is already booked — email us and we'll make room."); return; }
-  pendingWc = spaceId;
-  const comp = { "K-WA": "K-15", "K-WB": "K-5", "K-WC": "K-106", "K-WD": "K-14" }[spaceId];
-  const compOpen = comp && !unavailable.has(comp);
-  $("#wcChoiceBox").innerHTML = `
-    <div class="pay-summary" style="margin:0">
-      <div><span>Wheelchair space ${spaceId.split("-")[1].slice(1)} · row K</span><span>${money(CONFIG.wheelchair.price)} · card fee waived</span></div>
-      ${compOpen ? `<div style="margin-top:4px"><label class="switch" style="font-size:12.5px"><input type="checkbox" id="wcComp" checked> Add companion seat ${comp}</label><span>${money(CONFIG.wheelchair.price)} · fee waived</span></div>`
-                 : `<div><span style="color:var(--dim)">The paired companion seat is taken — email us and we'll seat a companion nearby.</span><span></span></div>`}
-    </div>`;
-  const sc = $("#termsScroll");
-  sc.scrollTop = 0;
-  $("#agreeBtn").disabled = true;
-  $("#scrollHint").style.opacity = 1;
-  $("#scrollHint").textContent = "▼ scroll to the very end to wake the agree button ▼";
-  $("#termsModal").classList.add("open"); $("#veil").classList.add("open");
-  requestAnimationFrame(() => requestAnimationFrame(termsEval));
-}
-function termsEval(){
-  if (!$("#termsModal").classList.contains("open")) return;
-  const el = $("#termsScroll");
-  const fitsWhole = el.scrollHeight - el.clientHeight <= 6;
-  const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 6;
-  if (fitsWhole || atEnd){
-    $("#agreeBtn").disabled = false;
-    $("#scrollHint").style.opacity = .35;
-    $("#scrollHint").textContent = fitsWhole ? "— the full terms fit your screen · agree is awake —" : "— read to the end · agree is awake —";
-  }
-}
-$("#termsScroll").addEventListener("scroll", termsEval);
-window.addEventListener("resize", termsEval);
-$("#agreeBtn").addEventListener("click", () => {
-  if (!pendingWc) return;
-  const comp = { "K-WA": "K-15", "K-WB": "K-5", "K-WC": "K-106", "K-WD": "K-14" }[pendingWc];
-  const seats = [pendingWc];
-  if ($("#wcComp") && $("#wcComp").checked && comp) seats.push(comp);
-  closeOverlays();
-  toast("Opening secure payment for your accessible booking…");
-  checkout(seats);
-});
-$("#openAccessible").addEventListener("click", () => {
-  const open = ["K-WA","K-WB","K-WC","K-WD"].find(id => !unavailable.has(id));
-  if (!open){ toast("All wheelchair spaces are booked — email us and we'll make room."); return; }
-  openTerms(open);
-});
-
 /* ---------- panels / overlays ---------- */
 $$(".cat-btn").forEach(b => b.addEventListener("click", () => {
   const id = "cat-" + b.dataset.cat;
@@ -1229,15 +1012,7 @@ $$(".cat-btn").forEach(b => b.addEventListener("click", () => {
 }));
 function closeOverlays(){ $("#veil").classList.remove("open"); $$(".modal").forEach(m => m.classList.remove("open")); }
 $("#veil").addEventListener("click", closeOverlays);
-$$("[data-close]").forEach(b => b.addEventListener("click", closeOverlays));
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeOverlays(); });
-
-/* release my holds if I close the tab without paying */
-window.addEventListener("pagehide", () => {
-  if (selected.size && !paying && navigator.sendBeacon)
-    navigator.sendBeacon(CONFIG.api + "/claim-seats",
-      new Blob([JSON.stringify({ holder: HOLDER, seats: [...selected], action: "release" })], { type: "application/json" }));
-});
 
 </script>
 </body>

@@ -353,7 +353,7 @@ function render(o){
     div.innerHTML = `<div class="qr"><canvas></canvas></div>
       <div class="t-info">
         <span class="t-type">THE CAPE COD COMEDY CARNIVAL${o.accessible ? " · ACCESSIBLE" : ""}</span>
-        <b>SEAT ${id}</b>
+        <b>${id.startsWith("H-") ? "HOUSE · UNRESERVED" : id.startsWith("S-") ? "THE SPLASH ZONE" : "SEAT " + id}</b>
         <span>${code}</span><br>
         <span style="color:#6f6552">SAT 29 AUG · 7:00 PM · TILDEN ARTS CENTER</span>
       </div>`;
