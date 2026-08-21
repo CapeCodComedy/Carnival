@@ -1,4 +1,4 @@
-/* Create checkout — the ONE place a hard hold is taken (spec §3.2 steps 3-4).
+/* Create checkout, the ONE place a hard hold is taken (spec §3.2 steps 3-4).
    Atomic claim first; Stripe session only if the claim wins; release on any
    failure after the claim. Hard hold TTL (35 min) ≥ session lifetime (30 min):
    the §5 law, enforced by constants that live in house.json. */
@@ -16,7 +16,7 @@ exports.handler = async (event) => {
   const STATION_CODES = new Set(["Y101", "FRANK", "PIXY"]);
   const _raw = String(body.code || "").trim().toUpperCase();
   const station = STATION_CODES.has(_raw) ? _raw : null;
-  /* org fundraiser codes (v3.18): pure tracking — price untouched, fee untouched.
+  /* org fundraiser codes (v3.18): pure tracking, price untouched, fee untouched.
      v3.51: every seat pays the half; orgCodesEnabled=false in house.json closes the offer. */
   const ORG_CODES = new Set((HOUSE.orgCodes || []).map(c => String(c).toUpperCase()));
   const org = (HOUSE.orgCodesEnabled !== false && !station && ORG_CODES.has(_raw)) ? _raw : null;
@@ -41,8 +41,8 @@ exports.handler = async (event) => {
   const priced = priceCart(seats, !!accessible);
   if (!priced.ok) return resp(400, { err: priced.err });
 
-  /* org eligibility + owed (half the ticket price per eligible seat — v3.27;
-     v3.51: the 160-seat room — HOUSE and SPLASH both pay the half;
+  /* org eligibility + owed (half the ticket price per eligible seat, v3.27;
+     v3.51: the 160-seat room: HOUSE and SPLASH both pay the half;
      the accessible flow stays out) */
   const ORG_TIERS = new Set(["house", "splash"]);
   const ORG_SHARE = HOUSE.orgShare || 0.5;
@@ -64,7 +64,7 @@ exports.handler = async (event) => {
     if (companions.length) await store.adminRelease(companions);
   }
 
-  /* THE claim — hard hold, all seats or none */
+  /* THE claim, hard hold, all seats or none */
   const claim = await store.claim(holder, seats, HOUSE.hardHoldSec);
   if (!claim.ok) {
     if (accessible) { // restore companion hold if the claim lost
@@ -75,22 +75,22 @@ exports.handler = async (event) => {
 
   const siteUrl = process.env.SITE_URL || "";
   try {
-    /* v3.55: mixed orders — each line item carries its own kind's name */
+    /* v3.55: mixed orders, each line item carries its own kind's name */
     const line_items = seats.map(id => ({
       quantity: 1,
       price_data: {
         currency: "usd",
         unit_amount: (seat(id).wc || accessible) ? HOUSE.wheelchair.price * 100 : HOUSE.prices[seat(id).zone] * 100,
-        product_data: { name: `${HOUSE.zones[seat(id).zone]} — unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
+        product_data: { name: `${HOUSE.zones[seat(id).zone]}, unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
       },
     }));
-    const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only — fee charged normally */
+    const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only, fee charged normally */
     if (feeCents > 0) line_items.push({
       quantity: seats.length,
       price_data: {
         currency: "usd",
         unit_amount: Math.round(feeCents / seats.length),
-        product_data: { name: "Card processing fee (passed through at cost — the 1140A Corporation keeps none of it)" },
+        product_data: { name: "Card processing fee (passed through at cost; the 1140A Corporation keeps none of it)" },
       },
     });
 
@@ -99,7 +99,7 @@ exports.handler = async (event) => {
       price_data: {
         currency: "usd",
         unit_amount: MERCH.teeBundleCents,
-        product_data: { name: `${MERCH.teeName || "Show tee"} — size ${tee.size} (ticket-bundle price) — claimed at will-call on show night` },
+        product_data: { name: `${MERCH.teeName || "Show tee"}, size ${tee.size} (ticket-bundle price), claimed at will-call on show night` },
       },
     });
 
@@ -123,7 +123,7 @@ exports.handler = async (event) => {
   } catch (e) {
     await store.release(holder, seats);            // never leave orphaned holds on failure
     if (accessible) for (const id of seats.filter(id => !seat(id).wc)) await store.adminHold([id], "companion");
-    return resp(502, { err: "payment session failed — seats released", detail: String(e.message || e).slice(0, 200) });
+    return resp(502, { err: "payment session failed, seats released", detail: String(e.message || e).slice(0, 200) });
   }
 };
 const resp = (code, obj) => ({ statusCode: code, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) });

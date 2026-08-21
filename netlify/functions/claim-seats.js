@@ -1,4 +1,4 @@
-/* Soft hold / release — the 3-minute map courtesy hold (spec §5.1 stage 1).
+/* Soft hold / release, the 3-minute map courtesy hold (spec §5.1 stage 1).
    The seat goes dark for everyone the instant it is held. */
 const store = require("./lib/store");
 const { HOUSE, seat } = require("./lib/house");

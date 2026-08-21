@@ -1,4 +1,4 @@
-/* Public seat state — the map's only source of truth (spec §3.2 step 1).
+/* Public seat state, the map's only source of truth (spec §3.2 step 1).
    Buyer-blind: console holds and buyer holds and sold all collapse into
    "unavailable"; which is which is the console's business.
    CDN-cached ~8s so a radio-spike of viewers costs ~1 origin hit per

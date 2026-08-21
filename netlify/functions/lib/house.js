@@ -1,4 +1,4 @@
-/* House model — generated from the venue seat chart (single source).
+/* House model, generated from the venue seat chart (single source).
    Never hand-edit seat data here; regenerate house.json instead. */
 const HOUSE = require("./house.json");
 
@@ -6,7 +6,7 @@ const seat = id => HOUSE.seats[id] || null;
 const isWc = id => { const s = seat(id); return !!(s && s.wc); };
 
 function tierOf(ids) {
-  /* v3.55: unreserved room — HOUSE and SPLASH mix freely in one order
+  /* v3.55: unreserved room: HOUSE and SPLASH mix freely in one order
      (the one-tier law was a reserved-map rule; tierage exclusivity retired).
      Unknown seats still hard-fail. */
   let zone = null, mixed = false;

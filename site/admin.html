@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Box Office Console — Cape Cod Comedy Carnival (crew only)</title>
+<title>Box Office Console: Cape Cod Comedy Carnival (crew only)</title>
 <meta name="description" content="Owner console.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,8 +15,8 @@
   --line:#31364f;
   --bone:#d8d3c5;       /* available seats, body text */
   --dim:#8d8fa3;        /* secondary text */
-  --glow:#f5b445;       /* tungsten amber — selection & CTA */
-  --gilt:#e6c069;       /* gilt ring — carnival accents */
+  --glow:#f5b445;       /* tungsten amber, selection & CTA */
+  --gilt:#e6c069;       /* gilt ring, carnival accents */
   --sold:#41465e;       /* receded, spoken-for */
   --held:#2c3049;       /* blocked / held back */
   --stock:#f4efe2;      /* ticket-stock cream (the stub) */
@@ -274,7 +274,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 <body>
 <!--
   ============================================================
-  THE CAPE COD COMEDY CARNIVAL — RESERVED-SEAT BOX OFFICE (v2)
+  THE CAPE COD COMEDY CARNIVAL: RESERVED-SEAT BOX OFFICE (v2)
   All-Stripe · all-reserved · the map IS the box office.
   Seat truth lives server-side (Netlify Functions + Upstash).
   THE SWITCH: CONFIG.gate.enabled (both pages, one line each).
@@ -313,18 +313,18 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   <div class="pane on" id="pane-dash">
     <div class="stats" id="statTiles"></div>
     <div class="chart-box">
-      <h3>Ledger proof — from the live store, on demand</h3>
+      <h3>Ledger proof, from the live store, on demand</h3>
       <pre class="io" id="ledgerBox" style="min-height:120px;white-space:pre-wrap">press PROVE</pre>
-      <h2 style="margin-top:18px">SINGLET WAITLIST — the demand poll</h2>
+      <h2 style="margin-top:18px">SINGLET WAITLIST, the demand poll</h2>
       <pre class="io" id="wlBox" style="min-height:80px;white-space:pre-wrap">press TALLY</pre>
       <button class="btn" id="wlBtn">Tally the waitlist</button>
       <div class="btn-row" style="justify-content:flex-start"><button class="btn primary" id="proveBtn">Prove the closing identity</button></div>
-      <p class="hint">Money truth lives in the Stripe dashboard (one settlement stream — no second platform to sum). This console proves seats; Stripe proves dollars.</p>
+      <p class="hint">Money truth lives in the Stripe dashboard (one settlement stream, no second platform to sum). This console proves seats; Stripe proves dollars.</p>
     </div>
   </div>
 
   <div class="pane" id="pane-seats">
-    <p class="sub">INSPECT is the default — tap any seat and it says exactly what it is. Action tools write straight to the live store; the buyer map sees it within seconds.</p>
+    <p class="sub">INSPECT is the default, tap any seat and it says exactly what it is. Action tools write straight to the live store; the buyer map sees it within seconds.</p>
     <div class="seat-tools" id="toolTools"></div>
     <section class="map-card">
       <div class="map-scroll"><svg id="adminMap" role="group" aria-label="Admin seat map"></svg></div>
@@ -352,9 +352,9 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
 <script>
 /* ==================================================================
-   CARNIVAL BOX OFFICE v2 — shared core (buyer + console)
+   CARNIVAL BOX OFFICE v2, shared core (buyer + console)
    All-reserved, all-Stripe. The map IS the box office (spec §0).
-   Seat state comes ONLY from /api/seats-state — never guessed locally.
+   Seat state comes ONLY from /api/seats-state, never guessed locally.
    ================================================================== */
 const CONFIG = {
   event: {
@@ -367,7 +367,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  /* v3.51 — the small room: one price, unreserved, plus THE SPLASH ZONE.
+  /* v3.51, the small room: one price, unreserved, plus THE SPLASH ZONE.
      Legacy zone keys stay below so the console's old-room map still renders. */
   prices: { house: 66, splash: 88, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
@@ -375,21 +375,21 @@ const CONFIG = {
   currency: "$",
   maxPerOrder: 10,
   zones: {
-    house:  { name: "HOUSE",           desc: "Unreserved — arrive, sit where you like" },
-    splash: { name: "THE SPLASH ZONE", desc: "Ten chairs on the open floor, dribble-distance from the comics" },
-    orch: { name: "ORCHESTRA", desc: "legacy — old room" },
-    t1:   { name: "TIER 1",    desc: "legacy — old room" },
-    t2:   { name: "TIER 2",    desc: "legacy — old room" },
-    t3:   { name: "TIER 3",    desc: "legacy — old room" },
-    balc: { name: "BALCONY",   desc: "legacy — old room" }
+    house:  { name: "HOUSE",           desc: "Unreserved: arrive, sit where you like" },
+    splash: { name: "THE SPLASH ZONE", desc: "Ten chairs on the open floor, spitting-distance from the comics" },
+    orch: { name: "ORCHESTRA", desc: "legacy, old room" },
+    t1:   { name: "TIER 1",    desc: "legacy, old room" },
+    t2:   { name: "TIER 2",    desc: "legacy, old room" },
+    t3:   { name: "TIER 3",    desc: "legacy, old room" },
+    balc: { name: "BALCONY",   desc: "legacy, old room" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
   pollMs: 8000,            // map repaint cadence (matches CDN cache window)
   api: "/api",
-  gate: { enabled: false, password: "pitrow" }   // THE SWITCH — false = public
+  gate: { enabled: false, password: "pitrow" }   // THE SWITCH, false = public
 };
 
-/* ---------- house layout (venue chart — geometry only; state lives server-side) ---------- */
+/* ---------- house layout (venue chart, geometry only; state lives server-side) ---------- */
 const CEN = [115,114,113,112,111,110,109,108,107,106,105,104,103,102,101];
 const LAYOUT = [
   {row:"TA",zone:"orch",l:[5,3,1],c:CEN,pit:true},
@@ -416,7 +416,7 @@ const LAYOUT = [
   {row:"EE",zone:"balc",l:[11,9,7,5,3,1],c:[115,114,113],booth:true,hiEven:28}
 ];
 /* Even-side (house-right) blocks are generated from the venue chart's
-   high seat per row — 2 up to that even — so the map and the chart
+   high seat per row, 2 up to that even, so the map and the chart
    can never disagree on a hand-typed list. */
 const EVENS_HI = { TA:6, TB:8, C:10, D:12, E:14, F:16, G:18, H:20, I:20, J:20, L:18, M:18, N:18, O:18 };
 LAYOUT.forEach(R => {
@@ -490,7 +490,7 @@ function buildSeatMap(svg, opts){
   };
   const mono = t => { t.style.fontFamily = "'Spline Sans Mono',monospace"; return t; };
 
-  /* vertical plan — TA/TB sit in the pit, C a breath behind, then the house */
+  /* vertical plan: TA/TB sit in the pit, C a breath behind, then the house */
   const STAGE_H = 56;
   let y = STAGE_H + 22;
   const rowY = {};
@@ -547,7 +547,7 @@ function buildSeatMap(svg, opts){
   LAYOUT.forEach(Rw => {
     const cy = rowY[Rw.row];
 
-    /* left block — from the aisle outward */
+    /* left block, from the aisle outward */
     if (Array.isArray(Rw.l)){
       let d = 0;
       const BOFF = -(2*G + AISLE);                                       // balcony left edge flush with the floor's left edge
@@ -563,7 +563,7 @@ function buildSeatMap(svg, opts){
       mono(el("text",{x:aisleL - 12, y:cy+3.6,"text-anchor":"end",fill:"#8d8fa3","font-size":"10.5"})).textContent = Rw.row;
     }
 
-    /* centre block — pinned to the 115→101 grid; balcony rows anchor to the
+    /* centre block, pinned to the 115→101 grid; balcony rows anchor to the
        centre section's LEFT edge per the venue chart (114 starts where 115 would) */
     if (Rw.c){
       let bi = 0;
@@ -580,7 +580,7 @@ function buildSeatMap(svg, opts){
       });
     }
 
-    /* right block — from the aisle outward (2,4,6…) */
+    /* right block, from the aisle outward (2,4,6…) */
     if (Array.isArray(Rw.r) && Rw.r.length){
       let d = 0;
       const anchR = (Rw.zone === "balc") ? centerStart - (2*G + AISLE) + (CGRID + 1)*G : aisleR;   // centre narrower up top; passage two wide
@@ -612,7 +612,7 @@ function buildSeatMap(svg, opts){
   el("rect",{x:aisleL - 10*G, y:pY-12, width:8.6*G, height:(qY-pY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
   mono(el("text",{x:aisleL - 10*G + 4.3*G, y:(pY+qY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="CONTROL BOOTH";
   const dY = rowY["DD"], eY = rowY["EE"];
-  const boothX = centerXFor(110) - G/2 - (2*G + AISLE);   // balcony centre block sits flush-left with the floor edge — the booth rides with it
+  const boothX = centerXFor(110) - G/2 - (2*G + AISLE);   // balcony centre block sits flush-left with the floor edge, the booth rides with it
   el("rect",{x:boothX, y:dY-12, width:9.2*G, height:(eY-dY)+26, rx:6, fill:"none", stroke:"#3a3f58","stroke-dasharray":"4 5"});
   mono(el("text",{x:boothX + 4.6*G, y:(dY+eY)/2 + 4,"text-anchor":"middle",fill:"#5c6078","font-size":"9.5","letter-spacing":"1.5"})).textContent="PROJECTION BOOTH";
 
@@ -620,7 +620,7 @@ function buildSeatMap(svg, opts){
   /* ---------- paint (v2: all-reserved; state injected, never guessed) ---------- */
   const HOLD_COLORS = { sponsor:"#e6c069", comp:"#8fd9c9", marketing:"#f5b445", companion:"#7f96d9",
                         volunteer:"#7fb069", charity:"#c07fb0", wheelchair:"#7f96d9", house:"#8d8fa3" };
-  /* tier rims on open seats — gold, silver, copper, teal down the ladder; balcony rides plain */
+  /* tier rims on open seats, gold, silver, copper, teal down the ladder; balcony rides plain */
   const ZONE_RIM = { orch: "var(--gilt)", t1: "#b9c2d6", t2: "#c98a5b", t3: "#6fa79b" };
 
   function update(view){
@@ -635,7 +635,7 @@ function buildSeatMap(svg, opts){
         els.shape.setAttribute("fill", gone ? "var(--sold)" : "var(--held)");
         els.shape.setAttribute("stroke", gone ? "#4a4e63" : "#7f96d9");
         els.g.classList.add("wc");
-        els.g.setAttribute("aria-label", gone ? `Wheelchair space — unavailable` : `Wheelchair space — tap for accessible booking`);
+        els.g.setAttribute("aria-label", gone ? `Wheelchair space, unavailable` : `Wheelchair space, tap for accessible booking`);
         return;
       }
       const sel = view.selected && view.selected.has(id);
@@ -644,7 +644,7 @@ function buildSeatMap(svg, opts){
         els.shape.setAttribute("fill", "var(--glow)");
         els.shape.setAttribute("stroke-width", "0");
         els.label.setAttribute("opacity", .95);
-        els.g.setAttribute("aria-label", `Seat ${id} — in your stub`);
+        els.g.setAttribute("aria-label", `Seat ${id}, in your stub`);
         return;
       }
       els.label.setAttribute("opacity", 0);
@@ -658,12 +658,12 @@ function buildSeatMap(svg, opts){
           els.shape.setAttribute("stroke", "#ffffff");
           els.shape.setAttribute("stroke-width", "1.4");
         } else els.shape.setAttribute("stroke-width", "0");
-        els.g.setAttribute("aria-label", `Seat ${id} — sold`);
+        els.g.setAttribute("aria-label", `Seat ${id}, sold`);
         return;
       }
-      /* open — every tier wears its own subtle rim (orchestra keeps the heaviest) */
+      /* open, every tier wears its own subtle rim (orchestra keeps the heaviest) */
       els.shape.setAttribute("fill", "var(--bone)");
-      els.g.setAttribute("aria-label", `Seat ${id}, ${CONFIG.zones[zone].name} — available, ${money(CONFIG.prices[zone])}`);
+      els.g.setAttribute("aria-label", `Seat ${id}, ${CONFIG.zones[zone].name}, available, ${money(CONFIG.prices[zone])}`);
       if (ZONE_RIM[zone]){ els.shape.setAttribute("stroke", ZONE_RIM[zone]); els.shape.setAttribute("stroke-width", zone === "orch" ? "1.5" : "1.2"); }
       else els.shape.setAttribute("stroke-width", "0");
     });
@@ -671,7 +671,7 @@ function buildSeatMap(svg, opts){
   return { update, seatEls };
 }
 
-/* ================= OWNER CONSOLE (v2 — live store) ================= */
+/* ================= OWNER CONSOLE (v2, live store) ================= */
 let TOKEN = null, map = null, tool = "inspect", lastState = { unavailable: new Set(), cats: {}, buyerHeld: new Set(), soldSet: new Set() };
 
 const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
@@ -686,7 +686,7 @@ const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
   const tryPw = async () => {
     TOKEN = $("#gatePw").value.trim();
     const r = await call("state");
-    if (!r.ok){ $("#gateErr").textContent = r.status === 401 ? "Bad token." : "Backend unreachable — deployed with functions?"; return; }
+    if (!r.ok){ $("#gateErr").textContent = r.status === 401 ? "Bad token." : "Backend unreachable, deployed with functions?"; return; }
     g.hidden = true; site.style.visibility = "visible"; boot(r.data);
   };
   $("#gateGo").addEventListener("click", tryPw);
@@ -717,7 +717,7 @@ function boot(initial){
   const d = r.data;
   const fmtSec = s => `orch ${s.orch} · t1 ${s.t1} · t2 ${s.t2} · balc ${s.balc} · any ${s.any}`;
   const lines = [`total in line: ${d.total}`, `SAGALOW ${d.sagalow} · CANNON ${d.cannon} · EITHER ${d.either}`];
-  if (d.sections) lines.push(`sections — ${fmtSec(d.sections)}`);
+  if (d.sections) lines.push(`sections, ${fmtSec(d.sections)}`);
   if (d.cross) ["sagalow", "cannon", "either"].forEach(k => { if (d[k]) lines.push(`${k.toUpperCase().padEnd(8)} ${fmtSec(d.cross[k])}`); });
   lines.push("");
   (d.entries || []).slice(0, 12).forEach(e => lines.push(`${new Date(e.ts).toLocaleString()}  ${e.choice.toUpperCase().padEnd(8)} ${String(e.tier || "any").toUpperCase().padEnd(5)} ${e.email}`));
@@ -752,18 +752,18 @@ function apply(s){
     <div class="stat"><b>${zoneSold.balc}</b><span>Balcony</span></div>`;
 }
 
-const WHAT = { sponsor:"SPONSOR block", comp:"HOUSE COMP — the owner's personal hold (Mom's seat)",
-  marketing:"MARKETING / giveaway hold", companion:"WHEELCHAIR COMPANION — pairs with a row-K space",
+const WHAT = { sponsor:"SPONSOR block", comp:"HOUSE COMP, the owner's personal hold (Mom's seat)",
+  marketing:"MARKETING / giveaway hold", companion:"WHEELCHAIR COMPANION, pairs with a row-K space",
   volunteer:"VOLUNTEER hold", charity:"MARKETING & CHARITY hold (balcony wing)", house:"generic house hold" };
 
 async function onSeat(id){
   const { cats, buyerHeld, soldSet } = lastState;
   if (tool === "inspect"){
-    if (WC_IDS.has(id)) return msg(`${id} — wheelchair space (${soldSet.has(id) ? "BOOKED" : "open for accessible booking"})`);
-    if (cats[id]) return msg(`${id} — HELD: ${WHAT[cats[id]] || cats[id]}`);
-    if (soldSet.has(id)) return msg(`${id} — SOLD (live store; Stripe has the payment)`);
-    if (buyerHeld.has(id)) return msg(`${id} — in a buyer's cart right now (hold expires on its own)`);
-    return msg(`${id} — OPEN · ${CONFIG.zones[seatZone[id]].name} · ${money(CONFIG.prices[seatZone[id]])}`);
+    if (WC_IDS.has(id)) return msg(`${id}, wheelchair space (${soldSet.has(id) ? "BOOKED" : "open for accessible booking"})`);
+    if (cats[id]) return msg(`${id}, HELD: ${WHAT[cats[id]] || cats[id]}`);
+    if (soldSet.has(id)) return msg(`${id}, SOLD (live store; Stripe has the payment)`);
+    if (buyerHeld.has(id)) return msg(`${id}, in a buyer's cart right now (hold expires on its own)`);
+    return msg(`${id}: OPEN · ${CONFIG.zones[seatZone[id]].name} · ${money(CONFIG.prices[seatZone[id]])}`);
   }
   let r;
   if (tool === "release")  r = await call("release", { seats: [id] });
@@ -771,12 +771,12 @@ async function onSeat(id){
   else if (tool === "marksold") {
     r = await call("marksold", { seats: [id] });
     if (r.ok && r.data.sid){
-      $("#seatMsg").innerHTML = `${id} — COMP issued. <a href="/success.html?sid=${encodeURIComponent(r.data.sid)}" target="_blank" style="color:var(--glow)">OPEN THE TICKET</a> — print it (Ctrl+P) or copy that page's address to forward it.`;
+      $("#seatMsg").innerHTML = `${id}: COMP issued. <a href="/success.html?sid=${encodeURIComponent(r.data.sid)}" target="_blank" style="color:var(--glow)">OPEN THE TICKET</a>, print it (Ctrl+P) or copy that page's address to forward it.`;
       refresh(); return;
     }
   }
   else r = await call("hold", { seats: [id], category: tool });
-  msg(r.ok ? `${id} — ${tool} done.` : `${id} — failed: ${r.data.err || r.status}`);
+  msg(r.ok ? `${id}, ${tool} done.` : `${id}, failed: ${r.data.err || r.status}`);
   refresh();
 }
 const msg = t => { $("#seatMsg").textContent = t; };
@@ -793,19 +793,19 @@ function buildActions(){
     d.appendChild(b);
     A.appendChild(d);
   };
-  add("Initialize house holds — run once at setup",
-      "Seeds sponsor 12, house comp TA-108, marketing 16, companion 4, volunteer 6, charity 20 into the live store. Idempotent — safe to press twice.",
+  add("Initialize house holds, run once at setup",
+      "Seeds sponsor 12, house comp TA-108, marketing 16, companion 4, volunteer 6, charity 20 into the live store. Idempotent, safe to press twice.",
       "Seed the house", async () => { const r = await call("seed"); toast(r.ok ? "House holds seeded." : "Seed failed."); });
   const bulk = (cat, label, sub) => add(label, sub, "Release all " + cat, async () => {
     const ids = Object.entries(lastState.cats).filter(([, c]) => c === cat).map(([id]) => id);
     if (!ids.length) return toast("None held in that category.");
     await call("release", { seats: ids }); toast(`${ids.length} ${cat} seats released to sale.`);
   });
-  bulk("sponsor", "Sponsor block — the twelve", "TA/TB 110–115. No sponsor landed? Release to sale.");
-  bulk("marketing", "Marketing seats — all sixteen", "Fast sales? Release them — the show doesn't need the advertising.");
-  bulk("charity", "Balcony charity block — the twenty", "DD/EE evens 10–28 behind the booth.");
-  bulk("volunteer", "Volunteer seats — the six", "K-101–105 + K-110.");
-  add("Purge expired holds", "Housekeeping — clears lapsed cart-holds early (they self-heal anyway).",
+  bulk("sponsor", "Sponsor block, the twelve", "TA/TB 110–115. No sponsor landed? Release to sale.");
+  bulk("marketing", "Marketing seats, all sixteen", "Fast sales? Release them, the show doesn't need the advertising.");
+  bulk("charity", "Balcony charity block, the twenty", "DD/EE evens 10–28 behind the booth.");
+  bulk("volunteer", "Volunteer seats, the six", "K-101–105 + K-110.");
+  add("Purge expired holds", "Housekeeping, clears lapsed cart-holds early (they self-heal anyway).",
       "Purge", async () => { const r = await call("purge"); toast(`Purged ${r.data.purged ?? 0}.`); });
 }
 

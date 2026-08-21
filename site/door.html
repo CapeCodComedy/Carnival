@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>Door Scan — Cape Cod Comedy Carnival</title>
+<title>Door Scan · Cape Cod Comedy Carnival</title>
 <!-- v2: server-verified single scan across ALL door devices via /api/scan.
      Offline fallback: checksum + this-device dedupe. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,10 +46,10 @@
 <div class="wrap">
   <div class="org">THE 1140A CORPORATION · CREW ONLY</div>
   <h1>DOOR <span>SCAN</span></h1>
-  <p class="sub">One credential type for the whole house — every ticket is a reserved seat. First scan admits and shows the seat; re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
+  <p class="sub">One credential type for the whole house: every ticket is a reserved seat. First scan admits and shows the seat; re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
 
   <div class="panel">
-    <label for="doorWord">Door word (crew only — ask Max)</label>
+    <label for="doorWord">Door word (crew only, ask Max)</label>
     <input id="doorWord" placeholder="word of the night" autocomplete="off" style="margin-bottom:10px">
     <label for="codeIn">Scan result / ticket code</label>
     <input id="codeIn" placeholder="CCC-XXXX-XXXXX" autocomplete="off">
@@ -68,8 +68,8 @@
   </div>
 
   <div class="panel">
-    <label>Door log — this device</label>
-    <div class="log" id="log"><div>— no scans yet —</div></div>
+    <label>Door log · this device</label>
+    <div class="log" id="log"><div>· no scans yet ·</div></div>
   </div>
 
   <p class="hint">If the lobby connection blips, the scanner falls back to checksum + this-device duplicate protection and says so. <a href="/admin.html">console</a> · <a href="/">buyer site</a></p>
@@ -93,7 +93,7 @@ function show(kind, verdict, detail, why){
   document.getElementById("detail").textContent = detail || "";
   document.getElementById("why").textContent = why || "";
   const log = document.getElementById("log");
-  if (log.firstChild && log.firstChild.textContent.startsWith("—")) log.innerHTML = "";
+  if (log.firstChild && log.firstChild.textContent.startsWith("·")) log.innerHTML = "";
   const d = document.createElement("div");
   d.textContent = new Date().toLocaleTimeString() + " · " + verdict + (detail ? " · " + detail : "");
   log.prepend(d);
@@ -102,18 +102,18 @@ async function check(raw){
   let code = String(raw || "").trim().toUpperCase();
   if (code.includes("|")) code = (code.split("|").find(p => p.startsWith("CCC-")) || code);
   if (!code) return;
-  if (!checksumOk(code)){ show("bad", "VOID", code, "fails the checksum — copied or mistyped"); return; }
+  if (!checksumOk(code)){ show("bad", "VOID", code, "fails the checksum: copied or mistyped"); return; }
   try {
     const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, door: document.getElementById("doorWord").value.trim() }) });
     const v = await r.json();
-    if (v.verdict === "VALID") show("ok", "VALID — ADMIT", "SEAT " + v.seat);
+    if (v.verdict === "VALID") show("ok", "VALID · ADMIT", "SEAT " + v.seat);
     else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", "SEAT " + v.seat, "fine at re-entry, fishy at first entry");
     else if (v.verdict === "LOCKED") show("bad", "LOCKED", "", v.why || "door word missing or wrong");
     else show("bad", "VOID", code, v.why || "not issued by this box office");
   } catch (e) {
     /* offline fallback: checksum passed; enforce single-scan on this device only */
     if (localScanned.has(code)) show("dupe", "ALREADY IN (offline)", code, "first scanned " + localScanned.get(code) + " on this device");
-    else { localScanned.set(code, new Date().toLocaleTimeString()); show("ok", "VALID (offline mode)", code, "checksum OK — server unreachable; duplicate protection is this-device-only until it returns"); }
+    else { localScanned.set(code, new Date().toLocaleTimeString()); show("ok", "VALID (offline mode)", code, "checksum OK, server unreachable; duplicate protection is this-device-only until it returns"); }
   }
 }
 const dw = document.getElementById("doorWord");
@@ -126,7 +126,7 @@ let stream = null, scanning = false;
 document.getElementById("camBtn").addEventListener("click", async () => {
   const v = document.getElementById("cam"), hint = document.getElementById("camHint");
   if (scanning){ stopCam(); return; }
-  if (!("BarcodeDetector" in window)){ hint.textContent = "This browser lacks a built-in QR detector — paste the code instead."; return; }
+  if (!("BarcodeDetector" in window)){ hint.textContent = "This browser lacks a built-in QR detector. Paste the code instead."; return; }
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
     v.srcObject = stream; v.style.display = "block"; await v.play();
@@ -142,7 +142,7 @@ document.getElementById("camBtn").addEventListener("click", async () => {
       requestAnimationFrame(loop);
     };
     loop();
-  } catch(e){ hint.textContent = "Camera unavailable (" + e.name + ") — paste the code instead."; }
+  } catch(e){ hint.textContent = "Camera unavailable (" + e.name + "). Paste the code instead."; }
 });
 function stopCam(){
   scanning = false;

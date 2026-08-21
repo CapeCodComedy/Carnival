@@ -1,5 +1,5 @@
 /* =============================================================
-   SEAT STORE — the one place a seat can be claimed or sold.
+   SEAT STORE, the one place a seat can be claimed or sold.
    Spec §4: single conditional write, group-atomic via Lua.
    Values are dependency-free strings:  holder|expiresMs[|category]
    Keys:  h:held  h:sold  (hashes seatId -> value)
@@ -40,7 +40,7 @@ end
 return {1}
 `;
 
-/* RELEASE: ARGV = holder, seat1..N — deletes only if held by this holder */
+/* RELEASE: ARGV = holder, seat1..N, deletes only if held by this holder */
 const LUA_RELEASE = `
 local holder = ARGV[1]
 local n = 0
@@ -81,7 +81,7 @@ end
 return {1}
 `;
 
-/* UNSELL: ARGV = seat1..N — refunds/console; returns count re-opened */
+/* UNSELL: ARGV = seat1..N, refunds/console; returns count re-opened */
 const LUA_UNSELL = `
 local n = 0
 for i = 1, #ARGV do
@@ -202,7 +202,7 @@ async function getOrder(sid) {
 async function onceEvent(eventId, exSec = 86400) { return d.setnx_ex(`evt:${eventId}`, "1", exSec); }
 
 /* singlet waitlist: hash email -> "choice|tier|ts"; one entry per email, latest wins.
-   Legacy rows are "choice|ts" — readers treat the missing tier as "any". */
+   Legacy rows are "choice|ts", readers treat the missing tier as "any". */
 async function waitlistPut(email, choice, tier) {
   return d.eval(`redis.call('HSET','wl:entries', ARGV[1], ARGV[2]) return 1`, [email, choice + "|" + (tier || "any") + "|" + Date.now()]);
 }

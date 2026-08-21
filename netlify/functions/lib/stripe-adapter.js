@@ -1,4 +1,4 @@
-/* Stripe adapter — real SDK when STRIPE_SECRET_KEY is a real key,
+/* Stripe adapter, real SDK when STRIPE_SECRET_KEY is a real key,
    a faithful local mock when it is "mock" (tests/harness only).
    Webhook SIGNATURE VERIFICATION is real crypto in BOTH modes: the mock
    signs payloads exactly the way Stripe does (t=...,v1=HMAC-SHA256),

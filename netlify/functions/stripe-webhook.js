@@ -1,4 +1,4 @@
-/* Stripe webhook — the ONE place a sale is finalized (spec §3.2 step 6).
+/* Stripe webhook, the ONE place a sale is finalized (spec §3.2 step 6).
    Signature-verified, idempotent, re-verify-then-sell, with the REQUIRED
    auto-refund path when a conflict slips through (spec §5.2). */
 const store = require("./lib/store");
@@ -14,7 +14,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: "bad signature" };
   }
 
-  /* idempotency latch — Stripe retries deliveries; process each event once */
+  /* idempotency latch: Stripe retries deliveries; process each event once */
   const fresh = await store.onceEvent(evt.id);
   if (!fresh) return ok({ dedup: true });
 
@@ -26,7 +26,7 @@ exports.handler = async (event) => {
 
     const fin = await store.finalize(order.holder, order.seats);
     if (!fin.ok) {
-      /* §5.2: the failure that must never reach a buyer — refund automatically */
+      /* §5.2: the failure that must never reach a buyer, refund automatically */
       try { await stripe.refund(obj.payment_intent); } catch (e) { /* surface below regardless */ }
       order.status = "refunded_conflict";
       order.conflictSeat = fin.seat;

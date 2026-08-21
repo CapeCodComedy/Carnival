@@ -1,4 +1,4 @@
-/* Ticket codes — unambiguous alphabet, free of the ill-omen digit,
+/* Ticket codes, unambiguous alphabet, free of the ill-omen digit,
    trailing checksum. Same format the door scanner validates:
    CCC-XXXX-XXXXC  (8 payload chars + 1 checksum) */
 const crypto = require("crypto");
