@@ -306,16 +306,16 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     </div>
     <div class="head-right">
       <span class="chip warn" id="modeChip">TEST MODE · BEHIND PASSWORD</span>
-      <span class="chip">AN INTIMATE 160-SEAT ROOM</span>
+      <span class="chip">UNRESERVED SEATING</span>
     </div>
   </header>
 
   <section>
     <h2>One ticket. The whole night. One price.</h2>
-    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI, one evening, one ticket, in an intimate 160-seat room at the Tilden Arts Center. Unreserved seating: arrive, sit where you like. <b>The cheaper seats are all gone.</b></p>
+    <p class="sub">Two headline sets — BRENDAN SAGALOW and MIKE CANNON — with opener JASON CHOI, one evening, one ticket, at the Tilden Arts Center. Unreserved seating: arrive, sit where you like. <b>The cheaper seats are all gone.</b></p>
   </section>
 
-  <!-- v3.51: the 160-seat room — two kinds, quantity, pay. No chart; the room is the chart. -->
+  <!-- v3.51: the small room — two kinds, quantity, pay. No chart; the room is the chart. -->
   <div class="cols">
     <div>
       <section class="map-card" style="padding:16px 14px 18px">
@@ -448,7 +448,7 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  /* v3.51 — the 160-seat room: one price, unreserved, plus THE SPLASH ZONE.
+  /* v3.51 — the small room: one price, unreserved, plus THE SPLASH ZONE.
      Legacy zone keys stay below so the console's old-room map still renders. */
   prices: { house: 66, splash: 88, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
@@ -752,7 +752,7 @@ function buildSeatMap(svg, opts){
   return { update, seatEls };
 }
 
-/* ================= BUYER BOX OFFICE LOGIC (v3.51 — the 160-seat room) =================
+/* ================= BUYER BOX OFFICE LOGIC (v3.51 — the small room) =================
    Unreserved: two kinds (HOUSE $66 / THE SPLASH ZONE $88), quantity steppers, no chart.
    Capacity still lives server-side as invisible units (H-1..H-150, S-1..S-10):
    checkout picks free units and the atomic claim + Stripe flow runs unchanged, so
