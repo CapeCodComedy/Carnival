@@ -86,11 +86,11 @@ exports.handler = async (event) => {
     }));
     const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only, fee charged normally */
     if (feeCents > 0) line_items.push({
-      quantity: seats.length,
+      quantity: seats.length,   /* v3.59: $3 per ticket, the standing law */
       price_data: {
         currency: "usd",
         unit_amount: Math.round(feeCents / seats.length),
-        product_data: { name: "Card processing fee (passed through at cost; the 1140A Corporation keeps none of it)" },
+        product_data: { name: "Card processing fee, $3 per ticket (the 1140A Corporation keeps none of it)" },
       },
     });
 

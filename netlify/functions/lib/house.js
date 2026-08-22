@@ -19,14 +19,15 @@ function tierOf(ids) {
   return { ok: true, zone: mixed ? "mixed" : zone };
 }
 
-/* price a cart; accessible carts (wheelchair space ± companion) waive the fee */
+/* price a cart; accessible carts (wheelchair space ± companion) waive the fee.
+   v3.59: the $3 card fee is PER TICKET (the standing law; v3.58 briefly went flat, reverted). */
 function priceCart(ids, accessible) {
   const t = tierOf(ids);
   if (!t.ok) return t;
   let ticketCents = 0, feeCents = 0;
   for (const id of ids) {
     const s = seat(id);
-    if (s.wc || accessible) { ticketCents += HOUSE.wheelchair.price * 100; feeCents += HOUSE.wheelchair.fee * 100; }
+    if (s.wc || accessible) ticketCents += HOUSE.wheelchair.price * 100;
     else { ticketCents += HOUSE.prices[s.zone] * 100; feeCents += Math.round(HOUSE.fee * 100); }
   }
   return { ok: true, zone: t.zone, ticketCents, feeCents, totalCents: ticketCents + feeCents };

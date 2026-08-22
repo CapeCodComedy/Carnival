@@ -320,7 +320,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     <div>
       <section class="map-card" style="padding:16px 14px 18px">
         <h2 style="margin:0 0 4px">Tickets</h2>
-        <p class="sub" style="margin:0 0 14px;line-height:1.7">Every seat <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · THE SPLASH ZONE <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b>, plus $3 per seat card processor fee*</p>
+        <p class="sub" style="margin:0 0 14px;line-height:1.7">Every seat <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$66</b> · THE SPLASH ZONE <b class="mono" style="color:var(--glow);font-size:1.45em;font-weight:600">$88</b>, plus $3 per ticket card processor fee*</p>
 
         <div style="border:1px solid #31365f;border-radius:10px;padding:14px;margin:0 0 12px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
@@ -335,7 +335,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
         <div style="border:1px solid #31365f;border-radius:10px;padding:14px;margin:0 0 12px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-            <div style="min-width:180px"><b>THE SPLASH ZONE</b> <b class="mono" style="color:var(--glow)">$88</b><br><span class="hint" style="margin:0">Ten chairs on the open floor, spitting-distance from the comics.</span></div>
+            <div style="min-width:180px"><b>THE SPLASH ZONE</b> <b class="mono" style="color:var(--glow)">$88</b><br><span class="hint" style="margin:0">Ten seats, spitting-distance from the comics.</span></div>
             <div style="display:flex;align-items:center;gap:10px">
               <button id="splashMinus" type="button" aria-label="Fewer Splash Zone tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
               <b id="splashQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">0</b>
@@ -381,8 +381,8 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   </div>
 
   <div class="mature" style="border-color:#3f4a3a;background:rgba(127,176,105,.05)">
-    <h3 style="color:#a6c99a">*A NOTE ON THE $3: BECAUSE WE'D RATHER BE UPFRONT</h3>
-    <p>The $3 per seat is a card-processing fee charged by our payment processor, not by us. <b>The 1140A Corporation receives none of it</b>, it goes straight to the processor to cover the cost of taking your card safely. We pass it through at exact cost rather than hiding it inside a higher ticket price. Your ticket price is the ticket price.</p>
+    <h3 style="color:#a6c99a">*A NOTE ON THE $3, BECAUSE WE'D RATHER BE UPFRONT</h3>
+    <p>The $3 per ticket is a card-processing fee charged by our payment processor, not by us. <b>The 1140A Corporation receives none of it.</b> It goes straight to the processor to cover the cost of taking your card safely. We pass it through rather than hiding it inside a higher ticket price. Your ticket price is the ticket price.</p>
   </div>
 
   <section id="access">
@@ -457,7 +457,7 @@ const CONFIG = {
   maxPerOrder: 10,
   zones: {
     house:  { name: "HOUSE",           desc: "Unreserved: arrive, sit where you like" },
-    splash: { name: "THE SPLASH ZONE", desc: "Ten chairs on the open floor, spitting-distance from the comics" },
+    splash: { name: "THE SPLASH ZONE", desc: "Ten seats, spitting-distance from the comics" },
     orch: { name: "ORCHESTRA", desc: "legacy, old room" },
     t1:   { name: "TIER 1",    desc: "legacy, old room" },
     t2:   { name: "TIER 2",    desc: "legacy, old room" },
@@ -782,12 +782,12 @@ const qty = { house: 0, splash: 0 };  // the whole order is a pair of counts now
 let paying = false, pollT = null;
 
 /* the invisible inventory, mirrors house.json exactly.
-   v3.52 fail-safe caps while the room's true free count is tallied:
-   110 house units on sale; 6 splash units (the other floor chairs are
-   handled off-web, by email). Raising either cap = one line here + house.json. */
+   v3.61: the original space. 400 house; the Splash Zone is officially Ten,
+   raised only if demand grows (scarcity is the truth, with flexibility).
+   Balcony is closed and does not exist online. */
 const UNITS = {
-  house: Array.from({ length: 110 }, (_, i) => "H-" + (i + 1)),
-  splash: Array.from({ length: 6 }, (_, i) => "S-" + (i + 1))
+  house: Array.from({ length: 400 }, (_, i) => "H-" + (i + 1)),
+  splash: Array.from({ length: 10 }, (_, i) => "S-" + (i + 1))
 };
 const freeUnits = k => UNITS[k].filter(id => !unavailable.has(id));
 
@@ -867,7 +867,7 @@ function renderCart(){
     list.appendChild(li);
   });
   const sc = stationCode();
-  const fee = count * CONFIG.fee;
+  const fee = count * CONFIG.fee;   /* v3.59: $3 per ticket, the standing law */
   const oc = orgCode();
   const orgNote = $("#orgNote");
   if (orgNote){
@@ -891,7 +891,7 @@ function renderCart(){
   $("#totals").innerHTML = count ? `
     <div><span>Tickets</span><span>${money(tickets)}</span></div>
     ${_tee ? `<div><span>Show tee × ${_tee.qty} (${_tee.size}): ticket-bundle price · will-call on show night</span><span>${money(teeCost)}</span></div>` : ""}
-    <div><span>Card processing fee, passed through at cost, we keep none of it</span><span>${money(fee)}</span></div>
+    <div><span>Card processing fee, $3 per ticket, we keep none of it</span><span>${money(fee)}</span></div>
     <div class="grand"><span>Total</span><span>${money(tickets + teeCost + fee)}</span></div>` : "";
   $("#checkoutBtn").disabled = !count;
   const mb = $("#miniBar");
