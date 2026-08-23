@@ -339,7 +339,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
     <section class="map-card" style="padding:16px 14px 18px;margin-top:14px">
       <h2 style="margin:0 0 4px">Issue comps</h2>
-      <p class="hint" style="margin:0 0 10px">Marks units sold under a COMP order and mints real QR tickets that scan at the door. The link that appears is the printable ticket page; print it or forward its address. A Splash comp eats one of the scarce ten.</p>
+      <p class="hint" style="margin:0 0 10px">Marks units sold under a COMP order and mints real QR tickets that scan at the door. The link that appears is the printable ticket page; print it or forward its address. A Splash comp eats a sellable unit.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <select id="compKind" aria-label="Comp kind" style="flex:1;min-width:150px;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace"></select>
         <select id="compQty" aria-label="Comp quantity" style="width:90px;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace"></select>
@@ -372,17 +372,17 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     <div class="action-list" id="actionList"></div>
 
     <div class="chart-box" style="margin-top:14px">
-      <h3>THE SPLASH ZONE · the expansion protocol</h3>
-      <p class="sub" style="margin:6px 0 0">Ten units are on sale in the store; the buyer page states no number, only SEATS ARE LIMITED. When the ten sell: five more go in, S-11 to S-15. If the ten sell inside one day: twenty go in instead. Either way it is a small build; say the word and it ships.</p>
+      <h3>THE SPLASH ZONE · the cap</h3>
+      <p class="sub" style="margin:6px 0 0">Sixty units are on sale in the store; the buyer page states no number, only SEATS ARE LIMITED. The ten-then-expand protocol is retired. If the cap ever moves again, it is a small build; say the word and it ships.</p>
     </div>
 
     <div class="chart-box" style="margin-top:14px">
       <h3>THE CHEAP SEATS · wired, not on sale</h3>
-      <p class="sub" style="margin:6px 0 0">$19, already in the price list and in this console, with zero units, so nothing shows anywhere a buyer looks. To launch: say the word, C-units go into the room file, the buyer page gets its card, and every counter here starts moving on its own.</p>
+      <p class="sub" style="margin:6px 0 0">$19, already in the price list and in this console, with zero units, so nothing shows anywhere a buyer looks. To launch: say the word, CS-units go into the room file, the buyer page gets its card, and every counter here starts moving on its own.</p>
     </div>
   </div>
 
-  <footer><p class="mono" style="opacity:.7">CONSOLE v3.63 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
+  <footer><p class="mono" style="opacity:.7">CONSOLE v3.66 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
 </div>
 <div id="toast" role="status"></div>
 
@@ -709,13 +709,14 @@ function buildSeatMap(svg, opts){
   return { update, seatEls };
 }
 
-/* ================= OWNER CONSOLE (v3.62, the unreserved room) =================
+/* ================= OWNER CONSOLE (v3.65, the unreserved room) =================
    The room sells counted units, not chart seats: H- is HOUSE, S- is THE SPLASH
-   ZONE, C- is THE CHEAP SEATS (wired, dormant until launch). Any other id in
-   the store is a reserved-era ticket from the old chart: real, door-scannable,
-   counted separately. Caps, names, and prices arrive from the server (house.json
-   through admin-api), so expanding the Splash Zone or launching THE CHEAP SEATS
-   never needs a console edit. */
+   ZONE, CS- is THE CHEAP SEATS (wired, dormant until launch). CS- and never C-:
+   the old reserved chart has a real row C (C-1 through C-111), and those are
+   era tickets. Any id that is not H-, S-, or CS- is a reserved-era ticket from
+   the old chart: real, door-scannable, counted separately. Caps, names, and
+   prices arrive from the server (house.json through admin-api), so expanding
+   the Splash Zone or launching THE CHEAP SEATS never needs a console edit. */
 let TOKEN = null, lastState = { sold: new Set(), held: new Set(), cats: {}, meta: null };
 
 const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
@@ -724,7 +725,7 @@ const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
   body: JSON.stringify({ action, ...(extra || {}) })
 }).then(async r => ({ ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) }));
 
-const kindOf = id => id.startsWith("H-") ? "house" : id.startsWith("S-") ? "splash" : id.startsWith("C-") ? "cheap" : "era";
+const kindOf = id => id.startsWith("H-") ? "house" : id.startsWith("CS-") ? "cheap" : id.startsWith("S-") ? "splash" : "era";
 
 (function gate(){
   const g = $("#gate"), site = $("#site");
@@ -906,7 +907,7 @@ function freeUnits(kind, n){
   /* comp from the top end of the number line, away from where buyers land */
   const m = lastState.meta;
   const total = m.zones[kind].units;
-  const prefix = kind === "house" ? "H-" : kind === "splash" ? "S-" : "C-";
+  const prefix = kind === "house" ? "H-" : kind === "splash" ? "S-" : "CS-";
   const { sold, held, cats } = lastState;
   const out = [];
   for (let i = total; i >= 1 && out.length < n; i--){

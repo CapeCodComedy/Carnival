@@ -784,12 +784,12 @@ const qty = { house: 0, splash: 0 };  // the whole order is a pair of counts now
 let paying = false, pollT = null;
 
 /* the invisible inventory, mirrors house.json exactly.
-   v3.61: the original space. 400 house; the Splash Zone is officially Ten,
-   raised only if demand grows (scarcity is the truth, with flexibility).
+   v3.66: the original space. 400 house; the Splash Zone cap is sixty (his
+   ruling; the page states no number, only SEATS ARE LIMITED).
    Balcony is closed and does not exist online. */
 const UNITS = {
   house: Array.from({ length: 400 }, (_, i) => "H-" + (i + 1)),
-  splash: Array.from({ length: 10 }, (_, i) => "S-" + (i + 1))
+  splash: Array.from({ length: 60 }, (_, i) => "S-" + (i + 1))
 };
 const freeUnits = k => UNITS[k].filter(id => !unavailable.has(id));
 
