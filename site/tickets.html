@@ -335,7 +335,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
         <div style="border:1px solid #31365f;border-radius:10px;padding:14px;margin:0 0 12px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-            <div style="min-width:180px"><b>THE SPLASH ZONE</b> <b class="mono" style="color:var(--glow)">$88</b><br><span class="hint" style="margin:0">Ten seats, spitting-distance from the comics.</span></div>
+            <div style="min-width:180px"><b>THE SPLASH ZONE</b> <b class="mono" style="color:var(--glow)">$88</b><br><span class="hint" style="margin:0">Spitting-distance from the comics. SEATS ARE LIMITED.</span></div>
             <div style="display:flex;align-items:center;gap:10px">
               <button id="splashMinus" type="button" aria-label="Fewer Splash Zone tickets" style="width:38px;height:38px;border-radius:8px;border:1px solid #31365f;background:rgba(255,255,255,.04);color:var(--bone);font-size:1.3em;cursor:pointer">−</button>
               <b id="splashQty" class="mono" style="font-size:1.35em;min-width:1.3em;text-align:center">0</b>
@@ -448,21 +448,23 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  /* v3.51, the small room: one price, unreserved, plus THE SPLASH ZONE.
-     Legacy zone keys stay below so the console's old-room map still renders. */
-  prices: { house: 66, splash: 88, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
+  /* v3.62, the room as sold: HOUSE + THE SPLASH ZONE live, THE CHEAP SEATS
+     wired and dormant (no units until launch). Legacy tier keys stay ONLY so
+     the console can price the seats sold back in the reserved-chart era. */
+  prices: { house: 66, splash: 88, cheap: 19, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible: arranged by email, fee waived
   currency: "$",
   maxPerOrder: 10,
   zones: {
     house:  { name: "HOUSE",           desc: "Unreserved: arrive, sit where you like" },
-    splash: { name: "THE SPLASH ZONE", desc: "Ten seats, spitting-distance from the comics" },
-    orch: { name: "ORCHESTRA", desc: "legacy, old room" },
-    t1:   { name: "TIER 1",    desc: "legacy, old room" },
-    t2:   { name: "TIER 2",    desc: "legacy, old room" },
-    t3:   { name: "TIER 3",    desc: "legacy, old room" },
-    balc: { name: "BALCONY",   desc: "legacy, old room" }
+    splash: { name: "THE SPLASH ZONE", desc: "Spitting-distance from the comics. SEATS ARE LIMITED" },
+    cheap:  { name: "THE CHEAP SEATS", desc: "wired, not on sale yet" },
+    orch: { name: "ORCHESTRA", desc: "reserved-era tier (sold seats only)" },
+    t1:   { name: "TIER 1",    desc: "reserved-era tier (sold seats only)" },
+    t2:   { name: "TIER 2",    desc: "reserved-era tier (sold seats only)" },
+    t3:   { name: "TIER 3",    desc: "reserved-era tier (sold seats only)" },
+    balc: { name: "BALCONY",   desc: "reserved-era tier (sold seats only)" }
   },
   softHoldSec: 180,        // 3-minute courtesy hold while a buyer decides
   pollMs: 8000,            // map repaint cadence (matches CDN cache window)

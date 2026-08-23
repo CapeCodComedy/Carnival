@@ -27,29 +27,62 @@ exports.handler = async (event) => {
   }
 
   if (action === "state") {
+    /* v3.62: the live store plus the room's shape, so the console carries no
+       hardcoded caps: expand the Splash Zone or launch THE CHEAP SEATS by
+       regenerating house.json and the console follows on its own. */
     const s = await store.state();
-    return ok(s);
+    const meta = { fee: HOUSE.fee, maxPerOrder: HOUSE.maxPerOrder, zones: {} };
+    for (const [z, name] of Object.entries(HOUSE.zones))
+      meta.zones[z] = { name, price: HOUSE.prices[z] || 0, units: 0 };
+    for (const st of Object.values(HOUSE.seats))
+      if (!st.wc && meta.zones[st.zone]) meta.zones[st.zone].units++;
+    return ok({ ...s, meta });
   }
 
   if (action === "ledger") {
-    /* prove the closing identity from the LIVE store (spec §2.2) */
+    /* prove the closing identity from the LIVE store (spec §2.2).
+       v3.62: zone buckets come from house.json, never hardcoded. Ids the
+       current room does not know (sold or held on the old reserved chart)
+       are counted as reserved-era rows, not treated as errors: those are
+       real tickets and they scan at the door like any other. */
     const s = await store.state();
-    const zones = { orch: { phys: 0 }, t1: { phys: 0 }, t2: { phys: 0 }, balc: { phys: 0 } };
-    let wc = 0;
-    for (const [id, seat] of Object.entries(HOUSE.seats)) {
-      if (seat.wc) { wc++; continue; }
-      zones[seat.zone].phys++;
+    const zones = {};
+    for (const z of Object.keys(HOUSE.zones)) zones[z] = { units: 0, sold: 0, inCart: 0, held: 0 };
+    let wc = 0, physical = 0;
+    for (const st of Object.values(HOUSE.seats)) {
+      if (st.wc) { wc++; continue; }
+      if (zones[st.zone]) { zones[st.zone].units++; physical++; }
     }
-    const catCount = k => Object.entries(s.adminHolds).filter(([id, c]) => !HOUSE.seats[id].wc && (k ? c === k : true)).length;
-    const held = catCount(null);
-    const sold = s.sold.filter(id => !HOUSE.seats[id].wc).length;
-    const buyerHeld = s.held.length;
-    const physical = Object.values(zones).reduce((a, z) => a + z.phys, 0);
+    const eraSold = [], eraHeld = [];
+    let sold = 0, buyerHolding = 0, consoleHeld = 0;
+    const byCategory = {};
+    for (const id of s.sold) {
+      const st = HOUSE.seats[id];
+      if (!st) { eraSold.push(id); continue; }
+      if (st.wc) continue;
+      zones[st.zone].sold++; sold++;
+    }
+    for (const id of s.held) {
+      const st = HOUSE.seats[id];
+      if (st && !st.wc && zones[st.zone]) { zones[st.zone].inCart++; buyerHolding++; }
+    }
+    for (const [id, cat] of Object.entries(s.adminHolds)) {
+      const st = HOUSE.seats[id];
+      if (!st) { eraHeld.push(id); continue; }
+      if (st.wc) continue;
+      zones[st.zone].held++; consoleHeld++;
+      byCategory[cat] = (byCategory[cat] || 0) + 1;
+    }
+    const open = physical - consoleHeld - sold - buyerHolding;
     return ok({
-      physical, wheelchairUnits: wc, consoleHeld: held, sold, buyerHolding: buyerHeld,
-      open: physical - held - sold - buyerHeld,
-      identity: { total: physical + wc, expected: 653, closes: physical + wc === 653 },
-      byCategory: Object.fromEntries(["sponsor","comp","marketing","companion","volunteer","charity"].map(c => [c, catCount(c)])),
+      physical, wheelchairUnits: wc, consoleHeld, sold, buyerHolding, open, zones,
+      identity: {
+        total: physical + wc, expected: Object.keys(HOUSE.seats).length,
+        closes: open + consoleHeld + sold + buyerHolding === physical
+             && physical + wc === Object.keys(HOUSE.seats).length,
+      },
+      reservedEra: { sold: eraSold.length, held: eraHeld.length, soldIds: eraSold, heldIds: eraHeld },
+      byCategory,
     });
   }
 

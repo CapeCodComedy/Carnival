@@ -6,7 +6,8 @@
   },
   "prices": {
     "house": 66,
-    "splash": 88
+    "splash": 88,
+    "cheap": 19
   },
   "fee": 3,
   "wheelchair": {
@@ -19,7 +20,8 @@
   "stripeSessionSec": 1800,
   "zones": {
     "house": "HOUSE",
-    "splash": "THE SPLASH ZONE"
+    "splash": "THE SPLASH ZONE",
+    "cheap": "THE CHEAP SEATS"
   },
   "orgCodes": [
     "COYOTES",
