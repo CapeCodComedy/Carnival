@@ -824,6 +824,7 @@ async function refreshState(first){
     if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
     if (s.orgShare) ORG_SHARE = s.orgShare;
     if (s.orgColors && typeof s.orgColors === "object") ORG_COLORS = s.orgColors;
+    if (s.discounts && typeof s.discounts === "object") { DISCOUNTS = s.discounts; updateDiscount(); }
     if (s.merch && typeof s.merch === "object") { MERCH = s.merch; initTeeRow(); }
     unavailable = new Set(s.unavailable || []);
     $("#liveNote").textContent = `Live box office · ${s.sold} spoken for`;
@@ -863,10 +864,13 @@ function renderCart(){
   let tickets = 0, count = 0;
   ["house", "splash"].forEach(k => {
     if (!qty[k]) return;
-    const p = CONFIG.prices[k];
+    /* v3.69: a live discount code reprices its tiers right in the stub,
+       to the cent of what Stripe will charge */
+    const cut = discActive && (discActive.tiers || []).includes(k);
+    const p = cut ? Math.round(CONFIG.prices[k] * 100 * (1 - discActive.off)) / 100 : CONFIG.prices[k];
     tickets += p * qty[k]; count += qty[k];
     const li = document.createElement("li");
-    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span></span>
+    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span>${cut ? `<span class="tag">${Math.round(discActive.off * 100)}% off</span>` : ""}</span>
       <span>${money(p * qty[k])}</span>`;
     list.appendChild(li);
   });
@@ -887,6 +891,12 @@ function renderCart(){
       orgNote.style.color = ink;
       orgNote.style.display = "block";
       orgNote.innerHTML = `<b>${oc} FUNDRAISER:</b> <b>${money(owed)}</b> of this order goes straight to them.`;
+    } else if (discActive && count){
+      const names = (discActive.tiers || []).map(t => CONFIG.zones[t] ? CONFIG.zones[t].name : t).join(" and ");
+      orgNote.style.borderColor = STATION_INK;
+      orgNote.style.color = STATION_INK;
+      orgNote.style.display = "block";
+      orgNote.innerHTML = `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off ${names} tickets in this order.`;
     } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = count ? "none" : "block";
@@ -959,6 +969,31 @@ function rawCode(){
   return el ? (el.value || "").trim() : "";
 }
 
+/* ---------- discount codes (v3.69): served as hashes, matched client-side,
+   so the code words never appear in any public payload or page source.
+   The server reprices independently; this is display truth only. ---------- */
+let DISCOUNTS = {};
+let discActive = null, _discSeq = 0;
+async function sha256Hex(txt){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+async function updateDiscount(){
+  const v = (rawCode() || "").toUpperCase();
+  const seq = ++_discSeq;
+  let hit = null;
+  if (v && !STATION_CODES.includes(v) && !ORG_CODES.includes(v) && Object.keys(DISCOUNTS).length){
+    try {
+      const h = await sha256Hex(v);
+      if (DISCOUNTS[h]) hit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [] };
+    } catch (e) {}
+  }
+  if (seq !== _discSeq) return;   /* a newer keystroke superseded this check */
+  const changed = (hit ? hit.code : null) !== (discActive ? discActive.code : null);
+  discActive = hit;
+  if (changed) renderCart();
+}
+
 /* ---------- src tag (?src=ig), remembered for the session, stamped on the payment ---------- */
 try { const _s = new URLSearchParams(location.search).get("src"); if (_s) sessionStorage.setItem("cccc_src", _s); } catch (e) {}
 function srcTag(){
@@ -1007,7 +1042,7 @@ async function checkout(){
 $("#checkoutBtn").addEventListener("click", () => checkout());
 $("#mbGo").addEventListener("click", () => checkout());
 const _scEl = $("#stationCode");
-if (_scEl) _scEl.addEventListener("input", () => renderCart());
+if (_scEl) _scEl.addEventListener("input", () => { updateDiscount(); renderCart(); });
 
 /* ---------- panels / overlays ---------- */
 $$(".cat-btn").forEach(b => b.addEventListener("click", () => {

@@ -5,10 +5,17 @@
    interval, not one per person (free-tier economics, walls-first item). */
 const store = require("./lib/store");
 const { HOUSE } = require("./lib/house");
+const crypto = require("crypto");
 
 exports.handler = async () => {
   const s = await store.state();
   const unavailable = [...new Set([...s.sold, ...s.held, ...Object.keys(s.adminHolds)])];
+  /* v3.69: discount codes ride hashed, so the code words never appear in this
+     public payload; the client hashes what the buyer types and matches. */
+  const discounts = {};
+  for (const [code, d] of Object.entries(HOUSE.discounts || {}))
+    if (d && d.enabled !== false)
+      discounts[crypto.createHash("sha256").update(String(code).toUpperCase()).digest("hex")] = { off: d.off || 0, tiers: d.tiers || [] };
   return {
     statusCode: 200,
     headers: {
@@ -16,6 +23,6 @@ exports.handler = async () => {
       "Cache-Control": "public, max-age=0, must-revalidate",
       "Netlify-CDN-Cache-Control": "public, s-maxage=8, stale-while-revalidate=30",
     },
-    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: (HOUSE.orgCodesEnabled !== false ? HOUSE.orgCodes : []) || [], orgShare: HOUSE.orgShare || 0.5, orgColors: HOUSE.orgColors || {}, merch: HOUSE.merch || null }),
+    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: (HOUSE.orgCodesEnabled !== false ? HOUSE.orgCodes : []) || [], orgShare: HOUSE.orgShare || 0.5, orgColors: HOUSE.orgColors || {}, merch: HOUSE.merch || null, discounts }),
   };
 };

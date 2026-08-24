@@ -34,6 +34,9 @@
   "orgCodesEnabled": true,
   "orgShare": 0.5,
   "orgColors": {},
+  "discounts": {
+    "CARNIVAL": { "off": 0.2, "tiers": ["house"], "enabled": true }
+  },
   "merch": {
     "teeBundleCents": 1100,
     "teeName": "Limited-edition show tee",

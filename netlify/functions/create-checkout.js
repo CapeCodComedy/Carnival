@@ -20,6 +20,18 @@ exports.handler = async (event) => {
      v3.51: every seat pays the half; orgCodesEnabled=false in house.json closes the offer. */
   const ORG_CODES = new Set((HOUSE.orgCodes || []).map(c => String(c).toUpperCase()));
   const org = (HOUSE.orgCodesEnabled !== false && !station && ORG_CODES.has(_raw)) ? _raw : null;
+  /* discount codes (v3.69): the first price-changing code, data-driven from
+     house.json. CARNIVAL: 20% off HOUSE for the comics' own email lists.
+     Station and org codes win the field if they match; the accessible flow
+     is never discounted; the fee stays $3 per ticket, the standing law. */
+  const DISCOUNTS = HOUSE.discounts || {};
+  const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, tiers: new Set(DISCOUNTS[_raw].tiers || []) } : null;
+  const unitCents = (id) => {
+    const s = seat(id);
+    if (s.wc || accessible) return HOUSE.wheelchair.price * 100;
+    const full = HOUSE.prices[s.zone] * 100;
+    return (disc && disc.tiers.has(s.zone)) ? Math.round(full * (1 - disc.off)) : full;
+  };
   const src = String(body.src || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32) || null;
   /* tee add-on (v3.30): bundle-priced merch line that exists only inside a ticket purchase */
   const MERCH = HOUSE.merch || {};
@@ -75,15 +87,24 @@ exports.handler = async (event) => {
 
   const siteUrl = process.env.SITE_URL || "";
   try {
-    /* v3.55: mixed orders, each line item carries its own kind's name */
-    const line_items = seats.map(id => ({
-      quantity: 1,
-      price_data: {
-        currency: "usd",
-        unit_amount: (seat(id).wc || accessible) ? HOUSE.wheelchair.price * 100 : HOUSE.prices[seat(id).zone] * 100,
-        product_data: { name: `${HOUSE.zones[seat(id).zone]}, unreserved admission${seat(id).wc ? " (wheelchair space)" : ""}` },
-      },
-    }));
+    /* v3.55: mixed orders, each line item carries its own kind's name.
+       v3.69: discounted seats carry the code on the line, so the receipt
+       says out loud why the price is lower. */
+    const line_items = seats.map(id => {
+      const s = seat(id);
+      const cents = unitCents(id);
+      const discounted = disc && !s.wc && !accessible && disc.tiers.has(s.zone);
+      return {
+        quantity: 1,
+        price_data: {
+          currency: "usd",
+          unit_amount: cents,
+          product_data: { name: `${HOUSE.zones[s.zone]}, unreserved admission${s.wc ? " (wheelchair space)" : ""}${discounted ? ` (code ${disc.code}, ${Math.round(disc.off * 100)}% off)` : ""}` },
+        },
+      };
+    });
+    const ticketCentsFinal = seats.reduce((a, id) => a + unitCents(id), 0);
+    const savedCents = priced.ticketCents - ticketCentsFinal;
     const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only, fee charged normally */
     if (feeCents > 0) line_items.push({
       quantity: seats.length,   /* v3.59: $3 per ticket, the standing law */
@@ -109,14 +130,14 @@ exports.handler = async (event) => {
       expires_at: Math.floor(Date.now() / 1000) + HOUSE.stripeSessionSec,
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/?canceled=1`,
-      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" },
-      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" } },
+      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" },
+      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" } },
     });
 
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
-      totalCents: priced.ticketCents + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
-      org, orgEligible, orgTiers, orgOwedCents, src, tee,
+      totalCents: ticketCentsFinal + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
+      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, src, tee,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });
