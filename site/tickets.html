@@ -784,12 +784,14 @@ const qty = { house: 0, splash: 0 };  // the whole order is a pair of counts now
 let paying = false, pollT = null;
 
 /* the invisible inventory, mirrors house.json exactly.
-   v3.66: the original space. 400 house; the Splash Zone cap is sixty (his
-   ruling; the page states no number, only SEATS ARE LIMITED).
-   Balcony is closed and does not exist online. */
+   v3.68: the original space. 400 house; the Splash Zone is physically
+   forty-four chairs and eight are taken per the owner's book (will-call
+   plus sold, the online pair included), so the store carries thirty-eight
+   units: the two online sales inside, thirty-six open. The page states
+   no number, only SEATS ARE LIMITED. Balcony is closed offline. */
 const UNITS = {
   house: Array.from({ length: 400 }, (_, i) => "H-" + (i + 1)),
-  splash: Array.from({ length: 60 }, (_, i) => "S-" + (i + 1))
+  splash: Array.from({ length: 38 }, (_, i) => "S-" + (i + 1))
 };
 const freeUnits = k => UNITS[k].filter(id => !unavailable.has(id));
 
