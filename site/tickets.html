@@ -285,17 +285,6 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
   THE SWITCH: CONFIG.gate.enabled (both pages, one line each).
   ============================================================
 -->
-<div id="gate" hidden>
-  <div class="g-box">
-    <div class="org">THE 1140A CORPORATION</div>
-    <h1>DOORS<br><span class="amp">NOT OPEN</span> YET</h1>
-    <p>This box office is in private testing. Enter the crew password to step inside.</p>
-    <input id="gatePw" type="password" autocomplete="off" placeholder="password" aria-label="Site password">
-    <button id="gateGo">Let me in</button>
-    <div class="g-err" id="gateErr"></div>
-  </div>
-</div>
-
 <div class="wrap" id="site" style="visibility:hidden">
 
   <header class="site">
@@ -305,7 +294,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
       <div class="when" id="evWhen"></div>
     </div>
     <div class="head-right">
-      <span class="chip warn" id="modeChip">TEST MODE · BEHIND PASSWORD</span>
+      <span class="chip live" id="modeChip">ON SALE NOW</span>
       <span class="chip">UNRESERVED SEATING</span>
     </div>
   </header>
@@ -772,22 +761,12 @@ function buildSeatMap(svg, opts){
    checkout picks free units and the atomic claim + Stripe flow runs unchanged, so
    codes, tees, station stamps, src tags, door scan, and will-call all survive. */
 
-/* ---------- gate ---------- */
-(function gate(){
-  const g = $("#gate"), site = $("#site");
-  const open = () => { g.hidden = true; site.style.visibility = "visible"; boot(); };
-  if (!CONFIG.gate.enabled){
-    $("#modeChip").textContent = "ON SALE NOW"; $("#modeChip").classList.remove("warn"); $("#modeChip").classList.add("live");
-    setTimeout(open, 0); return;   // after this script finishes initializing, never mid-parse
-  }
-  g.hidden = false;
-  const tryPw = () => {
-    if ($("#gatePw").value === CONFIG.gate.password) open();
-    else { $("#gateErr").textContent = "Not tonight's password."; $("#gatePw").select(); }
-  };
-  $("#gateGo").addEventListener("click", tryPw);
-  $("#gatePw").addEventListener("keydown", e => { if (e.key === "Enter") tryPw(); });
-})();
+/* ---------- open the doors ----------
+   v3.73: the crew password gate is retired for good. Its dormant markup used
+   to sit in the raw HTML and no-JavaScript readers (crawlers, AI fetchers)
+   took its placeholder wording at face value. Removed entirely: the raw page
+   and the rendered page now say the same thing. */
+setTimeout(() => { $("#site").style.visibility = "visible"; boot(); }, 0);
 
 /* ---------- state ---------- */
 const HOLDER = "b_" + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now());
