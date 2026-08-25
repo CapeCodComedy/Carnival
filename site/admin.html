@@ -378,16 +378,11 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
     <div class="chart-box" style="margin-top:14px">
       <h3>CODE CARNIVAL · the comics' 20%</h3>
-      <p class="sub" style="margin:6px 0 0">CARNIVAL takes 20% off BOTH tiers: $66 becomes $52.80, the Splash $88 becomes $70.40, and the $3 fee stays. It is for Sagalow's and Cannon's own email lists and the word never appears on the site: the public payload carries only a hash. Uses land in Stripe metadata under discount. Kill switch: discounts in the room file, enabled false, one build.</p>
-    </div>
-
-    <div class="chart-box" style="margin-top:14px">
-      <h3>THE CHEAP SEATS · wired, not on sale</h3>
-      <p class="sub" style="margin:6px 0 0">$19, already in the price list and in this console, with zero units, so nothing shows anywhere a buyer looks. To launch: say the word, CS-units go into the room file, the buyer page gets its card, and every counter here starts moving on its own.</p>
+      <p class="sub" style="margin:6px 0 0">CARNIVAL takes 20% off every tier: $88 becomes $70.40, $66 becomes $52.80, $33 becomes $26.40, and the $3 fee stays. It is for Sagalow's and Cannon's own email lists and the word never appears on the site: the public payload carries only a hash. Uses land in Stripe metadata under discount. Kill switch: discounts in the room file, enabled false, one build. (THE CHEAP SEATS idea is retired; GENERAL $33 replaced it.)</p>
     </div>
   </div>
 
-  <footer><p class="mono" style="opacity:.7">CONSOLE v3.70 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
+  <footer><p class="mono" style="opacity:.7">CONSOLE v3.71 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
 </div>
 <div id="toast" role="status"></div>
 
@@ -408,18 +403,19 @@ const CONFIG = {
     contactEmail: "info@1140A.com",
     url: "https://1140a.com"
   },
-  /* v3.62, the room as sold: HOUSE + THE SPLASH ZONE live, THE CHEAP SEATS
-     wired and dormant (no units until launch). Legacy tier keys stay ONLY so
-     the console can price the seats sold back in the reserved-chart era. */
-  prices: { house: 66, splash: 88, cheap: 19, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
+  /* v3.71, three tiers: THE SPLASH ZONE $88, PREMIUM $66 (zone key stays
+     "house"; only the display name changed), GENERAL $33. THE CHEAP SEATS
+     idea is retired; GENERAL replaced it. Legacy tier keys stay ONLY so the
+     console can price the seats sold back in the reserved-chart era. */
+  prices: { house: 66, splash: 88, general: 33, orch: 88, t1: 66, t2: 55, t3: 44, balc: 28 },
   fee: 3.00,                                           // flat per-seat card-processing pass-through (spec §9)
   wheelchair: { price: 33, fee: 0 },                   // accessible: arranged by email, fee waived
   currency: "$",
   maxPerOrder: 10,
   zones: {
-    house:  { name: "HOUSE",           desc: "Unreserved: arrive, sit where you like" },
-    splash: { name: "THE SPLASH ZONE", desc: "Spitting-distance from the comics. SEATS ARE LIMITED" },
-    cheap:  { name: "THE CHEAP SEATS", desc: "wired, not on sale yet" },
+    house:   { name: "PREMIUM",         desc: "The front of the house" },
+    splash:  { name: "THE SPLASH ZONE", desc: "In front of the front of the house. Spitting-distance from the comics" },
+    general: { name: "GENERAL",         desc: "Everything behind the front of the house" },
     orch: { name: "ORCHESTRA", desc: "reserved-era tier (sold seats only)" },
     t1:   { name: "TIER 1",    desc: "reserved-era tier (sold seats only)" },
     t2:   { name: "TIER 2",    desc: "reserved-era tier (sold seats only)" },
@@ -714,14 +710,14 @@ function buildSeatMap(svg, opts){
   return { update, seatEls };
 }
 
-/* ================= OWNER CONSOLE (v3.65, the unreserved room) =================
-   The room sells counted units, not chart seats: H- is HOUSE, S- is THE SPLASH
-   ZONE, CS- is THE CHEAP SEATS (wired, dormant until launch). CS- and never C-:
-   the old reserved chart has a real row C (C-1 through C-111), and those are
-   era tickets. Any id that is not H-, S-, or CS- is a reserved-era ticket from
-   the old chart: real, door-scannable, counted separately. Caps, names, and
-   prices arrive from the server (house.json through admin-api), so expanding
-   the Splash Zone or launching THE CHEAP SEATS never needs a console edit. */
+/* ================= OWNER CONSOLE (v3.71, three tiers) =================
+   The room sells counted units, not chart seats: H- is PREMIUM (the key is
+   still "house"), S- is THE SPLASH ZONE, GA- is GENERAL. GA- and never G-:
+   the old reserved chart has a real row G, and those are era tickets, same
+   trap row C taught us. Any id that is not H-, S-, or GA- is a reserved-era
+   ticket from the old chart: real, door-scannable, counted separately.
+   Caps, names, and prices arrive from the server (house.json through
+   admin-api), so cap moves never need a console edit. */
 let TOKEN = null, lastState = { sold: new Set(), held: new Set(), cats: {}, meta: null };
 
 const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
@@ -730,7 +726,7 @@ const call = (action, extra) => fetch(CONFIG.api + "/admin-api", {
   body: JSON.stringify({ action, ...(extra || {}) })
 }).then(async r => ({ ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) }));
 
-const kindOf = id => id.startsWith("H-") ? "house" : id.startsWith("CS-") ? "cheap" : id.startsWith("S-") ? "splash" : "era";
+const kindOf = id => id.startsWith("H-") ? "house" : id.startsWith("GA-") ? "general" : id.startsWith("S-") ? "splash" : "era";
 
 (function gate(){
   const g = $("#gate"), site = $("#site");
@@ -805,7 +801,7 @@ function apply(s){
   lastState = { sold, held, cats, meta };
 
   /* bucket sold by kind; price units from meta, era seats from the old chart */
-  const kSold = { house: 0, splash: 0, cheap: 0, era: 0 };
+  const kSold = { house: 0, splash: 0, general: 0, era: 0 };
   let rev = 0;
   sold.forEach(id => {
     const k = kindOf(id);
@@ -820,15 +816,12 @@ function apply(s){
   $("#countChip").textContent = `${sold.size} SOLD · ${held.size} IN CARTS · ${heldN} HELD`;
 
   const cap = k => (meta && meta.zones[k]) ? meta.zones[k].units : 0;
-  const splashCap = cap("splash"), houseCap = cap("house"), cheapCap = cap("cheap");
+  const splashCap = cap("splash"), houseCap = cap("house"), generalCap = cap("general");
   const splashLeft = Math.max(0, splashCap - kSold.splash);
-  const cheapTile = cheapCap > 0
-    ? `<div class="stat"><b>${kSold.cheap} <span style="font-size:.55em;opacity:.6">of ${cheapCap}</span></b><span>THE CHEAP SEATS</span></div>`
-    : `<div class="stat"><b style="opacity:.55">$19</b><span>THE CHEAP SEATS · wired, not on sale</span></div>`;
   $("#statTiles").innerHTML = `
     <div class="stat"><b>${kSold.splash} <span style="font-size:.55em;opacity:.6">of ${splashCap}</span></b><span>THE SPLASH ZONE · ${splashLeft} left</span></div>
-    <div class="stat"><b>${kSold.house} <span style="font-size:.55em;opacity:.6">of ${houseCap}</span></b><span>HOUSE</span></div>
-    ${cheapTile}
+    <div class="stat"><b>${kSold.house} <span style="font-size:.55em;opacity:.6">of ${houseCap}</span></b><span>PREMIUM</span></div>
+    <div class="stat"><b>${kSold.general} <span style="font-size:.55em;opacity:.6">of ${generalCap}</span></b><span>GENERAL</span></div>
     <div class="stat"><b>${sold.size}</b><span>Sold, every era, the real total</span></div>
     <div class="stat money"><b>${money(rev)}</b><span>Ticket revenue (est · Stripe is truth)</span></div>
     <div class="stat"><b>${kSold.era}</b><span>Reserved-era seats (old chart, still valid)</span></div>`;
@@ -912,7 +905,7 @@ function freeUnits(kind, n){
   /* comp from the top end of the number line, away from where buyers land */
   const m = lastState.meta;
   const total = m.zones[kind].units;
-  const prefix = kind === "house" ? "H-" : kind === "splash" ? "S-" : "CS-";
+  const prefix = kind === "house" ? "H-" : kind === "splash" ? "S-" : "GA-";
   const { sold, held, cats } = lastState;
   const out = [];
   for (let i = total; i >= 1 && out.length < n; i--){

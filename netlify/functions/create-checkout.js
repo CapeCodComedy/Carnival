@@ -56,7 +56,7 @@ exports.handler = async (event) => {
   /* org eligibility + owed (half the ticket price per eligible seat, v3.27;
      v3.51: the 160-seat room: HOUSE and SPLASH both pay the half;
      the accessible flow stays out) */
-  const ORG_TIERS = new Set(["house", "splash"]);
+  const ORG_TIERS = new Set(["house", "splash", "general"]);   /* v3.71: every seat in the house pays the half */
   const ORG_SHARE = HOUSE.orgShare || 0.5;
   let orgEligible = 0, orgOwedCents = 0; const _tc = {};
   if (org && !accessible) for (const id of seats) {

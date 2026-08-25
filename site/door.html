@@ -46,7 +46,7 @@
 <div class="wrap">
   <div class="org">THE 1140A CORPORATION · CREW ONLY</div>
   <h1>DOOR <span>SCAN</span></h1>
-  <p class="sub">One credential type for the whole house: every ticket is a reserved seat. First scan admits and shows the seat; re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
+  <p class="sub">One credential type for the whole house. First scan admits and names the tier (SPLASH ZONE, PREMIUM, GENERAL, or a reserved-era seat); re-scans say when it first came in. Verification is server-side, shared across every door device.</p>
 
   <div class="panel">
     <label for="doorWord">Door word (crew only, ask Max)</label>
@@ -98,6 +98,16 @@ function show(kind, verdict, detail, why){
   d.textContent = new Date().toLocaleTimeString() + " · " + verdict + (detail ? " · " + detail : "");
   log.prepend(d);
 }
+/* v3.71: name the tier loudly so the door can route people on the open floor.
+   H- is PREMIUM (front of house), S- is SPLASH ZONE, GA- is GENERAL (behind),
+   anything else is a reserved-era ticket with a printed old-chart seat. */
+function tierWords(seat){
+  const id = String(seat || "");
+  if (id.startsWith("GA-")) return "GENERAL · behind the front of house · " + id;
+  if (id.startsWith("H-")) return "PREMIUM · front of house · " + id;
+  if (id.startsWith("S-")) return "SPLASH ZONE · front rows · " + id;
+  return "RESERVED-ERA SEAT " + id;
+}
 async function check(raw){
   let code = String(raw || "").trim().toUpperCase();
   if (code.includes("|")) code = (code.split("|").find(p => p.startsWith("CCC-")) || code);
@@ -106,8 +116,8 @@ async function check(raw){
   try {
     const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, door: document.getElementById("doorWord").value.trim() }) });
     const v = await r.json();
-    if (v.verdict === "VALID") show("ok", "VALID · ADMIT", "SEAT " + v.seat);
-    else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", "SEAT " + v.seat, "fine at re-entry, fishy at first entry");
+    if (v.verdict === "VALID") show("ok", "VALID · ADMIT", tierWords(v.seat));
+    else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", tierWords(v.seat), "fine at re-entry, fishy at first entry");
     else if (v.verdict === "LOCKED") show("bad", "LOCKED", "", v.why || "door word missing or wrong");
     else show("bad", "VOID", code, v.why || "not issued by this box office");
   } catch (e) {

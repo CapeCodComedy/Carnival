@@ -7,7 +7,7 @@
   "prices": {
     "house": 66,
     "splash": 88,
-    "cheap": 19
+    "general": 33
   },
   "fee": 3,
   "wheelchair": {
@@ -19,9 +19,9 @@
   "hardHoldSec": 2100,
   "stripeSessionSec": 1800,
   "zones": {
-    "house": "HOUSE",
+    "house": "PREMIUM",
     "splash": "THE SPLASH ZONE",
-    "cheap": "THE CHEAP SEATS"
+    "general": "GENERAL"
   },
   "orgCodes": [
     "COYOTES",
@@ -35,7 +35,15 @@
   "orgShare": 0.5,
   "orgColors": {},
   "discounts": {
-    "CARNIVAL": { "off": 0.2, "tiers": ["house", "splash"], "enabled": true }
+    "CARNIVAL": {
+      "off": 0.2,
+      "tiers": [
+        "house",
+        "splash",
+        "general"
+      ],
+      "enabled": true
+    }
   },
   "merch": {
     "teeBundleCents": 1100,
@@ -1051,1006 +1059,6 @@
       "hold": null,
       "wc": false
     },
-    "H-201": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-202": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-203": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-204": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-205": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-206": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-207": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-208": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-209": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-210": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-211": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-212": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-213": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-214": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-215": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-216": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-217": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-218": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-219": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-220": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-221": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-222": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-223": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-224": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-225": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-226": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-227": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-228": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-229": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-230": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-231": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-232": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-233": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-234": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-235": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-236": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-237": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-238": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-239": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-240": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-241": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-242": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-243": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-244": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-245": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-246": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-247": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-248": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-249": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-250": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-251": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-252": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-253": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-254": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-255": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-256": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-257": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-258": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-259": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-260": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-261": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-262": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-263": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-264": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-265": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-266": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-267": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-268": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-269": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-270": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-271": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-272": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-273": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-274": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-275": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-276": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-277": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-278": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-279": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-280": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-281": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-282": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-283": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-284": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-285": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-286": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-287": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-288": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-289": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-290": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-291": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-292": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-293": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-294": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-295": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-296": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-297": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-298": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-299": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-300": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-301": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-302": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-303": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-304": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-305": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-306": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-307": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-308": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-309": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-310": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-311": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-312": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-313": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-314": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-315": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-316": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-317": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-318": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-319": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-320": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-321": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-322": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-323": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-324": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-325": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-326": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-327": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-328": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-329": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-330": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-331": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-332": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-333": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-334": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-335": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-336": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-337": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-338": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-339": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-340": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-341": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-342": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-343": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-344": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-345": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-346": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-347": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-348": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-349": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-350": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-351": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-352": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-353": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-354": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-355": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-356": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-357": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-358": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-359": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-360": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-361": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-362": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-363": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-364": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-365": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-366": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-367": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-368": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-369": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-370": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-371": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-372": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-373": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-374": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-375": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-376": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-377": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-378": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-379": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-380": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-381": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-382": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-383": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-384": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-385": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-386": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-387": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-388": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-389": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-390": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-391": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-392": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-393": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-394": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-395": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-396": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-397": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-398": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-399": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
-    "H-400": {
-      "zone": "house",
-      "hold": null,
-      "wc": false
-    },
     "S-1": {
       "zone": "splash",
       "hold": null,
@@ -2238,6 +1246,1006 @@
     },
     "S-38": {
       "zone": "splash",
+      "hold": null,
+      "wc": false
+    },
+    "GA-1": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-2": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-3": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-4": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-5": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-6": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-7": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-8": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-9": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-10": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-11": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-12": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-13": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-14": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-15": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-16": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-17": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-18": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-19": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-20": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-21": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-22": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-23": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-24": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-25": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-26": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-27": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-28": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-29": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-30": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-31": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-32": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-33": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-34": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-35": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-36": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-37": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-38": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-39": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-40": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-41": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-42": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-43": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-44": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-45": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-46": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-47": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-48": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-49": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-50": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-51": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-52": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-53": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-54": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-55": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-56": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-57": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-58": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-59": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-60": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-61": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-62": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-63": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-64": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-65": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-66": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-67": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-68": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-69": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-70": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-71": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-72": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-73": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-74": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-75": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-76": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-77": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-78": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-79": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-80": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-81": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-82": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-83": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-84": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-85": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-86": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-87": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-88": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-89": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-90": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-91": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-92": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-93": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-94": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-95": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-96": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-97": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-98": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-99": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-100": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-101": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-102": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-103": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-104": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-105": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-106": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-107": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-108": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-109": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-110": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-111": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-112": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-113": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-114": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-115": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-116": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-117": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-118": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-119": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-120": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-121": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-122": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-123": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-124": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-125": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-126": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-127": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-128": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-129": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-130": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-131": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-132": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-133": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-134": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-135": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-136": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-137": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-138": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-139": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-140": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-141": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-142": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-143": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-144": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-145": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-146": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-147": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-148": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-149": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-150": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-151": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-152": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-153": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-154": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-155": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-156": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-157": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-158": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-159": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-160": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-161": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-162": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-163": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-164": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-165": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-166": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-167": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-168": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-169": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-170": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-171": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-172": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-173": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-174": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-175": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-176": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-177": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-178": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-179": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-180": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-181": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-182": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-183": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-184": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-185": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-186": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-187": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-188": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-189": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-190": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-191": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-192": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-193": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-194": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-195": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-196": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-197": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-198": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-199": {
+      "zone": "general",
+      "hold": null,
+      "wc": false
+    },
+    "GA-200": {
+      "zone": "general",
       "hold": null,
       "wc": false
     }
