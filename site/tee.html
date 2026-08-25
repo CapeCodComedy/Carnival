@@ -49,6 +49,11 @@
         <a class="buy" href="/tickets.html?tee=1">SEATS + TEE</a>
       </div>
     </div>
+    <div id="ltd" style="display:none;margin:40px 0 0">
+      <p class="org" style="letter-spacing:.24em">A REALLY LIMITED EDITION</p>
+      <p class="fine" style="margin:0 0 16px;text-align:center">The Carnival's posters, printed on shirts, one poster at a time.</p>
+      <div id="ltdCards"></div>
+    </div>
     <p class="fine">Saturday, August 29 · Tilden Arts Center · nationally touring stand-up headliners Brendan Sagalow &amp; Mike Cannon, a full hour each, Jason Choi opening · <a href="/" style="color:var(--glow)">1140A.com</a><br>First word on the next ones → <a href="/list.html" style="color:var(--glow)">the 1140A List</a></p>
   </div>
   <script>
@@ -61,6 +66,29 @@
         var b = document.getElementById("buyBtn");
         if (m.teeBuyUrl){ b.href = m.teeBuyUrl; b.removeAttribute("aria-disabled"); }
         else { b.textContent = "MAIL-ORDER OPENS SHORTLY"; b.addEventListener("click", function(e){ e.preventDefault(); }); }
+        /* A REALLY LIMITED EDITION (v3.72): poster tees, data-driven from the
+           room file; a new tee tomorrow is one entry there, no page edit. */
+        var L = m.limited || [];
+        if (L.length){
+          var box = document.getElementById("ltdCards");
+          L.forEach(function(t){
+            var card = document.createElement("div");
+            card.style.margin = "0 0 26px";
+            var live = !!t.buyUrl;
+            card.innerHTML =
+              '<img class="tee" src="' + t.img + '" alt="' + t.name + ' poster tee, The Cape Cod Comedy Carnival">' +
+              '<div class="opt deal" style="margin:12px 0 0">' +
+                '<p class="label">' + t.name + '</p>' +
+                '<p class="price mono">$' + t.price + '</p>' +
+                '<p class="sub">The poster, worn. We ship anywhere; size is picked at checkout.</p>' +
+                (live
+                  ? '<a class="buy" href="' + t.buyUrl + '">PURCHASE</a>'
+                  : '<a class="buy" href="#" aria-disabled="true" onclick="return false">OPENS SHORTLY</a>') +
+              '</div>';
+            box.appendChild(card);
+          });
+          document.getElementById("ltd").style.display = "block";
+        }
       }catch(e){}
     })();
   </script>

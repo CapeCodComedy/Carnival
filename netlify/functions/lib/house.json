@@ -56,7 +56,16 @@
       "XXL"
     ],
     "teeFullCents": 2200,
-    "teeBuyUrl": "https://buy.stripe.com/eVq14n6u3aT201hfPvbII01"
+    "teeBuyUrl": "https://buy.stripe.com/eVq14n6u3aT201hfPvbII01",
+    "limited": [
+      {
+        "id": "magician",
+        "name": "THE MAGICIAN",
+        "price": 38,
+        "img": "/press/thumb-houdin.jpg",
+        "buyUrl": "https://buy.stripe.com/7sY5kD05FaT27tJ0UBbII02"
+      }
+    ]
   },
   "seats": {
     "H-1": {
