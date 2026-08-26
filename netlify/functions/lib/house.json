@@ -45,6 +45,13 @@
       "enabled": true
     }
   },
+  "freeCodes": {
+    "MIDCAPE": {
+      "tier": "general",
+      "limit": 10,
+      "enabled": true
+    }
+  },
   "merch": {
     "teeBundleCents": 1100,
     "teeName": "Limited-edition show tee",

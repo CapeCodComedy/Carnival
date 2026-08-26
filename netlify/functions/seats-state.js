@@ -16,6 +16,15 @@ exports.handler = async () => {
   for (const [code, d] of Object.entries(HOUSE.discounts || {}))
     if (d && d.enabled !== false)
       discounts[crypto.createHash("sha256").update(String(code).toUpperCase()).digest("hex")] = { off: d.off || 0, tiers: d.tiers || [] };
+  /* free-ticket codes (v3.75): same hashed ride; "left" is the live pool so the
+     page can clamp before a doomed checkout. */
+  const freeCodes = {};
+  for (const [code, f] of Object.entries(HOUSE.freeCodes || {}))
+    if (f && f.enabled !== false) {
+      const used = Number(await store._driver.eval(`return redis.call('GET', 'free:' .. ARGV[1]) or '0'`, [code])) || 0;
+      freeCodes[crypto.createHash("sha256").update(String(code).toUpperCase()).digest("hex")] =
+        { tier: f.tier, left: Math.max(0, (f.limit || 0) - used) };
+    }
   return {
     statusCode: 200,
     headers: {
@@ -23,6 +32,6 @@ exports.handler = async () => {
       "Cache-Control": "public, max-age=0, must-revalidate",
       "Netlify-CDN-Cache-Control": "public, s-maxage=8, stale-while-revalidate=30",
     },
-    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: (HOUSE.orgCodesEnabled !== false ? HOUSE.orgCodes : []) || [], orgShare: HOUSE.orgShare || 0.5, orgColors: HOUSE.orgColors || {}, merch: HOUSE.merch || null, discounts }),
+    body: JSON.stringify({ unavailable, sold: s.sold.length, ts: s.ts, orgCodes: (HOUSE.orgCodesEnabled !== false ? HOUSE.orgCodes : []) || [], orgShare: HOUSE.orgShare || 0.5, orgColors: HOUSE.orgColors || {}, merch: HOUSE.merch || null, discounts, freeCodes }),
   };
 };

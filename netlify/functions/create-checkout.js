@@ -3,8 +3,21 @@
    failure after the claim. Hard hold TTL (35 min) ≥ session lifetime (30 min):
    the §5 law, enforced by constants that live in house.json. */
 const store = require("./lib/store");
+const codes = require("./lib/codes");
 const { HOUSE, seat, priceCart } = require("./lib/house");
 const { stripe } = require("./lib/stripe-adapter");
+
+/* free-ticket pool (v3.75): atomic take from a capped counter; -1 = pool spent */
+const LUA_POOL_TAKE = `
+local key = 'free:' .. ARGV[1]
+local limit = tonumber(ARGV[2])
+local want = tonumber(ARGV[3])
+local used = tonumber(redis.call('GET', key) or '0')
+if used + want > limit then return -1 end
+redis.call('INCRBY', key, want)
+return limit - used - want
+`;
+const LUA_POOL_BACK = `redis.call('DECRBY', 'free:' .. ARGV[1], tonumber(ARGV[2])) return 1`;
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "POST" };
@@ -26,9 +39,17 @@ exports.handler = async (event) => {
      is never discounted; the fee stays $3 per ticket, the standing law. */
   const DISCOUNTS = HOUSE.discounts || {};
   const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, tiers: new Set(DISCOUNTS[_raw].tiers || []) } : null;
+  /* free-ticket codes (v3.75): MIDCAPE grants a capped pool of free GENERAL
+     tickets, self-serve, real QR vouchers, no will-call. Free seats pay no
+     ticket price and no fee. A cart that ends at $0 never goes to Stripe:
+     it finalizes on the spot and lands straight on the ticket page. */
+  const FREECODES = HOUSE.freeCodes || {};
+  const freeCfg = (!station && !org && !disc && FREECODES[_raw] && FREECODES[_raw].enabled !== false) ? { code: _raw, tier: FREECODES[_raw].tier, limit: FREECODES[_raw].limit || 0 } : null;
+  const isFreeSeat = (id) => { const s = seat(id); return !!(freeCfg && !s.wc && !accessible && s.zone === freeCfg.tier); };
   const unitCents = (id) => {
     const s = seat(id);
     if (s.wc || accessible) return HOUSE.wheelchair.price * 100;
+    if (isFreeSeat(id)) return 0;
     const full = HOUSE.prices[s.zone] * 100;
     return (disc && disc.tiers.has(s.zone)) ? Math.round(full * (1 - disc.off)) : full;
   };
@@ -76,9 +97,20 @@ exports.handler = async (event) => {
     if (companions.length) await store.adminRelease(companions);
   }
 
+  /* v3.75: take from the free pool BEFORE claiming; hand it back on any failure */
+  const freeSeatIds = seats.filter(isFreeSeat);
+  if (freeCfg && freeSeatIds.length) {
+    const left = await store._driver.eval(LUA_POOL_TAKE, [freeCfg.code, freeCfg.limit, freeSeatIds.length]);
+    if (Number(left) < 0) return resp(409, { err: "That code has been fully claimed. Tickets remain at their regular prices." });
+  }
+  const poolBack = async () => {
+    if (freeCfg && freeSeatIds.length) { try { await store._driver.eval(LUA_POOL_BACK, [freeCfg.code, freeSeatIds.length]); } catch (e) {} }
+  };
+
   /* THE claim, hard hold, all seats or none */
   const claim = await store.claim(holder, seats, HOUSE.hardHoldSec);
   if (!claim.ok) {
+    await poolBack();
     if (accessible) { // restore companion hold if the claim lost
       for (const id of seats.filter(id => !seat(id).wc)) await store.adminHold([id], "companion");
     }
@@ -86,6 +118,24 @@ exports.handler = async (event) => {
   }
 
   const siteUrl = process.env.SITE_URL || "";
+  const ticketCentsFinal = seats.reduce((a, id) => a + unitCents(id), 0);
+  const feeCents = priced.feeCents - freeSeatIds.length * Math.round(HOUSE.fee * 100);   /* free seats pay no fee */
+  const totalDue = ticketCentsFinal + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0);
+
+  /* pure-free order: nothing to charge, so no Stripe at all. Finalize on the
+     spot, mint real door codes, and send the buyer straight to the ticket
+     page: the voucher, no will-call. */
+  if (totalDue === 0) {
+    const fin = await store.finalize(holder, seats);
+    if (!fin.ok) { await poolBack(); await store.release(holder, seats); return resp(409, { err: "seat taken", seat: fin.seat }); }
+    const sid = "free_" + holder;
+    const issued = {};
+    for (const id of seats) issued[id] = codes.gen();
+    await store.putOrder(sid, { holder, seats, zone: priced.zone, free: freeCfg ? freeCfg.code : "", status: "sold", codes: issued, soldAt: Date.now() });
+    for (const [seatId, code] of Object.entries(issued)) await store.putOrder("code_" + code, { seat: seatId, sid });
+    return resp(200, { url: `${siteUrl}/success.html?sid=${encodeURIComponent(sid)}`, sid });
+  }
+
   try {
     /* v3.55: mixed orders, each line item carries its own kind's name.
        v3.69: discounted seats carry the code on the line, so the receipt
@@ -94,23 +144,23 @@ exports.handler = async (event) => {
       const s = seat(id);
       const cents = unitCents(id);
       const discounted = disc && !s.wc && !accessible && disc.tiers.has(s.zone);
+      const freeSeat = isFreeSeat(id);
       return {
         quantity: 1,
         price_data: {
           currency: "usd",
           unit_amount: cents,
-          product_data: { name: `${HOUSE.zones[s.zone]}, unreserved admission${s.wc ? " (wheelchair space)" : ""}${discounted ? ` (code ${disc.code}, ${Math.round(disc.off * 100)}% off)` : ""}` },
+          product_data: { name: `${HOUSE.zones[s.zone]}, unreserved admission${s.wc ? " (wheelchair space)" : ""}${freeSeat ? ` (code ${freeCfg.code}, free)` : discounted ? ` (code ${disc.code}, ${Math.round(disc.off * 100)}% off)` : ""}` },
         },
       };
     });
-    const ticketCentsFinal = seats.reduce((a, id) => a + unitCents(id), 0);
     const savedCents = priced.ticketCents - ticketCentsFinal;
-    const feeCents = priced.feeCents;   /* v3.28: station codes are tee + attribution only, fee charged normally */
-    if (feeCents > 0) line_items.push({
-      quantity: seats.length,   /* v3.59: $3 per ticket, the standing law */
+    const feePaying = seats.length - freeSeatIds.length;   /* v3.75: free seats pay no fee */
+    if (feeCents > 0 && feePaying > 0) line_items.push({
+      quantity: feePaying,   /* v3.59: $3 per ticket, the standing law */
       price_data: {
         currency: "usd",
-        unit_amount: Math.round(feeCents / seats.length),
+        unit_amount: Math.round(feeCents / feePaying),
         product_data: { name: "Card processing fee, $3 per ticket (the 1140A Corporation keeps none of it)" },
       },
     });
@@ -130,18 +180,19 @@ exports.handler = async (event) => {
       expires_at: Math.floor(Date.now() / 1000) + HOUSE.stripeSessionSec,
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/?canceled=1`,
-      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" },
-      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" } },
+      metadata: { seats: seats.join(","), holder, accessible: accessible ? "1" : "0", station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", free: freeCfg ? freeCfg.code : "", free_seats: freeSeatIds.length ? String(freeSeatIds.length) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" },
+      payment_intent_data: { metadata: { seats: seats.join(","), holder, station: station || "", org: org || "", org_eligible: String(orgEligible), org_tiers: orgTiers, org_owed: orgOwed, discount: disc ? disc.code : "", discount_saved: disc ? (savedCents / 100).toFixed(2) : "", free: freeCfg ? freeCfg.code : "", free_seats: freeSeatIds.length ? String(freeSeatIds.length) : "", src: src || "", tee_qty: tee ? String(tee.qty) : "", tee_size: tee ? tee.size : "" } },
     });
 
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
       totalCents: ticketCentsFinal + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
-      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, src, tee,
+      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, free: freeCfg ? freeCfg.code : null, src, tee,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });
   } catch (e) {
+    await poolBack();
     await store.release(holder, seats);            // never leave orphaned holds on failure
     if (accessible) for (const id of seats.filter(id => !seat(id).wc)) await store.adminHold([id], "companion");
     return resp(502, { err: "payment session failed, seats released", detail: String(e.message || e).slice(0, 200) });

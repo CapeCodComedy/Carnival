@@ -816,7 +816,9 @@ async function refreshState(first){
     if (Array.isArray(s.orgCodes)) ORG_CODES = s.orgCodes.map(c => String(c).toUpperCase());
     if (s.orgShare) ORG_SHARE = s.orgShare;
     if (s.orgColors && typeof s.orgColors === "object") ORG_COLORS = s.orgColors;
-    if (s.discounts && typeof s.discounts === "object") { DISCOUNTS = s.discounts; updateDiscount(); }
+    if (s.discounts && typeof s.discounts === "object") DISCOUNTS = s.discounts;
+    if (s.freeCodes && typeof s.freeCodes === "object") FREECODES = s.freeCodes;
+    if ((s.discounts && typeof s.discounts === "object") || (s.freeCodes && typeof s.freeCodes === "object")) updateDiscount();
     if (s.merch && typeof s.merch === "object") { MERCH = s.merch; initTeeRow(); }
     unavailable = new Set(s.unavailable || []);
     $("#liveNote").textContent = `Live box office · ${s.sold} spoken for`;
@@ -835,6 +837,10 @@ function bump(kind, delta){
     const free = freeUnits(kind).length;
     if (qty[kind] >= free){
       toast(free ? `Only ${free} left at ${CONFIG.zones[kind].name}.` : `${CONFIG.zones[kind].name} is spoken for.`);
+      return;
+    }
+    if (freeActive && kind === freeActive.tier && qty[kind] >= freeActive.left){
+      toast(freeActive.left ? `Only ${freeActive.left} free tickets remain on that code.` : "That code has been fully claimed.");
       return;
     }
   }
@@ -856,21 +862,24 @@ function renderCart(){
   $("#splashQty").textContent = qty.splash;
   $("#generalQty").textContent = qty.general;
   const list = $("#cartList"); list.innerHTML = "";
-  let tickets = 0, count = 0;
+  let tickets = 0, count = 0, freeCount = 0;
   ["splash", "house", "general"].forEach(k => {
     if (!qty[k]) return;
     /* v3.69: a live discount code reprices its tiers right in the stub,
-       to the cent of what Stripe will charge */
-    const cut = discActive && (discActive.tiers || []).includes(k);
-    const p = cut ? Math.round(CONFIG.prices[k] * 100 * (1 - discActive.off)) / 100 : CONFIG.prices[k];
+       to the cent of what Stripe will charge. v3.75: a free code zeroes its
+       tier, ticket and fee both. */
+    const gratis = freeActive && freeActive.tier === k;
+    const cut = !gratis && discActive && (discActive.tiers || []).includes(k);
+    const p = gratis ? 0 : cut ? Math.round(CONFIG.prices[k] * 100 * (1 - discActive.off)) / 100 : CONFIG.prices[k];
     tickets += p * qty[k]; count += qty[k];
+    if (gratis) freeCount += qty[k];
     const li = document.createElement("li");
-    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span>${cut ? `<span class="tag">${Math.round(discActive.off * 100)}% off</span>` : ""}</span>
+    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span>${gratis ? `<span class="tag">free</span>` : cut ? `<span class="tag">${Math.round(discActive.off * 100)}% off</span>` : ""}</span>
       <span>${money(p * qty[k])}</span>`;
     list.appendChild(li);
   });
   const sc = stationCode();
-  const fee = count * CONFIG.fee;   /* v3.59: $3 per ticket, the standing law */
+  const fee = (count - freeCount) * CONFIG.fee;   /* v3.59: $3 per ticket, the standing law; v3.75: free seats pay none */
   const oc = orgCode();
   const orgNote = $("#orgNote");
   if (orgNote){
@@ -894,6 +903,11 @@ function renderCart(){
       orgNote.style.color = STATION_INK;
       orgNote.style.display = "block";
       orgNote.innerHTML = `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off ${every ? "every ticket" : names + " tickets"} in this order.`;
+    } else if (freeActive && count){
+      orgNote.style.borderColor = ORG_INK_DEFAULT;
+      orgNote.style.color = ORG_INK_DEFAULT;
+      orgNote.style.display = "block";
+      orgNote.innerHTML = `<b>CODE ${freeActive.code} APPLIED:</b> ${CONFIG.zones[freeActive.tier].name} tickets are free with this code, no fee either; ${freeActive.left} remain on it. Your QR tickets appear the moment you lock in.`;
     } else orgNote.style.display = "none";
   }
   $("#cartEmpty").style.display = count ? "none" : "block";
@@ -970,7 +984,8 @@ function rawCode(){
    so the code words never appear in any public payload or page source.
    The server reprices independently; this is display truth only. ---------- */
 let DISCOUNTS = {};
-let discActive = null, _discSeq = 0;
+let FREECODES = {};   /* v3.75: free-ticket codes, hashed like discounts; value carries tier + live pool */
+let discActive = null, freeActive = null, _discSeq = 0;
 async function sha256Hex(txt){
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
@@ -978,16 +993,23 @@ async function sha256Hex(txt){
 async function updateDiscount(){
   const v = (rawCode() || "").toUpperCase();
   const seq = ++_discSeq;
-  let hit = null;
-  if (v && !STATION_CODES.includes(v) && !ORG_CODES.includes(v) && Object.keys(DISCOUNTS).length){
+  let dHit = null, fHit = null;
+  if (v && !STATION_CODES.includes(v) && !ORG_CODES.includes(v) && (Object.keys(DISCOUNTS).length || Object.keys(FREECODES).length)){
     try {
       const h = await sha256Hex(v);
-      if (DISCOUNTS[h]) hit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [] };
+      if (DISCOUNTS[h]) dHit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [] };
+      else if (FREECODES[h]) fHit = { code: v, tier: FREECODES[h].tier, left: FREECODES[h].left || 0 };
     } catch (e) {}
   }
   if (seq !== _discSeq) return;   /* a newer keystroke superseded this check */
-  const changed = (hit ? hit.code : null) !== (discActive ? discActive.code : null);
-  discActive = hit;
+  const changed = (dHit ? dHit.code : null) !== (discActive ? discActive.code : null)
+               || (fHit ? fHit.code : null) !== (freeActive ? freeActive.code : null)
+               || !!(fHit && freeActive && fHit.left !== freeActive.left);
+  discActive = dHit; freeActive = fHit;
+  if (freeActive && qty[freeActive.tier] > freeActive.left){
+    qty[freeActive.tier] = freeActive.left;
+    toast(freeActive.left ? `Only ${freeActive.left} free tickets remain on that code.` : "That code has been fully claimed.");
+  }
   if (changed) renderCart();
 }
 
