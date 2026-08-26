@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Find My Tickets: The Cape Cod Comedy Carnival</title>
+<meta name="description" content="Closed the page with your tickets? Type the email you bought with and your Cape Cod Comedy Carnival tickets come right back, QR codes and all.">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800&family=Archivo:wght@400;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#171a2b; --bone:#d8d3c5; --glow:#f5b445; --dim:#8d8fa3; }
+  body{ margin:0; background:var(--ink); color:var(--bone); font-family:'Archivo',sans-serif; }
+  .wrap{ max-width:560px; margin:0 auto; padding:30px 18px 50px; }
+  .org{ font-family:'Spline Sans Mono',monospace; font-size:11px; letter-spacing:.3em; color:var(--dim); margin:0 0 10px; text-align:center; }
+  h1{ font-family:'Big Shoulders','Archivo',sans-serif; font-weight:800; font-size:clamp(36px,8vw,52px); line-height:.98; margin:0 0 14px; text-align:center; }
+  h1 .amp{ color:var(--glow); }
+  .story{ line-height:1.6; margin:0 0 18px; text-align:center; }
+  .row{ display:flex; gap:8px; }
+  input{ flex:1; min-width:0; background:rgba(255,255,255,.04); border:1px solid #31365f; border-radius:10px; color:var(--bone); padding:14px 12px; font-size:16px; font-family:'Archivo',sans-serif; }
+  button{ border:0; border-radius:10px; padding:14px 18px; font-family:'Big Shoulders','Archivo',sans-serif; font-weight:800; font-size:18px; letter-spacing:.06em; background:var(--glow); color:var(--ink); cursor:pointer; }
+  #out{ margin:22px 0 0; }
+  .hit{ display:block; text-decoration:none; border:2px solid var(--glow); background:rgba(245,180,69,.06); border-radius:12px; padding:16px 14px; margin:0 0 12px; color:var(--bone); }
+  .hit b{ font-family:'Big Shoulders','Archivo',sans-serif; font-weight:800; font-size:22px; letter-spacing:.04em; color:var(--glow); }
+  .hit span{ display:block; font-size:13px; color:var(--dim); margin-top:4px; }
+  .none{ border:1px solid #31365f; border-radius:12px; padding:16px 14px; color:var(--dim); line-height:1.5; }
+  .fine{ font-size:12.5px; color:var(--dim); margin:20px 0 0; line-height:1.5; text-align:center; }
+  .mono{ font-family:'Spline Sans Mono',monospace; }
+</style></head>
+<body>
+  <div class="wrap">
+    <p class="org">THE 1140A CORPORATION · CAPE COD</p>
+    <h1>FIND MY <span class="amp">TICKETS</span></h1>
+    <p class="story">Closed the page before saving your tickets? No problem. Type the email you used when you bought, and they come right back, QR codes and all.</p>
+    <div class="row">
+      <input id="em" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="The email you bought with">
+      <button id="go">FIND</button>
+    </div>
+    <div id="out"></div>
+    <p class="fine">Your QR codes are your entry: show them on your phone at the door, or print the ticket page from a computer. Trouble? Email <span class="mono">info@1140A.com</span> and we'll sort it personally.<br>Saturday, August 29 · 7:00 PM · Tilden Arts Center · <a href="/" style="color:var(--glow)">1140A.com</a></p>
+  </div>
+  <script>
+    var out = document.getElementById("out");
+    async function find(){
+      var em = document.getElementById("em").value.trim();
+      if (!em) return;
+      out.innerHTML = '<div class="none">Looking&hellip;</div>';
+      try {
+        var r = await fetch("/api/my-tickets?email=" + encodeURIComponent(em), { cache: "no-store" });
+        var d = await r.json();
+        if (!r.ok){ out.innerHTML = '<div class="none">' + (d.err || "Something hiccuped. Try again.") + '</div>'; return; }
+        if (!d.found){ out.innerHTML = '<div class="none">No tickets found under that email. Check the spelling, try any other email you might have used, or write to info@1140A.com and we\'ll find them by hand.</div>'; return; }
+        out.innerHTML = d.orders.map(function(o){
+          var when = o.when ? new Date(o.when).toLocaleDateString() : "";
+          return '<a class="hit" href="/success.html?sid=' + encodeURIComponent(o.sid) + '"><b>OPEN MY TICKETS &rarr;</b><span>' + o.tickets + (o.tickets === 1 ? " ticket" : " tickets") + (when ? " · bought " + when : "") + '</span></a>';
+        }).join("");
+      } catch (e) {
+        out.innerHTML = '<div class="none">Connection hiccup. Try again in a moment.</div>';
+      }
+    }
+    document.getElementById("go").addEventListener("click", find);
+    document.getElementById("em").addEventListener("keydown", function(e){ if (e.key === "Enter") find(); });
+  </script>
+</body></html>
