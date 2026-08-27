@@ -54,6 +54,14 @@ exports.handler = async (event) => {
     const order = await store.getOrder(obj.id);
     if (order && order.status === "pending") {
       await store.release(order.holder, order.seats);
+      /* v3.77: an abandoned cart gives back what it borrowed. A mixed free-code
+         cart returns its free tickets to the pool; a single-use code un-burns. */
+      if (order.free && order.freeSeats) {
+        try { await store._driver.eval(`redis.call('DECRBY', 'free:' .. ARGV[1], tonumber(ARGV[2])) return 1`, [order.free, order.freeSeats]); } catch (e) {}
+      }
+      if (order.once) {
+        try { await store._driver.eval(`redis.call('DEL', 'once:' .. ARGV[1]) return 1`, [order.once]); } catch (e) {}
+      }
       order.status = "expired";
       await store.putOrder(obj.id, order);
     }

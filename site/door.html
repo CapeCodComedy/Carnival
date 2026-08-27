@@ -106,7 +106,19 @@ function tierWords(seat){
   if (id.startsWith("GA-")) return "GENERAL · behind the front of house · " + id;
   if (id.startsWith("H-")) return "PREMIUM · front of house · " + id;
   if (id.startsWith("S-")) return "SPLASH ZONE · front rows · " + id;
+  if (id.startsWith("RS-")) return "RESERVED CHAIR · " + id;
   return "RESERVED-ERA SEAT " + id;
+}
+/* v3.77: guest tickets (comps, winners, crew, will-call) announce the guest's
+   name and any chair label, so the door can walk them straight to their spot. */
+function scanWords(v){
+  let base = tierWords(v.seat);
+  if (v.guest){
+    if (String(v.seat || "").startsWith("RS-") && v.guest.label) base = "RESERVED · " + v.guest.label.toUpperCase();
+    else if (v.guest.label) base += " · " + v.guest.label.toUpperCase();
+    if (v.guest.name) base += " · GUEST: " + v.guest.name.toUpperCase();
+  }
+  return base;
 }
 async function check(raw){
   let code = String(raw || "").trim().toUpperCase();
@@ -116,8 +128,8 @@ async function check(raw){
   try {
     const r = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, door: document.getElementById("doorWord").value.trim() }) });
     const v = await r.json();
-    if (v.verdict === "VALID") show("ok", "VALID · ADMIT", tierWords(v.seat));
-    else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", tierWords(v.seat), "fine at re-entry, fishy at first entry");
+    if (v.verdict === "VALID") show("ok", "VALID · ADMIT", scanWords(v));
+    else if (v.verdict === "ALREADY IN") show("dupe", "ALREADY IN", scanWords(v), "fine at re-entry, fishy at first entry");
     else if (v.verdict === "LOCKED") show("bad", "LOCKED", "", v.why || "door word missing or wrong");
     else show("bad", "VOID", code, v.why || "not issued by this box office");
   } catch (e) {

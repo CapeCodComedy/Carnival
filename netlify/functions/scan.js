@@ -22,8 +22,10 @@ exports.handler = async (event) => {
   const order = rec.sid ? await store.getOrder(rec.sid) : null;
   if (order && String(order.status || "").startsWith("refunded"))
     return resp({ verdict: "VOID", seat: rec.seat, why: "order was refunded, this ticket is no longer live" });
+  /* v3.77: guest tickets announce who they were issued to and any chair label */
+  const guest = (order && order.guest) ? { name: (order.buyer && order.buyer.name) || "", label: order.label || "" } : null;
   const first = await store.onceEvent("scan_" + code, 7776000);
-  if (!first) return resp({ verdict: "ALREADY IN", seat: rec.seat });
-  return resp({ verdict: "VALID", seat: rec.seat });
+  if (!first) return resp({ verdict: "ALREADY IN", seat: rec.seat, guest });
+  return resp({ verdict: "VALID", seat: rec.seat, guest });
 };
 const resp = obj => ({ statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(obj) });

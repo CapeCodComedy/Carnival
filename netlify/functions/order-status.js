@@ -11,6 +11,10 @@ exports.handler = async (event) => {
     body: JSON.stringify({
       status: o.status, seats: o.seats, zone: o.zone, totalCents: o.totalCents,
       feeCents: o.feeCents, codes: o.codes || null, accessible: !!o.accessible,
+      /* v3.77: guest tickets carry a name, an optional chair label, and an
+         optional money note ("PAID AT WILL-CALL", "FACE VALUE $66", his words) */
+      guest: !!o.guest, name: o.guest && o.buyer ? o.buyer.name : undefined,
+      label: (o.guest && o.label) || undefined, note: (o.guest && o.note) || undefined,
     }),
   };
 };

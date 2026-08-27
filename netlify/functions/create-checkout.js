@@ -19,6 +19,17 @@ return limit - used - want
 `;
 const LUA_POOL_BACK = `redis.call('DECRBY', 'free:' .. ARGV[1], tonumber(ARGV[2])) return 1`;
 
+/* single-use codes (v3.77): a code that works for exactly ONE checkout, ever.
+   Burn is atomic at checkout creation; an expired unpaid session un-burns it
+   (webhook), a completed payment keeps it burned for good. */
+const LUA_ONCE_TAKE = `
+local key = 'once:' .. ARGV[1]
+if tonumber(redis.call('GET', key) or '0') >= 1 then return -1 end
+redis.call('INCR', key)
+return 0
+`;
+const LUA_ONCE_BACK = `redis.call('DEL', 'once:' .. ARGV[1]) return 1`;
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "POST" };
   let body;
@@ -38,7 +49,16 @@ exports.handler = async (event) => {
      Station and org codes win the field if they match; the accessible flow
      is never discounted; the fee stays $3 per ticket, the standing law. */
   const DISCOUNTS = HOUSE.discounts || {};
-  const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, tiers: new Set(DISCOUNTS[_raw].tiers || []) } : null;
+  const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, tiers: new Set(DISCOUNTS[_raw].tiers || []), once: !!DISCOUNTS[_raw].once, maxSeats: DISCOUNTS[_raw].maxSeats || 0 } : null;
+  /* v3.77: single-use codes are tier-locked and size-locked, server-enforced */
+  if (disc && disc.once) {
+    if (accessible) return resp(400, { err: "That code does not combine with the accessible flow. Book the accessible seats plain, they are already the low price." });
+    if (disc.maxSeats && seats.length > disc.maxSeats) return resp(400, { err: "That code covers one ticket, or two, no more." });
+    for (const id of seats) {
+      const s = seat(id);
+      if (!s || s.wc || !disc.tiers.has(s.zone)) return resp(400, { err: "That code covers Splash Zone and Premium tickets only. Take the others out of the order to use it." });
+    }
+  }
   /* free-ticket codes (v3.75): MIDCAPE grants a capped pool of free GENERAL
      tickets, self-serve, real QR vouchers, no will-call. Free seats pay no
      ticket price and no fee. A cart that ends at $0 never goes to Stripe:
@@ -103,8 +123,14 @@ exports.handler = async (event) => {
     const left = await store._driver.eval(LUA_POOL_TAKE, [freeCfg.code, freeCfg.limit, freeSeatIds.length]);
     if (Number(left) < 0) return resp(409, { err: "That code has been fully claimed. Tickets remain at their regular prices." });
   }
+  /* v3.77: burn a single-use code atomically; -1 means someone already used it */
+  if (disc && disc.once) {
+    const t = await store._driver.eval(LUA_ONCE_TAKE, [disc.code]);
+    if (Number(t) < 0) return resp(409, { err: "That code has already been used. Each one works exactly once." });
+  }
   const poolBack = async () => {
     if (freeCfg && freeSeatIds.length) { try { await store._driver.eval(LUA_POOL_BACK, [freeCfg.code, freeSeatIds.length]); } catch (e) {} }
+    if (disc && disc.once) { try { await store._driver.eval(LUA_ONCE_BACK, [disc.code]); } catch (e) {} }
   };
 
   /* THE claim, hard hold, all seats or none */
@@ -187,7 +213,7 @@ exports.handler = async (event) => {
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
       totalCents: ticketCentsFinal + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
-      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, free: freeCfg ? freeCfg.code : null, src, tee,
+      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, free: freeCfg ? freeCfg.code : null, freeSeats: freeSeatIds.length || 0, once: (disc && disc.once) ? disc.code : null, src, tee,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });

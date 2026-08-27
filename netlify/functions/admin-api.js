@@ -112,6 +112,112 @@ exports.handler = async (event) => {
     return ok({ sold: seats, codes: issued, sid: "comp_" + holder });   // sid → /success.html?sid=… is the printable ticket
   }
 
+  if (action === "guest") {
+    /* THE GUEST BOOK (v3.77): named tickets for comps, winners, crew, and
+       will-call holds. Two kinds: a zone kind eats real sellable units
+       (top of the number line, like comps always did); kind "reserved" mints
+       off-book RS- ids that live outside the sale entirely, for chairs that
+       were never in the online count (taped-off rows, will-call pairs).
+       Every guest ticket scans at the door like any sale. */
+    const name = String(body.name || "").trim().replace(/\s+/g, " ").slice(0, 60);
+    const email = String(body.email || "").trim().toLowerCase().slice(0, 120) || null;
+    const label = String(body.label || "").trim().slice(0, 60) || null;
+    const note = String(body.note || "").trim().slice(0, 80) || null;
+    const kind = String(body.kind || "");
+    const qty = Math.max(1, Math.min(10, parseInt(body.qty, 10) || 1));
+    if (!name) return ok({ err: "a guest name is required" });
+    if (kind !== "reserved" && !HOUSE.zones[kind]) return ok({ err: "unknown kind" });
+
+    let ids = [];
+    if (kind === "reserved") {
+      /* off-book ids from a counter; skip numbers carrying the ill-omen digit */
+      while (ids.length < qty) {
+        const n = Number(await store._driver.eval(`return redis.call('INCR', 'guest:rs')`, ["_"]));
+        if (!String(n).includes("4")) ids.push("RS-" + n);
+      }
+    } else {
+      const s = await store.state();
+      const taken = new Set([...s.sold, ...s.held, ...Object.keys(s.adminHolds)]);
+      const prefix = kind === "house" ? "H-" : kind === "splash" ? "S-" : "GA-";
+      let total = 0;
+      for (const st of Object.values(HOUSE.seats)) if (!st.wc && st.zone === kind) total++;
+      for (let i = total; i >= 1 && ids.length < qty; i--) {
+        const id = prefix + i;
+        if (!taken.has(id)) ids.push(id);
+      }
+      if (ids.length < qty) return ok({ err: `only ${ids.length} open units in ${HOUSE.zones[kind]}` });
+      const holder = "GUEST-" + Date.now();
+      const c = await store.claim(holder, ids, 60);
+      if (!c.ok) return ok({ err: "not claimable", seat: c.seat });
+      await store.finalize(holder, ids);
+    }
+
+    const rand = () => { const A = "235689ACDEFHJKMNPRTUVWXY"; let o = ""; const b = require("crypto").randomBytes(10); for (const x of b) o += A[x % A.length]; return o; };
+    const sid = "guest_" + rand();
+    const issued = Object.fromEntries(ids.map(id => [id, codes.gen()]));
+    await store.putOrder(sid, {
+      seats: ids, zone: kind, status: "sold", codes: issued, comp: true, guest: true,
+      buyer: { name, email }, namekey: name.toLowerCase(), label, note, soldAt: Date.now(),
+    });
+    for (const [seatId, code] of Object.entries(issued))
+      await store.putOrder("code_" + code, { seat: seatId, sid });
+    return ok({ sid, seats: ids, codes: issued });
+  }
+
+  if (action === "guests") {
+    /* the whole guest book, for the console list and the one-press print run */
+    const sids = (await store._driver.eval(`
+local keys = redis.call('KEYS', 'order:guest_*')
+local out = {}
+for i = 1, #keys do out[#out + 1] = string.sub(keys[i], 7) end
+return out
+`, ["_"])) || [];
+    const guests = [];
+    for (const sid of sids) {
+      const o = await store.getOrder(sid);
+      if (o && o.guest) guests.push({
+        sid, name: (o.buyer && o.buyer.name) || "", email: (o.buyer && o.buyer.email) || null,
+        label: o.label || null, note: o.note || null, kind: o.zone, seats: o.seats || [],
+        codes: o.codes || {}, soldAt: o.soldAt || 0, voided: String(o.status || "").startsWith("refunded"),
+      });
+    }
+    guests.sort((a, b) => (b.soldAt || 0) - (a.soldAt || 0));
+    return ok({ guests });
+  }
+
+  if (action === "guestvoid") {
+    /* undo a mistaken guest entry: reopen any real units and kill the codes */
+    const o = await store.getOrder(String(body.sid || ""));
+    if (!o || !o.guest) return ok({ err: "no such guest order" });
+    if (String(o.status || "").startsWith("refunded")) return ok({ err: "already void" });
+    const real = (o.seats || []).filter(id => !id.startsWith("RS-"));
+    if (real.length) await store.unsell(real);
+    o.status = "refunded_guestvoid";
+    await store.putOrder(String(body.sid), o);
+    return ok({ voided: body.sid, reopened: real.length });
+  }
+
+  if (action === "codes") {
+    /* the code cupboard: every live code word with its live state, for the
+       owner's eyes only; the public site sees only hashes */
+    const out = [];
+    for (const [w, d] of Object.entries(HOUSE.discounts || {})) {
+      if (!d || d.enabled === false) continue;
+      if (d.once) {
+        const used = Number(await store._driver.eval(`return redis.call('GET', 'once:' .. ARGV[1]) or '0'`, [w])) || 0;
+        out.push({ word: w, kind: "single-use 50%", state: used >= 1 ? "USED" : "unused" });
+      } else out.push({ word: w, kind: `${Math.round((d.off || 0) * 100)}% off`, state: "open" });
+    }
+    for (const [w, f] of Object.entries(HOUSE.freeCodes || {})) {
+      if (!f || f.enabled === false) continue;
+      const used = Number(await store._driver.eval(`return redis.call('GET', 'free:' .. ARGV[1]) or '0'`, [w])) || 0;
+      out.push({ word: w, kind: `free ${HOUSE.zones[f.tier] || f.tier}`, state: `${Math.max(0, (f.limit || 0) - used)} of ${f.limit} left` });
+    }
+    for (const w of ["Y101", "FRANK", "PIXY"]) out.push({ word: w, kind: "station, fee waived + tee", state: "open" });
+    for (const w of (HOUSE.orgCodesEnabled !== false ? HOUSE.orgCodes || [] : [])) out.push({ word: w, kind: "org, half to them", state: "open" });
+    return ok({ codes: out });
+  }
+
   if (action === "waitlist") {
     /* singlet demand poll: per-corner + per-section tallies + entries, newest first.
        Rows are "choice|tier|ts"; legacy rows "choice|ts" read as tier ANY. */

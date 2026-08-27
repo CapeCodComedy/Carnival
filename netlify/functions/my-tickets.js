@@ -24,12 +24,32 @@ end
 return out
 `;
 
-exports.handler = async (event) => {
-  const email = String((event.queryStringParameters || {}).email || "").trim().toLowerCase();
-  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120)
-    return resp(400, { err: "a valid email address is required" });
+/* v3.77: guest tickets (comps, winners, crew) can be found by the NAME they
+   were issued under, since some guests have no email on file. Name lookup
+   matches GUEST orders only; paid orders stay email-only on purpose, because
+   a name is guessable and a paid ticket is money. */
+const LUA_FIND_NAME = `
+local needle = '"namekey":"' .. string.lower(ARGV[1]) .. '"'
+local keys = redis.call('KEYS', 'order:guest_*')
+local out = {}
+for i = 1, #keys do
+  local v = redis.call('GET', keys[i])
+  if v and string.find(v, needle, 1, true) and string.find(v, '"status":"sold"', 1, true) then
+    out[#out + 1] = string.sub(keys[i], 7)
+  end
+end
+return out
+`;
 
-  const sids = (await store._driver.eval(LUA_FIND, [email])) || [];
+exports.handler = async (event) => {
+  const q = String((event.queryStringParameters || {}).email || "").trim();
+  const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(q);
+  const nameKey = q.toLowerCase().replace(/\s+/g, " ");
+  const isName = !isEmail && /^[a-z][a-z .'-]{1,59}$/.test(nameKey);
+  if (!q || q.length > 120 || (!isEmail && !isName))
+    return resp(400, { err: "type the email you bought with, or the full name your tickets were issued under" });
+
+  const sids = (await store._driver.eval(isEmail ? LUA_FIND : LUA_FIND_NAME, [isEmail ? q.toLowerCase() : nameKey])) || [];
   const orders = [];
   for (const sid of sids) {
     const o = await store.getOrder(sid);

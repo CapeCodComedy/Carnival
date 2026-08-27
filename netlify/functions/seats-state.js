@@ -14,8 +14,16 @@ exports.handler = async () => {
      public payload; the client hashes what the buyer types and matches. */
   const discounts = {};
   for (const [code, d] of Object.entries(HOUSE.discounts || {}))
-    if (d && d.enabled !== false)
-      discounts[crypto.createHash("sha256").update(String(code).toUpperCase()).digest("hex")] = { off: d.off || 0, tiers: d.tiers || [] };
+    if (d && d.enabled !== false) {
+      const entry = { off: d.off || 0, tiers: d.tiers || [] };
+      /* v3.77: single-use codes also carry their live burned state, so the page
+         can say "already used" before a doomed checkout. Hashed like the rest. */
+      if (d.once) {
+        const used = Number(await store._driver.eval(`return redis.call('GET', 'once:' .. ARGV[1]) or '0'`, [code])) || 0;
+        entry.once = true; entry.maxSeats = d.maxSeats || 2; entry.left = used >= 1 ? 0 : 1;
+      }
+      discounts[crypto.createHash("sha256").update(String(code).toUpperCase()).digest("hex")] = entry;
+    }
   /* free-ticket codes (v3.75): same hashed ride; "left" is the live pool so the
      page can clamp before a doomed checkout. */
   const freeCodes = {};

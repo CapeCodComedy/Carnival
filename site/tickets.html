@@ -844,6 +844,16 @@ function bump(kind, delta){
       toast(freeActive.left ? `Only ${freeActive.left} free tickets remain on that code.` : "That code has been fully claimed.");
       return;
     }
+    /* v3.77: a single-use code keeps the order inside its own shape */
+    if (discActive && discActive.once){
+      if (!(discActive.tiers || []).includes(kind)){
+        toast("That code covers Splash Zone and Premium only. Clear the code box to buy other tickets."); return;
+      }
+      const total = (discActive.tiers || []).reduce((a, k) => a + (qty[k] || 0), 0);
+      if (discActive.maxSeats && total >= discActive.maxSeats){
+        toast("That code covers one ticket, or two, no more."); return;
+      }
+    }
   }
   qty[kind] = Math.max(0, qty[kind] + delta);
   renderCart();
@@ -903,7 +913,9 @@ function renderCart(){
       orgNote.style.borderColor = STATION_INK;
       orgNote.style.color = STATION_INK;
       orgNote.style.display = "block";
-      orgNote.innerHTML = `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off ${every ? "every ticket" : names + " tickets"} in this order.`;
+      orgNote.innerHTML = discActive.once
+        ? `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off one or two tickets, ${names} only, and it works exactly once. The $3 fee stays.`
+        : `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off ${every ? "every ticket" : names + " tickets"} in this order.`;
     } else if (freeActive && count){
       orgNote.style.borderColor = ORG_INK_DEFAULT;
       orgNote.style.color = ORG_INK_DEFAULT;
@@ -998,15 +1010,33 @@ async function updateDiscount(){
   if (v && !STATION_CODES.includes(v) && !ORG_CODES.includes(v) && (Object.keys(DISCOUNTS).length || Object.keys(FREECODES).length)){
     try {
       const h = await sha256Hex(v);
-      if (DISCOUNTS[h]) dHit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [] };
+      if (DISCOUNTS[h]) dHit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [], once: !!DISCOUNTS[h].once, maxSeats: DISCOUNTS[h].maxSeats || 0, left: DISCOUNTS[h].left };
       else if (FREECODES[h]) fHit = { code: v, tier: FREECODES[h].tier, left: FREECODES[h].left || 0 };
     } catch (e) {}
   }
   if (seq !== _discSeq) return;   /* a newer keystroke superseded this check */
+  /* v3.77: a single-use code that has already been spent matches but does not apply */
+  if (dHit && dHit.once && dHit.left === 0){
+    if (!discActive || discActive.code !== dHit.code) toast("That code has already been used. Each one works exactly once.");
+    dHit = null;
+  }
   const changed = (dHit ? dHit.code : null) !== (discActive ? discActive.code : null)
                || (fHit ? fHit.code : null) !== (freeActive ? freeActive.code : null)
                || !!(fHit && freeActive && fHit.left !== freeActive.left);
   discActive = dHit; freeActive = fHit;
+  /* v3.77: a single-use code locks the order to its shape: one or two tickets,
+     its tiers only. Trim anything that does not fit, and say why. */
+  if (discActive && discActive.once){
+    let trimmed = false;
+    for (const k of Object.keys(qty)) if (!(discActive.tiers || []).includes(k) && qty[k] > 0){ qty[k] = 0; trimmed = true; }
+    if (discActive.maxSeats){
+      let total = (discActive.tiers || []).reduce((a, k) => a + (qty[k] || 0), 0);
+      for (const k of ["general", "house", "splash"]){
+        while (total > discActive.maxSeats && qty[k] > 0){ qty[k]--; total--; trimmed = true; }
+      }
+    }
+    if (trimmed) toast("That code covers one or two tickets, Splash Zone or Premium only; the cart was trimmed to fit.");
+  }
   if (freeActive && qty[freeActive.tier] > freeActive.left){
     qty[freeActive.tier] = freeActive.left;
     toast(freeActive.left ? `Only ${freeActive.left} free tickets remain on that code.` : "That code has been fully claimed.");

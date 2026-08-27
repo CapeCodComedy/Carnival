@@ -350,19 +350,25 @@ function render(o){
     const code = o.codes ? o.codes[id] : "";
     const div = document.createElement("div");
     div.className = "ticket";
+    /* v3.77: a reserved-chair guest ticket names its chair; every guest ticket
+       names its guest. Everything else keeps the tier words. */
+    const tierLine = id.startsWith("RS-")
+      ? `RESERVED · ${(o.label || "ASSIGNED CHAIR").toUpperCase()}`
+      : id.startsWith("GA-") ? "GENERAL · UNRESERVED" : id.startsWith("H-") ? "PREMIUM · UNRESERVED" : id.startsWith("S-") ? `THE SPLASH ZONE${o.guest && o.label ? " · " + o.label.toUpperCase() : ""}` : "SEAT " + id;
     div.innerHTML = `<div class="qr"><canvas></canvas></div>
       <div class="t-info">
         <span class="t-type">THE CAPE COD COMEDY CARNIVAL${o.accessible ? " · ACCESSIBLE" : ""}</span>
-        <b>${id.startsWith("GA-") ? "GENERAL · UNRESERVED" : id.startsWith("H-") ? "PREMIUM · UNRESERVED" : id.startsWith("S-") ? "THE SPLASH ZONE" : "SEAT " + id}</b>
+        <b>${tierLine}</b>
+        ${o.guest && o.name ? `<span style="letter-spacing:.06em">ISSUED TO ${String(o.name).toUpperCase()}</span>` : ""}
         <span>${code}</span><br>
         <span style="color:#6f6552">SAT 29 AUG · 7:00 PM · TILDEN ARTS CENTER</span>
       </div>`;
     box.appendChild(div);
     drawQR(div.querySelector("canvas"), code);
   });
-  if (o.totalCents == null){   // house comp, issued from the booth, no charge, no fee line
+  if (o.totalCents == null){   // house comp or guest, issued from the booth, no charge here
     document.getElementById("recap").innerHTML =
-      `<div class="grand" style="border-color:var(--bone)"><span>COMPLIMENTARY, issued by the box office</span><span>$0.00</span></div>`;
+      `<div class="grand" style="border-color:var(--bone)"><span>${o.note ? o.note : "COMPLIMENTARY, issued by the box office"}</span><span>${o.note ? "" : "$0.00"}</span></div>`;
     return;
   }
   const tickets = (o.totalCents - o.feeCents) / 100, fee = o.feeCents / 100;
