@@ -24,12 +24,13 @@ end
 return out
 `;
 
-/* v3.77: guest tickets (comps, winners, crew) can be found by the NAME they
-   were issued under, since some guests have no email on file. Name lookup
-   matches GUEST orders only; paid orders stay email-only on purpose, because
-   a name is guessable and a paid ticket is money. */
-const LUA_FIND_NAME = `
-local needle = '"namekey":"' .. string.lower(ARGV[1]) .. '"'
+/* v3.80: guest tickets (winners, comps, crew) are found by the EMAIL or the
+   PHONE NUMBER the box office attached at minting; the name path is retired
+   (names are guessable, and two winners have no email at all). An email
+   search covers paid orders and guest orders alike; a phone search covers
+   guest orders only. */
+const LUA_FIND_PHONE = `
+local needle = '"phone":"' .. ARGV[1] .. '"'
 local keys = redis.call('KEYS', 'order:guest_*')
 local out = {}
 for i = 1, #keys do
@@ -44,12 +45,13 @@ return out
 exports.handler = async (event) => {
   const q = String((event.queryStringParameters || {}).email || "").trim();
   const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(q);
-  const nameKey = q.toLowerCase().replace(/\s+/g, " ");
-  const isName = !isEmail && /^[a-z][a-z .'-]{1,59}$/.test(nameKey);
-  if (!q || q.length > 120 || (!isEmail && !isName))
-    return resp(400, { err: "type the email you bought with, or the full name your tickets were issued under" });
+  let digits = q.replace(/\D/g, "");
+  if (digits.length === 11 && digits[0] === "1") digits = digits.slice(1);
+  const isPhone = !isEmail && digits.length >= 7 && digits.length <= 15;
+  if (!q || q.length > 120 || (!isEmail && !isPhone))
+    return resp(400, { err: "type the email you bought with, or the phone number the box office has for you" });
 
-  const sids = (await store._driver.eval(isEmail ? LUA_FIND : LUA_FIND_NAME, [isEmail ? q.toLowerCase() : nameKey])) || [];
+  const sids = (await store._driver.eval(isEmail ? LUA_FIND : LUA_FIND_PHONE, [isEmail ? q.toLowerCase() : digits])) || [];
   const orders = [];
   for (const sid of sids) {
     const o = await store.getOrder(sid);

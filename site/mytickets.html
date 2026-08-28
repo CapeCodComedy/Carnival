@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Find My Tickets: The Cape Cod Comedy Carnival</title>
-<meta name="description" content="Closed the page with your tickets? Type the email you bought with, or the name your tickets were issued under, and your Cape Cod Comedy Carnival tickets come right back, QR codes and all.">
+<meta name="description" content="Closed the page with your tickets? Type the email you bought with, or the phone number the box office has for you, and your Cape Cod Comedy Carnival tickets come right back, QR codes and all.">
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800&family=Archivo:wght@400;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -29,9 +29,9 @@
   <div class="wrap">
     <p class="org">THE 1140A CORPORATION · CAPE COD</p>
     <h1>FIND MY <span class="amp">TICKETS</span></h1>
-    <p class="story">Closed the page before saving your tickets? No problem. Type the email you used when you bought, and they come right back, QR codes and all. Comp, winner, or crew ticket? Type the full name it was issued under instead.</p>
+    <p class="story">Closed the page before saving your tickets? No problem. Type the email you used when you bought, and they come right back, QR codes and all. Winner, comp, or crew ticket? Type the email or the phone number the box office has for you.</p>
     <div class="row">
-      <input id="em" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com, or your full name" aria-label="The email you bought with, or the name your tickets were issued under">
+      <input id="em" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com, or your phone number" aria-label="The email you bought with, or the phone number the box office has for you">
       <button id="go">FIND</button>
     </div>
     <div id="out"></div>
@@ -47,7 +47,7 @@
         var r = await fetch("/api/my-tickets?email=" + encodeURIComponent(em), { cache: "no-store" });
         var d = await r.json();
         if (!r.ok){ out.innerHTML = '<div class="none">' + (d.err || "Something hiccuped. Try again.") + '</div>'; return; }
-        if (!d.found){ out.innerHTML = '<div class="none">Nothing found. Check the spelling, try any other email you might have used, or the exact full name your tickets were issued under. Still nothing? Write to info@1140A.com and we\'ll find them by hand.</div>'; return; }
+        if (!d.found){ out.innerHTML = '<div class="none">Nothing found. Check the spelling, try any other email you might have used, or the phone number the box office has for you (numbers only works fine). Still nothing? Write to info@1140A.com and we\'ll find them by hand.</div>'; return; }
         out.innerHTML = d.orders.map(function(o){
           var when = o.when ? new Date(o.when).toLocaleDateString() : "";
           return '<a class="hit" href="/success.html?sid=' + encodeURIComponent(o.sid) + '"><b>OPEN MY TICKETS &rarr;</b><span>' + o.tickets + (o.tickets === 1 ? " ticket" : " tickets") + (when ? " · bought " + when : "") + '</span></a>';

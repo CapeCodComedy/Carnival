@@ -121,6 +121,11 @@ exports.handler = async (event) => {
        Every guest ticket scans at the door like any sale. */
     const name = String(body.name || "").trim().replace(/\s+/g, " ").slice(0, 60);
     const email = String(body.email || "").trim().toLowerCase().slice(0, 120) || null;
+    /* v3.80: a phone number (digits only, leading 1 dropped) is a lookup key
+       at /mytickets, for guests who have no email */
+    let phone = String(body.phone || "").replace(/\D/g, "").slice(0, 15);
+    if (phone.length === 11 && phone[0] === "1") phone = phone.slice(1);
+    phone = phone.length >= 7 ? phone : null;
     const label = String(body.label || "").trim().slice(0, 60) || null;
     const note = String(body.note || "").trim().slice(0, 80) || null;
     const kind = String(body.kind || "");
@@ -157,7 +162,7 @@ exports.handler = async (event) => {
     const issued = Object.fromEntries(ids.map(id => [id, codes.gen()]));
     await store.putOrder(sid, {
       seats: ids, zone: kind, status: "sold", codes: issued, comp: true, guest: true,
-      buyer: { name, email }, namekey: name.toLowerCase(), label, note, soldAt: Date.now(),
+      buyer: { name, email }, phone, label, note, soldAt: Date.now(),
     });
     for (const [seatId, code] of Object.entries(issued))
       await store.putOrder("code_" + code, { seat: seatId, sid });
@@ -177,6 +182,7 @@ return out
       const o = await store.getOrder(sid);
       if (o && o.guest) guests.push({
         sid, name: (o.buyer && o.buyer.name) || "", email: (o.buyer && o.buyer.email) || null,
+        phone: o.phone || null,
         label: o.label || null, note: o.note || null, kind: o.zone, seats: o.seats || [],
         codes: o.codes || {}, soldAt: o.soldAt || 0, voided: String(o.status || "").startsWith("refunded"),
       });

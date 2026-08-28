@@ -355,14 +355,16 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
 
     <section class="map-card" style="padding:16px 14px 18px;margin-top:14px">
       <h2 style="margin:0 0 4px">The guest book · named tickets</h2>
-      <p class="hint" style="margin:0 0 10px">Comps, winners, comics, crew, and will-call holds, all minted here with real QR tickets that scan at the door. A tier kind eats a sellable unit; RESERVED CHAIR mints an off-book ticket for chairs outside the sale (taped rows, will-call pairs) and eats nothing. Guests find their own tickets at 1140A.com/mytickets by typing their name; the link that appears here is the same ticket page, forward it where you have an email.</p>
+      <p class="hint" style="margin:0 0 10px">Comps, winners, comics, crew, and will-call holds, all minted here with real QR tickets that scan at the door. A tier kind eats a sellable unit; RESERVED CHAIR mints an off-book ticket for chairs outside the sale (taped rows, will-call pairs) and eats nothing. Guests find their own tickets at 1140A.com/mytickets by typing the email or the phone number you attach here; the link that appears is the same ticket page, forward it where you have an address.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <input id="gName" placeholder="Guest name (required)" autocomplete="off" maxlength="60"
                style="grid-column:1/-1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
-        <input id="gEmail" placeholder="Email (optional)" autocomplete="off" maxlength="120"
+        <input id="gEmail" placeholder="Email (their /mytickets key)" autocomplete="off" maxlength="120"
+               style="background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
+        <input id="gPhone" placeholder="Phone (their key if no email): 5085551234" autocomplete="off" maxlength="20"
                style="background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
         <input id="gLabel" placeholder="Chair label (optional): ROW SIX CENTRE" autocomplete="off" maxlength="60"
-               style="background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
+               style="grid-column:1/-1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
         <input id="gNote" placeholder="Money line (optional): FACE VALUE $66 / PAID AT WILL-CALL" autocomplete="off" maxlength="80"
                style="grid-column:1/-1;background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Archivo',sans-serif">
         <select id="gKind" aria-label="Guest kind" style="background:rgba(255,255,255,.04);border:1px solid #31365f;border-radius:8px;color:var(--bone);padding:9px 10px;font-family:'Spline Sans Mono',monospace"></select>
@@ -416,7 +418,7 @@ textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid v
     </div>
   </div>
 
-  <footer><p class="mono" style="opacity:.7">CONSOLE v3.79 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
+  <footer><p class="mono" style="opacity:.7">CONSOLE v3.80 · <a href="/">buyer site</a> · <a href="/door.html">door scanner</a></p></footer>
 </div>
 <div id="toast" role="status"></div>
 <div id="printBook"></div>
@@ -920,12 +922,13 @@ function buildDesk(meta){
     if (!name){ $("#gMsg").textContent = "A guest name is required; it goes on the ticket and finds it at /mytickets."; return; }
     $("#gMsg").textContent = "minting…";
     const r = await call("guest", {
-      name, email: $("#gEmail").value.trim(), label: $("#gLabel").value.trim(),
+      name, email: $("#gEmail").value.trim(), phone: $("#gPhone").value.trim(), label: $("#gLabel").value.trim(),
       note: $("#gNote").value.trim(), kind: kindSel.value, qty: parseInt(qtySel.value, 10) || 1,
     });
     if (r.ok && r.data.sid){
-      $("#gMsg").innerHTML = `${name}: ${squeeze(r.data.seats)} minted. <a href="/success.html?sid=${encodeURIComponent(r.data.sid)}" target="_blank" style="color:var(--glow)">OPEN THE TICKETS</a>, print the page or forward its address. They can also type "${name}" at /mytickets.`;
-      $("#gName").value = ""; $("#gEmail").value = ""; $("#gLabel").value = ""; $("#gNote").value = "";
+      const key = $("#gEmail").value.trim() || $("#gPhone").value.trim().replace(/\D/g, "");
+      $("#gMsg").innerHTML = `${name}: ${squeeze(r.data.seats)} minted. <a href="/success.html?sid=${encodeURIComponent(r.data.sid)}" target="_blank" style="color:var(--glow)">OPEN THE TICKETS</a>, print the page or forward its address.${key ? ` They can also type "${key}" at /mytickets.` : " No email or phone attached, so hand them the link or a print."}`;
+      $("#gName").value = ""; $("#gEmail").value = ""; $("#gPhone").value = ""; $("#gLabel").value = ""; $("#gNote").value = "";
       loadGuests();
     } else {
       $("#gMsg").textContent = "failed: " + (r.data.err || r.status) + (r.data.seat ? ` (${r.data.seat})` : "");
@@ -963,7 +966,7 @@ async function loadGuests(){
     <div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dotted #31365f;${g.voided ? "opacity:.45" : ""}">
       <div style="flex:1;min-width:0">
         <b>${esc(g.name)}</b>${g.voided ? " · VOID" : ""}<br>
-        <span style="font-size:12px;color:var(--dim)">${g.seats.length} ticket${g.seats.length === 1 ? "" : "s"} · ${esc(g.kind === "reserved" ? (g.label || "reserved chair") : g.kind)}${g.label && g.kind !== "reserved" ? " · " + esc(g.label) : ""}${g.note ? " · " + esc(g.note) : ""}${g.email ? " · " + esc(g.email) : ""}</span>
+        <span style="font-size:12px;color:var(--dim)">${g.seats.length} ticket${g.seats.length === 1 ? "" : "s"} · ${esc(g.kind === "reserved" ? (g.label || "reserved chair") : g.kind)}${g.label && g.kind !== "reserved" ? " · " + esc(g.label) : ""}${g.note ? " · " + esc(g.note) : ""}${g.email ? " · " + esc(g.email) : ""}${g.phone ? " · " + esc(g.phone) : ""}</span>
       </div>
       <a class="btn" style="text-decoration:none" href="/success.html?sid=${encodeURIComponent(g.sid)}" target="_blank">Open</a>
       ${g.voided ? "" : `<button class="btn" data-void="${i}">Void</button>`}
