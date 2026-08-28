@@ -43,6 +43,19 @@ exports.handler = async (event) => {
     };
     order.codes = Object.fromEntries(order.seats.map(id => [id, codes.gen()]));
     order.soldAt = Date.now();
+    /* v3.79: live per-code sales tally, so the console cupboard can show what
+       each word produced (orders, tickets, and ticket dollars net of the fee
+       and any tee) without a Stripe export. Payout codes read straight off it. */
+    if (order.discount) {
+      const ticketCents = Math.max(0, (order.totalCents || 0) - (order.feeCents || 0) - (order.teeCents || 0));
+      try {
+        await store._driver.eval(`
+redis.call('INCR', 'disc:cnt:' .. ARGV[1])
+redis.call('INCRBY', 'disc:tix:' .. ARGV[1], tonumber(ARGV[2]))
+redis.call('INCRBY', 'disc:cents:' .. ARGV[1], tonumber(ARGV[3]))
+return 1`, [order.discount, order.seats.length, ticketCents]);
+      } catch (e) {}
+    }
     await store.putOrder(obj.id, order);
     if (order.payment_intent) await store.putOrder("pi_" + order.payment_intent, { ref: obj.id });
     for (const [seatId, code] of Object.entries(order.codes))     // door-scan index

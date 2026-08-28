@@ -219,7 +219,7 @@ exports.handler = async (event) => {
     await store.putOrder(session.id, {
       holder, seats, zone: priced.zone, accessible: !!accessible,
       totalCents: ticketCentsFinal + feeCents + (tee ? tee.qty * MERCH.teeBundleCents : 0), feeCents, station,
-      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, free: freeCfg ? freeCfg.code : null, freeSeats: freeSeatIds.length || 0, once: (disc && disc.once) ? disc.code : null, src, tee,
+      org, orgEligible, orgTiers, orgOwedCents, discount: disc ? disc.code : null, savedCents: disc ? savedCents : 0, free: freeCfg ? freeCfg.code : null, freeSeats: freeSeatIds.length || 0, once: (disc && disc.once) ? disc.code : null, src, tee, teeCents: tee ? tee.qty * MERCH.teeBundleCents : 0,
       status: "pending", created: Date.now(), payment_intent: session.payment_intent || null,
     });
     return resp(200, { url: session.url, sid: session.id });

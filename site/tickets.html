@@ -783,7 +783,7 @@ let paying = false, pollT = null;
    other two, his cap. Balcony is closed offline. */
 const UNITS = {
   house: Array.from({ length: 200 }, (_, i) => "H-" + (i + 1)),
-  splash: Array.from({ length: 38 }, (_, i) => "S-" + (i + 1)),
+  splash: Array.from({ length: 12 }, (_, i) => "S-" + (i + 1)),
   general: Array.from({ length: 200 }, (_, i) => "GA-" + (i + 1))
 };
 const freeUnits = k => UNITS[k].filter(id => !unavailable.has(id));

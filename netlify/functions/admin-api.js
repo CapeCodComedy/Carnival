@@ -201,15 +201,25 @@ return out
     /* the code cupboard: every live code word with its live state, for the
        owner's eyes only; the public site sees only hashes */
     const out = [];
+    /* v3.79: every discount word carries its live tally (orders, tickets, and
+       ticket dollars net of fee and tee), so payout codes read straight here */
+    const tally = async (w) => {
+      const r = await store._driver.eval(`
+return {redis.call('GET', 'disc:cnt:' .. ARGV[1]) or '0',
+        redis.call('GET', 'disc:tix:' .. ARGV[1]) or '0',
+        redis.call('GET', 'disc:cents:' .. ARGV[1]) or '0'}`, [w]);
+      const [cnt, tix, cents] = (r || []).map(Number);
+      return cnt ? ` · ${cnt} order${cnt === 1 ? "" : "s"}, ${tix} ticket${tix === 1 ? "" : "s"}, $${(cents / 100).toFixed(2)} in` : " · no sales yet";
+    };
     for (const [w, d] of Object.entries(HOUSE.discounts || {})) {
       if (!d || d.enabled === false) continue;
       if (d.once) {
         const used = Number(await store._driver.eval(`return redis.call('GET', 'once:' .. ARGV[1]) or '0'`, [w])) || 0;
-        out.push({ word: w, kind: "single-use 50%", state: used >= 1 ? "USED" : "unused" });
+        out.push({ word: w, kind: "single-use 50%", state: (used >= 1 ? "USED" : "unused") + (await tally(w)) });
       } else if (d.prices) {
         const words = Object.entries(d.prices).map(([z, p]) => `${HOUSE.zones[z] || z} $${p}`).join(" / ");
-        out.push({ word: w, kind: words, state: "open" });
-      } else out.push({ word: w, kind: `${Math.round((d.off || 0) * 100)}% off`, state: "open" });
+        out.push({ word: w, kind: words, state: "open" + (await tally(w)) });
+      } else out.push({ word: w, kind: `${Math.round((d.off || 0) * 100)}% off`, state: "open" + (await tally(w)) });
     }
     for (const [w, f] of Object.entries(HOUSE.freeCodes || {})) {
       if (!f || f.enabled === false) continue;
