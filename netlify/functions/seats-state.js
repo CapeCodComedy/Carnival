@@ -16,6 +16,8 @@ exports.handler = async () => {
   for (const [code, d] of Object.entries(HOUSE.discounts || {}))
     if (d && d.enabled !== false) {
       const entry = { off: d.off || 0, tiers: d.tiers || [] };
+      /* v3.78: fixed per-tier code prices ride as plain numbers (no words) */
+      if (d.prices) entry.prices = d.prices;
       /* v3.77: single-use codes also carry their live burned state, so the page
          can say "already used" before a doomed checkout. Hashed like the rest. */
       if (d.once) {

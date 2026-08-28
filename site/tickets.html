@@ -881,11 +881,14 @@ function renderCart(){
        tier, ticket and fee both. */
     const gratis = freeActive && freeActive.tier === k;
     const cut = !gratis && discActive && (discActive.tiers || []).includes(k);
-    const p = gratis ? 0 : cut ? Math.round(CONFIG.prices[k] * 100 * (1 - discActive.off)) / 100 : CONFIG.prices[k];
+    /* v3.78: a code carries either a fraction off or a fixed price by tier */
+    const p = gratis ? 0
+      : cut ? (discActive.prices && discActive.prices[k] != null ? discActive.prices[k] : Math.round(CONFIG.prices[k] * 100 * (1 - discActive.off)) / 100)
+      : CONFIG.prices[k];
     tickets += p * qty[k]; count += qty[k];
     if (gratis) freeCount += qty[k];
     const li = document.createElement("li");
-    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span>${gratis ? `<span class="tag">free</span>` : cut ? `<span class="tag">${Math.round(discActive.off * 100)}% off</span>` : ""}</span>
+    li.innerHTML = `<span>${CONFIG.zones[k].name} × ${qty[k]}<span class="tag">unreserved</span>${gratis ? `<span class="tag">free</span>` : cut ? `<span class="tag">${discActive.prices ? "code price" : Math.round(discActive.off * 100) + "% off"}</span>` : ""}</span>
       <span>${money(p * qty[k])}</span>`;
     list.appendChild(li);
   });
@@ -915,6 +918,8 @@ function renderCart(){
       orgNote.style.display = "block";
       orgNote.innerHTML = discActive.once
         ? `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off one or two tickets, ${names} only, and it works exactly once. The $3 fee stays.`
+        : discActive.prices
+        ? `<b>CODE ${discActive.code} APPLIED:</b> ${tiers.filter(t => discActive.prices[t] != null).map(t => `${CONFIG.zones[t] ? CONFIG.zones[t].name : t} ${money(discActive.prices[t])}`).join(", ")} a ticket with this code. The $3 fee stays.`
         : `<b>CODE ${discActive.code} APPLIED:</b> ${Math.round(discActive.off * 100)}% off ${every ? "every ticket" : names + " tickets"} in this order.`;
     } else if (freeActive && count){
       orgNote.style.borderColor = ORG_INK_DEFAULT;
@@ -1010,7 +1015,7 @@ async function updateDiscount(){
   if (v && !STATION_CODES.includes(v) && !ORG_CODES.includes(v) && (Object.keys(DISCOUNTS).length || Object.keys(FREECODES).length)){
     try {
       const h = await sha256Hex(v);
-      if (DISCOUNTS[h]) dHit = { code: v, off: DISCOUNTS[h].off || 0, tiers: DISCOUNTS[h].tiers || [], once: !!DISCOUNTS[h].once, maxSeats: DISCOUNTS[h].maxSeats || 0, left: DISCOUNTS[h].left };
+      if (DISCOUNTS[h]) dHit = { code: v, off: DISCOUNTS[h].off || 0, prices: DISCOUNTS[h].prices || null, tiers: DISCOUNTS[h].tiers || [], once: !!DISCOUNTS[h].once, maxSeats: DISCOUNTS[h].maxSeats || 0, left: DISCOUNTS[h].left };
       else if (FREECODES[h]) fHit = { code: v, tier: FREECODES[h].tier, left: FREECODES[h].left || 0 };
     } catch (e) {}
   }

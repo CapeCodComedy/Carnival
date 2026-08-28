@@ -143,6 +143,19 @@
    "once": true,
    "maxSeats": 2,
    "enabled": true
+  },
+  "DAVIDG87": {
+   "prices": {
+    "splash": 51,
+    "house": 21,
+    "general": 21
+   },
+   "tiers": [
+    "splash",
+    "house",
+    "general"
+   ],
+   "enabled": true
   }
  },
  "freeCodes": {

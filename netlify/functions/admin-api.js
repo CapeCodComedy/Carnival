@@ -206,6 +206,9 @@ return out
       if (d.once) {
         const used = Number(await store._driver.eval(`return redis.call('GET', 'once:' .. ARGV[1]) or '0'`, [w])) || 0;
         out.push({ word: w, kind: "single-use 50%", state: used >= 1 ? "USED" : "unused" });
+      } else if (d.prices) {
+        const words = Object.entries(d.prices).map(([z, p]) => `${HOUSE.zones[z] || z} $${p}`).join(" / ");
+        out.push({ word: w, kind: words, state: "open" });
       } else out.push({ word: w, kind: `${Math.round((d.off || 0) * 100)}% off`, state: "open" });
     }
     for (const [w, f] of Object.entries(HOUSE.freeCodes || {})) {

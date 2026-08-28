@@ -49,7 +49,9 @@ exports.handler = async (event) => {
      Station and org codes win the field if they match; the accessible flow
      is never discounted; the fee stays $3 per ticket, the standing law. */
   const DISCOUNTS = HOUSE.discounts || {};
-  const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, tiers: new Set(DISCOUNTS[_raw].tiers || []), once: !!DISCOUNTS[_raw].once, maxSeats: DISCOUNTS[_raw].maxSeats || 0 } : null;
+  /* v3.78: a discount entry carries EITHER off (a fraction) or prices (fixed
+     dollars by zone, DAVIDG87 style: the comic's own numbers, not a percent) */
+  const disc = (!station && !org && DISCOUNTS[_raw] && DISCOUNTS[_raw].enabled !== false) ? { code: _raw, off: DISCOUNTS[_raw].off || 0, prices: DISCOUNTS[_raw].prices || null, tiers: new Set(DISCOUNTS[_raw].tiers || []), once: !!DISCOUNTS[_raw].once, maxSeats: DISCOUNTS[_raw].maxSeats || 0 } : null;
   /* v3.77: single-use codes are tier-locked and size-locked, server-enforced */
   if (disc && disc.once) {
     if (accessible) return resp(400, { err: "That code does not combine with the accessible flow. Book the accessible seats plain, they are already the low price." });
@@ -71,7 +73,11 @@ exports.handler = async (event) => {
     if (s.wc || accessible) return HOUSE.wheelchair.price * 100;
     if (isFreeSeat(id)) return 0;
     const full = HOUSE.prices[s.zone] * 100;
-    return (disc && disc.tiers.has(s.zone)) ? Math.round(full * (1 - disc.off)) : full;
+    if (disc && disc.tiers.has(s.zone)) {
+      if (disc.prices && disc.prices[s.zone] != null) return Math.round(disc.prices[s.zone] * 100);
+      return Math.round(full * (1 - disc.off));
+    }
+    return full;
   };
   const src = String(body.src || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32) || null;
   /* tee add-on (v3.30): bundle-priced merch line that exists only inside a ticket purchase */
@@ -176,7 +182,7 @@ exports.handler = async (event) => {
         price_data: {
           currency: "usd",
           unit_amount: cents,
-          product_data: { name: `${HOUSE.zones[s.zone]}, unreserved admission${s.wc ? " (wheelchair space)" : ""}${freeSeat ? ` (code ${freeCfg.code}, free)` : discounted ? ` (code ${disc.code}, ${Math.round(disc.off * 100)}% off)` : ""}` },
+          product_data: { name: `${HOUSE.zones[s.zone]}, unreserved admission${s.wc ? " (wheelchair space)" : ""}${freeSeat ? ` (code ${freeCfg.code}, free)` : discounted ? (disc.prices ? ` (code ${disc.code} price)` : ` (code ${disc.code}, ${Math.round(disc.off * 100)}% off)`) : ""}` },
         },
       };
     });
