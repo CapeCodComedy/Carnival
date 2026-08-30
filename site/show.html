@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cape Cod Comedy Carnival: Two Nationally Touring Headliners, One Night · Sat Aug 29 · Tilden Arts Center</title>
+<meta name="description" content="25 million+ views on YouTube. Two nationally touring headliners: Brendan Sagalow and Mike Cannon, with Jason Choi opening. The only comedy double-header on Cape Cod: Sat Aug 29 2026, 7 PM, Tilden Arts Center.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://1140a.com/show.html">
+<meta property="og:title" content="The Cape Cod Comedy Carnival: Two Nationally Touring Headliners, One Night · Sat Aug 29 · Tilden Arts Center">
+<meta property="og:description" content="25 million+ views on YouTube. Two nationally touring headliners: Brendan Sagalow and Mike Cannon, with Jason Choi opening. The only comedy double-header on Cape Cod: Sat Aug 29 2026, 7 PM, Tilden Arts Center.">
+<meta property="og:url" content="https://1140a.com/show.html">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ComedyEvent",
+ "name": "The Cape Cod Comedy Carnival",
+ "description": "One night of stand-up at the Tilden Arts Center: Brendan Sagalow and Mike Cannon, with opener Jason Choi \u2014 Saturday, August 29, 2026, 7:00 PM. Tickets at 1140A.com.",
+ "startDate": "2026-08-29T19:00:00-04:00",
+ "eventStatus": "https://schema.org/EventScheduled",
+ "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+ "location": {
+  "@type": "PerformingArtsTheater",
+  "name": "Tilden Arts Center, Cape Cod Community College",
+  "address": {
+   "@type": "PostalAddress",
+   "streetAddress": "2240 Iyannough Rd (Rte 132)",
+   "addressLocality": "West Barnstable",
+   "addressRegion": "MA",
+   "postalCode": "02668",
+   "addressCountry": "US"
+  }
+ },
+ "performer": [
+  {
+   "@type": "Person",
+   "name": "Brendan Sagalow"
+  },
+  {
+   "@type": "Person",
+   "name": "Mike Cannon"
+  },
+  {
+   "@type": "Person",
+   "name": "Jason Choi"
+  }
+ ],
+ "organizer": {
+  "@type": "Organization",
+  "name": "The 1140A Corporation",
+  "url": "https://1140A.com"
+ },
+ "offers": {
+  "@type": "AggregateOffer",
+  "priceCurrency": "USD",
+  "lowPrice": 33,
+  "highPrice": 88,
+  "url": "https://1140a.com",
+  "availability": "https://schema.org/InStock",
+  "validFrom": "2026-07-29T10:00:00-04:00"
+ }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#171a2b;        /* auditorium dark */
+  --ink-2:#20243a;      /* raised panel */
+  --line:#31364f;
+  --bone:#d8d3c5;       /* available seats, body text */
+  --dim:#8d8fa3;        /* secondary text */
+  --glow:#f5b445;       /* tungsten amber, selection & CTA */
+  --gilt:#e6c069;       /* gilt ring, carnival accents */
+  --sold:#41465e;       /* receded, spoken-for */
+  --held:#2c3049;       /* blocked / held back */
+  --stock:#f4efe2;      /* ticket-stock cream (the stub) */
+  --stock-ink:#2a2417;
+  --danger:#e2694f;
+  --ok:#7fb069;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;font-size:15px;line-height:1.5}
+::selection{background:var(--glow);color:var(--ink)}
+.mono{font-family:'Spline Sans Mono',monospace}
+.wrap{max-width:1140px;margin:0 auto;padding:20px 16px 120px}
+a{color:var(--glow)}
+
+/* ---------- header ---------- */
+header.site{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:18px}
+.org{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+h1{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:clamp(34px,6vw,60px);letter-spacing:.02em;line-height:.95;color:#fff}
+h1 .amp{color:var(--glow)}
+.when{font-family:'Spline Sans Mono',monospace;font-size:12.5px;color:var(--dim);margin-top:6px}
+.head-left{flex:1 1 320px;min-width:260px}
+.head-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-left:auto}
+.chip{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--dim)}
+.chip.warn{border-color:#6b5320;color:var(--glow)}
+.chip.live{border-color:#3f5a35;color:var(--ok)}
+
+section h2{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:23px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:4px}
+.sub{font-size:13px;color:var(--dim);margin-bottom:14px}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+
+/* ---------- show picker ---------- */
+.shows{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:6px 0 24px}
+.show-card{position:relative;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;cursor:pointer;color:var(--bone);font-family:'Archivo',sans-serif;transition:border-color .15s, transform .15s}
+.show-card:hover{border-color:#57506b}
+.show-card.sel{border-color:var(--glow);box-shadow:0 0 0 1px var(--glow)}
+.show-card.soon{opacity:.55;cursor:default}
+.show-card.soon:hover{border-color:var(--line)}
+.show-card.soon .tick{display:none}
+.show-card h3{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:26px;letter-spacing:.03em;color:#fff;line-height:1}
+.show-card .kicker{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.show-card.carn .kicker{color:var(--gilt)}
+.show-card .meta{font-size:12.5px;color:var(--dim);margin-top:6px;line-height:1.45}
+.show-card .from{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--glow);margin-top:8px}
+.show-card.carn{border-style:solid;background:linear-gradient(160deg,#262038 0%,var(--ink-2) 55%)}
+.show-card .tick{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--ink)}
+.show-card.sel .tick{background:var(--glow);border-color:var(--glow)}
+
+/* ---------- layout ---------- */
+.cols{display:grid;grid-template-columns:1fr 330px;gap:24px;align-items:start}
+.cols>*{min-width:0}   /* let the map column shrink; the map scrolls inside its card */
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+
+/* ---------- seat map ---------- */
+.map-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 8px 10px}
+.map-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.map-scroll svg{display:block;min-width:730px;width:100%;height:auto}
+.seat{cursor:pointer}
+.seat.sold,.seat.blocked,.seat.ga{cursor:default}
+.seat.wc{cursor:pointer}
+.seat:focus{outline:none}
+.seat:focus-visible .shape{stroke:#fff;stroke-width:2}
+@media(prefers-reduced-motion:no-preference){
+  .seat.sel .shape{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.72}}
+}
+.legend{display:flex;flex-wrap:wrap;gap:12px 16px;padding:12px 10px 4px;font-size:12px;color:var(--dim)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend i.sq{border-radius:3px}
+
+/* ---------- GA tiers ---------- */
+.tiers{margin-top:22px;display:grid;gap:14px}
+.tier{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.tier.dashed{border-style:dashed;opacity:.8}
+.tier-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.tier-top h3{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:20px;letter-spacing:.04em;color:#fff}
+.price{font-family:'Spline Sans Mono',monospace;font-size:15px;color:var(--glow);margin-left:auto}
+.tier-note{font-size:12.5px;color:var(--dim);margin-top:2px}
+.bar{height:7px;border-radius:999px;background:var(--line);margin:12px 0 6px;overflow:hidden}
+.bar b{display:block;height:100%;background:linear-gradient(90deg,#b47f2b,var(--glow));border-radius:999px}
+.bar-label{font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--dim)}
+.stepper{display:flex;align-items:center;gap:12px;margin-top:12px}
+.stepper button{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--bone);font-size:18px;cursor:pointer}
+.stepper button:hover:not(:disabled){border-color:var(--glow);color:var(--glow)}
+.stepper button:disabled{opacity:.3;cursor:not-allowed}
+.stepper output{font-family:'Spline Sans Mono',monospace;font-size:16px;min-width:2ch;text-align:center}
+
+/* ---------- the stub (cart) ---------- */
+.stub{position:sticky;top:16px;background:var(--stock);color:var(--stock-ink);border-radius:var(--radius);padding:18px 18px 16px 26px;box-shadow:0 12px 32px rgba(0,0,0,.45)}
+.stub::before{content:"";position:absolute;left:11px;top:10px;bottom:10px;border-left:2px dashed rgba(42,36,23,.35)}
+.stub::after{content:"";position:absolute;left:-8px;top:50%;width:16px;height:16px;border-radius:50%;background:var(--ink);transform:translateY(-50%)}
+.stub h2{color:var(--stock-ink);font-size:20px}
+.stub .sub{color:#6f6552;margin-bottom:10px}
+.stub ul{list-style:none;font-family:'Spline Sans Mono',monospace;font-size:13px;max-height:210px;overflow:auto;margin-bottom:8px}
+.stub li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px dotted rgba(42,36,23,.2)}
+.stub li .tag{font-size:10px;letter-spacing:.06em;color:#6f6552;display:block}
+.stub li button{border:none;background:none;color:#a04b32;cursor:pointer;font-size:13px}
+.empty{font-size:13px;color:#6f6552;padding:12px 0}
+.totals{font-family:'Spline Sans Mono',monospace;font-size:13.5px;margin-top:6px}
+.totals div{display:flex;justify-content:space-between;padding:3px 0}
+.totals .grand{font-size:17px;font-weight:600;border-top:2px solid var(--stock-ink);margin-top:6px;padding-top:8px}
+.hold{font-size:12px;color:#6f6552;margin-top:10px}
+.hold .hold-line{display:flex;justify-content:space-between;align-items:center}
+.hold b{font-family:'Spline Sans Mono',monospace;font-size:13px;color:#a04b32}
+.hold .hbar{height:4px;border-radius:999px;background:rgba(42,36,23,.15);margin-top:6px;overflow:hidden}
+.hold .hbar b{display:block;height:100%;background:#a04b32;border-radius:999px;transition:width 1s linear}
+.cta{width:100%;margin-top:12px;padding:13px;border:none;border-radius:8px;background:var(--stock-ink);color:var(--stock);font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.cta:disabled{opacity:.35;cursor:not-allowed}
+.cta:hover:not(:disabled){background:#000}
+.fee-note{font-size:11.5px;color:#6f6552;margin-top:8px;text-align:center}
+
+/* ---------- mobile mini-bar ---------- */
+#miniBar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;background:var(--stock);color:var(--stock-ink);padding:10px 14px;box-shadow:0 -8px 24px rgba(0,0,0,.5);align-items:center;gap:12px;font-family:'Spline Sans Mono',monospace;font-size:13px}
+#miniBar .mb-total{font-weight:600;font-size:15px}
+#miniBar button{margin-left:auto;padding:9px 16px;border:none;border-radius:8px;background:var(--stock-ink);color:var(--stock);font-family:'Big Shoulders',sans-serif;font-size:16px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+@media(max-width:980px){#miniBar.on{display:flex}}
+
+/* ---------- drawers & modals ---------- */
+#veil{position:fixed;inset:0;background:rgba(10,12,22,.7);display:none;z-index:40}
+#veil.open{display:block}
+.drawer{position:fixed;left:0;right:0;bottom:-110%;z-index:50;background:var(--ink-2);border-top:1px solid var(--line);border-radius:18px 18px 0 0;padding:22px 18px 30px;max-width:700px;margin:0 auto;transition:bottom .25s ease;max-height:88vh;overflow:auto}
+.drawer.open{bottom:0}
+.drawer h2{margin-bottom:2px}
+.close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer}
+.modal{position:fixed;inset:0;z-index:55;display:none;place-items:center;padding:14px}
+.modal.open{display:grid}
+.modal .box{position:relative;background:var(--ink-2);border:1px solid var(--line);border-radius:14px;max-width:560px;width:100%;max-height:88vh;display:flex;flex-direction:column;padding:20px 18px 16px}
+.terms-scroll{overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0;background:var(--ink);font-size:13.5px;flex:1;min-height:200px}
+.terms-scroll h3{font-family:'Big Shoulders',sans-serif;letter-spacing:.05em;font-size:17px;color:#fff;margin:14px 0 4px}
+.terms-scroll h3:first-child{margin-top:0}
+.terms-scroll p{margin-bottom:10px;color:var(--bone)}
+.terms-scroll .notice{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--glow);border:1px dashed #6b5320;border-radius:8px;padding:10px;margin:10px 0}
+.scroll-hint{font-size:11.5px;color:var(--dim);text-align:center;margin-bottom:8px}
+.btn-row{display:flex;gap:10px;justify-content:flex-end}
+.btn{padding:11px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--bone);font-family:'Archivo';font-weight:600;font-size:14px;cursor:pointer}
+.btn:hover{border-color:var(--glow);color:var(--glow)}
+.btn.primary{background:var(--glow);border-color:var(--glow);color:var(--ink)}
+.btn.primary:hover{background:#ffc75e;color:var(--ink)}
+.btn.primary:disabled{opacity:.35;cursor:not-allowed}
+.btn.danger{border-color:#7c3b2b;color:var(--danger)}
+
+/* ---------- checkout drawer ---------- */
+.pay-summary{font-family:'Spline Sans Mono',monospace;font-size:13px;background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0}
+.pay-summary div{display:flex;justify-content:space-between;padding:2px 0}
+.demo-btn{display:block;width:100%;margin-top:10px;padding:11px;border-radius:8px;border:1px dashed #6b5320;background:none;color:var(--glow);font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.06em;cursor:pointer}
+.rail-note{font-size:12px;color:var(--dim);margin-top:12px}
+
+/* ---------- tickets (demo confirmation) ---------- */
+.tix{display:grid;gap:14px;margin:14px 0}
+.ticket{background:var(--stock);color:var(--stock-ink);border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;position:relative;overflow:hidden}
+.ticket::before{content:"";position:absolute;left:96px;top:8px;bottom:8px;border-left:2px dashed rgba(42,36,23,.3)}
+.ticket.carnival{box-shadow:inset 0 0 0 3px var(--gilt)}
+.ticket .qr{width:82px;height:82px;flex:none;background:#fff;border-radius:6px;display:grid;place-items:center}
+.ticket .qr canvas{width:74px;height:74px;image-rendering:pixelated}
+.ticket .t-info{font-family:'Spline Sans Mono',monospace;font-size:12px;line-height:1.5}
+.ticket .t-info b{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.04em;display:block}
+.ticket .t-type{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f6552}
+.ticket.carnival .t-type{color:#8a6a1f}
+
+/* ---------- info sections ---------- */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+.info-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.info-card h3{font-family:'Big Shoulders',sans-serif;font-weight:600;font-size:19px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:6px}
+.info-card p{font-size:13px;color:var(--bone);margin-bottom:8px}
+.info-card .fine{font-size:12px;color:var(--dim)}
+.mature{border:1px dashed #6b5320;border-radius:var(--radius);padding:16px;margin:26px 0;background:rgba(245,180,69,.04)}
+.mature h3{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.06em;color:var(--glow);margin-bottom:6px}
+.mature p{font-size:13.5px;color:var(--bone);max-width:70ch}
+.contact-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+.cat-btn{text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px;color:var(--bone);cursor:pointer;font-family:'Archivo'}
+.cat-btn:hover{border-color:var(--glow)}
+.cat-btn b{font-family:'Big Shoulders',sans-serif;font-size:18px;letter-spacing:.04em;color:#fff;display:block;margin-bottom:4px}
+.cat-btn span{font-size:12.5px;color:var(--dim)}
+.cat-panel{display:none;margin-top:12px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.cat-panel.open{display:block}
+.cat-panel h3{font-family:'Big Shoulders',sans-serif;font-size:19px;letter-spacing:.05em;color:#fff;margin-bottom:8px}
+.cat-panel p{font-size:13.5px;margin-bottom:10px}
+.cat-panel .fine{font-size:12px;color:var(--dim)}
+.notice-line{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.05em;color:var(--glow);border:1px dashed #6b5320;border-radius:8px;padding:10px;margin:10px 0}
+
+/* ---------- mailing list ---------- */
+.mailing{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.ml-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.ml-card.buyers{background:linear-gradient(160deg,#262038 0%,var(--ink-2) 55%);border-color:#57506b}
+.ml-card h3{font-family:'Big Shoulders',sans-serif;font-size:20px;letter-spacing:.05em;color:#fff}
+.ml-card .kicker{font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.ml-card ul{margin:10px 0 12px 0;list-style:none}
+.ml-card li{font-size:13px;padding:3px 0;color:var(--bone)}
+.ml-card li::before{content:"◆ ";color:var(--glow);font-size:9px;vertical-align:1px}
+.ml-form{display:flex;gap:8px;margin-top:8px}
+.ml-form input{flex:1;padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:13px}
+.ml-form input:focus{outline:none;border-color:var(--glow)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;font-size:12.5px;color:var(--dim)}
+footer .mono{font-size:11px;letter-spacing:.08em}
+footer p{margin-bottom:8px;max-width:80ch}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:var(--stock);color:var(--stock-ink);padding:10px 18px;border-radius:999px;font-size:13.5px;opacity:0;transition:all .25s;z-index:60;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:92vw}
+#toast.show{transform:translate(-50%,0);opacity:1}
+
+/* ---------- password gate ---------- */
+#gate{position:fixed;inset:0;background:var(--ink);z-index:100;display:grid;place-items:center;padding:16px}
+#gate[hidden]{display:none}
+#gate .g-box{max-width:380px;width:100%;text-align:center}
+#gate .org{margin-bottom:10px}
+#gate h1{font-size:44px;margin-bottom:6px}
+#gate p{font-size:13px;color:var(--dim);margin-bottom:16px}
+#gate input{width:100%;padding:13px;border-radius:8px;border:1px solid var(--line);background:var(--ink-2);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:15px;text-align:center;letter-spacing:.1em}
+#gate input:focus{outline:none;border-color:var(--glow)}
+#gate button{width:100%;margin-top:10px;padding:13px;border:none;border-radius:8px;background:var(--glow);color:var(--ink);font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:19px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+#gate .g-err{color:var(--danger);font-size:12.5px;margin-top:8px;min-height:18px}
+
+/* ---------- admin ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.tab{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.tab.on{border-color:var(--glow);color:var(--glow)}
+.pane{display:none}
+.pane.on{display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.stat b{display:block;font-family:'Spline Sans Mono',monospace;font-size:19px;color:var(--glow)}
+.stat span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.stat.money b{color:#fff}
+table.grid{width:100%;border-collapse:collapse;font-family:'Spline Sans Mono',monospace;font-size:12.5px;margin:10px 0 18px}
+@media(max-width:700px){table.grid{display:block;overflow-x:auto;white-space:nowrap}}
+table.grid th,table.grid td{border:1px solid var(--line);padding:7px 10px;text-align:right}
+table.grid th{color:var(--dim);font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px}
+table.grid td:first-child,table.grid th:first-child{text-align:left}
+table.grid td.tot{color:var(--glow)}
+.action-list{display:grid;gap:10px;margin-top:12px}
+.action{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px}
+.action .a-info{flex:1 1 260px}
+.action b{font-size:14px;color:#fff;display:block}
+.action span{font-size:12px;color:var(--dim)}
+.action .mono.delta{color:var(--ok);font-size:12px}
+.switch{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:12px;color:var(--dim)}
+.switch input{appearance:none;width:34px;height:18px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;transition:background .15s;flex:none}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--bone);transition:transform .15s}
+.switch input:checked{background:var(--glow)}
+.switch input:checked::after{transform:translateX(16px);background:var(--ink)}
+.chart-box{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:18px}
+.chart-box h3{font-family:'Big Shoulders',sans-serif;font-size:18px;letter-spacing:.05em;text-transform:uppercase;color:#fff;margin-bottom:10px}
+.seat-tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.seat-tools .tab{font-size:11px;padding:7px 12px}
+textarea.io{width:100%;min-height:140px;background:var(--ink);border:1px solid var(--line);border-radius:8px;color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:11.5px;padding:10px}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.set-card{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.set-card label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:8px 0 4px}
+.set-card input[type=text],.set-card input[type=number]{width:100%;padding:9px 10px;border-radius:7px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:13px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:6px}</style>
+</head>
+<body>
+<!--
+  ============================================================
+  THE CAPE COD COMEDY CARNIVAL: RESERVED-SEAT BOX OFFICE (v2)
+  All-Stripe · all-reserved · the map IS the box office.
+  Seat truth lives server-side (Netlify Functions + Upstash).
+  THE SWITCH: CONFIG.gate.enabled (both pages, one line each).
+  ============================================================
+-->
+<style>
+  .cta{display:inline-block;background:var(--glow);color:#171a2b;font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(24px,5vw,34px);letter-spacing:.09em;padding:18px 60px;border-radius:10px;text-decoration:none;box-shadow:0 0 42px rgba(245,180,69,.38)}
+  .bannerwall{max-width:900px;margin:40px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:14px}
+  .bigbanner{font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;text-align:center;letter-spacing:.05em;line-height:1.05;padding:16px 18px;border-radius:10px;font-size:clamp(24px,5.4vw,44px)}
+  .bb-gold{background:var(--glow);color:#171a2b;transform:rotate(-.6deg)}
+  .bb-line{border:2px solid var(--glow);color:var(--glow);background:rgba(245,180,69,.06);transform:rotate(.5deg)}
+  .comic-card{width:300px;border:1px solid #31365f;border-radius:12px;padding:16px;background:rgba(255,255,255,.02);text-align:center}
+  .comic-card img{max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 10px}
+  .comic-card h3{font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:2px 0 2px;font-size:26px}
+  .comic-card .role{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--glow);margin:0 0 8px;display:block}
+  .comic-card p.bio{margin:0;line-height:1.55;font-size:13.5px;text-align:left}
+</style>
+
+<main>
+  <header style="text-align:center;padding:46px 16px 8px">
+    <p class="mono" style="color:#8d8fa3;letter-spacing:.35em;font-size:12px;margin:0 0 10px">THE 1140A CORPORATION PRESENTS</p>
+    <h1 style="font-family:'Big Shoulders','Archivo',sans-serif;font-weight:800;font-size:clamp(44px,9vw,94px);line-height:.95;margin:0">THE CAPE COD <span class="amp">COMEDY CARNIVAL</span></h1>
+    <p class="mono" style="color:var(--glow);letter-spacing:.18em;font-size:clamp(12px,2.6vw,16px);margin:16px 0 26px">SAT 29 AUG 2026 · 7:00 PM · TILDEN ARTS CENTER · WEST BARNSTABLE, CAPE COD</p>
+    <p class="mono" style="letter-spacing:.14em;font-size:12px;margin:0 0 22px"><a href="/thanks.html" style="text-decoration:none">THAT WAS THE SHOW. THANK YOU, EVERYONE →</a></p>
+    <a class="cta" href="/tickets.html">BUY TICKETS</a>
+  </header>
+
+  <section class="bannerwall" aria-label="Why this show is the real deal">
+    <div class="bigbanner bb-gold"><span class="b-main">25 MILLION+ VIEWS ON YOUTUBE</span>
+      <span class="b-sub" style="display:block;white-space:nowrap;font-size:min(.62em, 2.9vw);font-weight:700;letter-spacing:.05em;margin-top:6px">AND THEIR COMBINED FOLLOWERS: OVER 640,000</span>
+    </div>
+    <div class="bigbanner bb-line" style="font-size:min(36px, calc(4.4vw - 3px))"><span style="white-space:nowrap">TWO NATIONALLY TOURING HEADLINERS</span><br>ONE NIGHT</div>
+    <div class="bigbanner bb-gold" style="font-size:min(40px, calc(5vw - 3px))"><span style="white-space:nowrap">THE ONLY COMEDY DOUBLE-HEADER</span><br>ON CAPE COD</div>
+    <div class="bigbanner bb-line">SAT AUG 29 · 7:00 PM · <span style="white-space:nowrap">TILDEN ARTS CENTER</span></div>
+  </section>
+
+  <section style="max-width:1040px;margin:44px auto 0;padding:0 14px">
+    <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 18px;text-align:center;font-size:clamp(26px,5vw,38px)">THE COMICS</h2>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center">
+      <div class="comic-card">
+        <img src="/press/thumb-sagalow.jpg" alt="Brendan Sagalow" loading="lazy">
+        <h3>BRENDAN SAGALOW</h3>
+        <span class="role">HEADLINER · NATIONALLY TOURING</span>
+        <p class="bio">Equal parts confident social observation and cutting self-deprecation, he has owned New York stages for over 10 years. His debut hour, <i>Thin Lips</i> (YouTube, 2024), keeps collecting critical acclaim; a &ldquo;New Face&rdquo; of the 2022 Just For Laughs festival, with runs on Barstool's <i>Answer the Internet</i> and MTV's <i>Joking Off</i>.</p>
+      </div>
+      <div class="comic-card">
+        <img src="/press/thumb-cannon.jpg" alt="Mike Cannon" loading="lazy">
+        <h3>MIKE CANNON</h3>
+        <span class="role">HEADLINER · NATIONALLY TOURING</span>
+        <p class="bio">He has headlined some of the world's most iconic rooms, including a sold-out Gramercy Theatre. His special <i>Traumatized Animal</i> (2024) drew millions of views across social media, and his first album, <i>I Think It Just Kicked In</i>, hit #1 on the iTunes comedy chart.</p>
+      </div>
+      <div class="comic-card">
+        <img src="/press/thumb-choi.jpg" alt="Jason Choi" loading="lazy">
+        <h3>JASON CHOI</h3>
+        <span class="role">OPENING THE NIGHT</span>
+        <p class="bio">Named New York's Funniest for the New York Comedy Festival 2025, with his network TV debut on CBS's <i>Comics Unleashed</i> in 2026. A finalist at the Boston Comedy Festival and the New York Comedy Club Fall Invitational, he has opened for Ronny Chieng, Mike Vecchione, and Gary Gulman.</p>
+      </div>
+    </div>
+    <p class="sub" style="text-align:center;margin:16px 0 0">Full bios, headshots &amp; the press kit: <a href="/press/" style="color:var(--glow)">1140A.com/press</a></p>
+  </section>
+
+  <section style="text-align:center;margin:46px auto 0;padding:0 14px">
+    <a href="/tickets.html" aria-label="The poster, click for tickets">
+      <img src="/poster.jpg" alt="The Cape Cod Comedy Carnival poster: Sagalow and Cannon, one night only, Sat Aug 29" style="width:min(430px,92vw);height:auto;border-radius:8px;box-shadow:0 8px 44px rgba(0,0,0,.5)">
+    </a>
+    <p class="sub mono" style="font-size:12px;margin:10px 0 0">THE POSTER, as seen all over the Cape. Click it for seats.</p>
+  </section>
+
+  <section style="max-width:680px;margin:44px auto 0;padding:0 14px">
+    <div style="border:1px solid #31365f;border-radius:12px;padding:22px;background:rgba(255,255,255,.02)">
+      <h2 style="font-family:'Big Shoulders','Archivo',sans-serif;letter-spacing:.05em;margin:0 0 8px">WHY THIS EXISTS</h2>
+      <p class="sub" style="margin:0">The 1140A Corporation is a Cape Cod nonprofit, run entirely by volunteers, with operating costs covered by donations, so the money goes to the artists and to keeping ticket prices within reach. The mission: bring top touring comedy back to the Cape at prices locals can afford, the way the Cape had it in the '80s and '90s and lost. This night is the first of a planned series.</p>
+    </div>
+  </section>
+
+  <section style="text-align:center;padding:44px 14px 8px">
+    <a class="cta" href="/tickets.html">PURCHASE TICKETS</a>
+  </section>
+
+  <p class="sub" style="text-align:center;padding:26px 14px 38px;font-size:13px">Questions, groups of eleven or more, wheelchair &amp; assistance, ASL: <span class="mono">info@1140A.com</span> · Tilden Arts Center, Cape Cod Community College, 2240 Iyannough Rd (Rte 132), West Barnstable, MA 02668</p>
+</main>
+<script>try{var _s=new URLSearchParams(location.search).get("src");if(_s)sessionStorage.setItem("cccc_src",_s);}catch(e){}</script>
+
+</body>
+</html>

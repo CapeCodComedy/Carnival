@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Door Sales · Cape Cod Comedy Carnival</title>
+<!-- v3.81: will-call cash sales, crew only, gated by the door word.
+     Mints real QR tickets from the same live store as every online sale. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#171a2b; --ink-2:#20243a; --line:#31364f; --bone:#d8d3c5; --dim:#8d8fa3;
+         --glow:#f5b445; --ok:#7fb069; --danger:#e2694f; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;font-size:16px;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto;padding:22px 16px 80px}
+  .org{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  h1{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:42px;line-height:.95;color:#fff;margin:4px 0 2px}
+  h1 span{color:var(--glow)}
+  .sub{font-size:13.5px;color:var(--dim);margin-bottom:16px}
+  .panel{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:10px 0 6px}
+  input{width:100%;padding:13px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;font-size:16px}
+  input:focus{outline:none;border-color:var(--glow)}
+  .tiers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .tier{padding:14px 6px;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--bone);font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:17px;letter-spacing:.04em;cursor:pointer;text-align:center;line-height:1.15}
+  .tier small{display:block;font-family:'Spline Sans Mono',monospace;font-weight:400;font-size:12px;color:var(--dim);letter-spacing:0}
+  .tier.on{border-color:var(--glow);color:var(--glow)}
+  .qtys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .qty{padding:12px 0;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--bone);font-family:'Spline Sans Mono',monospace;font-size:17px;cursor:pointer;text-align:center}
+  .qty.on{border-color:var(--glow);color:var(--glow)}
+  .due{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:34px;color:#fff;text-align:center;margin:14px 0 4px}
+  .due small{font-size:15px;color:var(--dim);font-family:'Archivo',sans-serif;font-weight:400;display:block}
+  .mint{width:100%;padding:16px;border-radius:10px;border:0;background:var(--glow);color:var(--ink);font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:22px;letter-spacing:.06em;cursor:pointer;margin-top:8px}
+  .mint:disabled{opacity:.5}
+  #msg{font-size:13.5px;margin-top:10px;color:var(--dim)}
+  #msg.bad{color:var(--danger)}
+  .ticket{display:flex;gap:14px;align-items:center;border:2px solid var(--ok);background:rgba(127,176,105,.07);border-radius:12px;padding:12px;margin:10px 0}
+  .ticket canvas{width:96px;height:96px;image-rendering:pixelated;background:#fff;border-radius:6px}
+  .t-info b{font-family:'Big Shoulders',sans-serif;font-weight:800;font-size:19px;display:block}
+  .t-info span{font-family:'Spline Sans Mono',monospace;font-size:12.5px;color:var(--dim);display:block}
+  .till{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--dim);border-top:1px dotted var(--line);margin-top:10px;padding-top:8px}
+  a{color:var(--glow)}
+  .hint{font-size:12.5px;color:var(--dim);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="org">THE 1140A CORPORATION · CREW ONLY</div>
+  <h1>DOOR <span>SALES</span></h1>
+  <p class="sub"><b>Cash only through this page.</b> Take the cash first, then mint. Cards: point the buyer at <b>1140A.com</b> on their own phone, it takes two minutes. Every ticket minted here is real and scans at the door.</p>
+
+  <div class="panel">
+    <label for="doorWord">Door word (crew only, ask Max)</label>
+    <input id="doorWord" autocomplete="off" placeholder="word of the night">
+
+    <label>What are they buying</label>
+    <div class="tiers" id="tiers"></div>
+
+    <label>How many</label>
+    <div class="qtys" id="qtys"></div>
+
+    <label for="buyerName">Buyer's name (optional, goes on the ticket)</label>
+    <input id="buyerName" autocomplete="off" placeholder="First and last">
+
+    <div class="due" id="due">$0<small>collect in cash, then press MINT</small></div>
+    <button class="mint" id="mintBtn" disabled>MINT THE TICKETS</button>
+    <p id="msg"></p>
+  </div>
+
+  <div id="out"></div>
+
+  <div class="panel">
+    <div class="till" id="till">Cash minted on this device tonight: $0</div>
+    <p class="hint">If a mint fails saying a unit slipped into a cart, just press MINT again. If a tier reads sold out, sell another tier or wave Max over. <a href="/door.html">door scanner</a> · <a href="/">buyer site</a></p>
+  </div>
+</div>
+<script src="/qrlib.js"></script>
+<script>
+var PRICES = { splash: 88, house: 66, general: 33 };
+var NAMES = { splash: "SPLASH ZONE", house: "PREMIUM", general: "GENERAL" };
+var kind = "general", qty = 1, busy = false;
+
+var tiersEl = document.getElementById("tiers");
+Object.keys(PRICES).forEach(function(k){
+  var b = document.createElement("button");
+  b.className = "tier" + (k === kind ? " on" : "");
+  b.innerHTML = NAMES[k] + "<small>$" + PRICES[k] + " cash</small>";
+  b.addEventListener("click", function(){ kind = k; paint(); });
+  b.dataset.k = k;
+  tiersEl.appendChild(b);
+});
+var qtysEl = document.getElementById("qtys");
+for (var i = 1; i <= 10; i++) (function(n){
+  var b = document.createElement("button");
+  b.className = "qty" + (n === 1 ? " on" : "");
+  b.textContent = n;
+  b.dataset.n = n;
+  b.addEventListener("click", function(){ qty = n; paint(); });
+  qtysEl.appendChild(b);
+})(i);
+
+var dw = document.getElementById("doorWord");
+try { dw.value = localStorage.getItem("doorWord") || ""; } catch (e) {}
+dw.addEventListener("input", function(){ try { localStorage.setItem("doorWord", dw.value.trim()); } catch (e) {} paint(); });
+
+function paint(){
+  document.querySelectorAll(".tier").forEach(function(b){ b.classList.toggle("on", b.dataset.k === kind); });
+  document.querySelectorAll(".qty").forEach(function(b){ b.classList.toggle("on", Number(b.dataset.n) === qty); });
+  document.getElementById("due").innerHTML = "$" + (PRICES[kind] * qty) + "<small>collect in cash, then press MINT</small>";
+  document.getElementById("mintBtn").disabled = busy || !dw.value.trim();
+}
+paint();
+
+function drawQR(canvas, text){
+  var holder = document.createElement("div");
+  holder.style.position = "absolute"; holder.style.left = "-9999px";
+  document.body.appendChild(holder);
+  var grid = null, n = 0;
+  try {
+    var q = new QRCode(holder, { text: text, width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
+    var inner = q._oQRCode; n = inner.getModuleCount(); grid = function(r, c){ return inner.isDark(r, c); };
+  } catch (e) {}
+  if (!grid){ holder.remove(); return; }
+  var PAD = 2, cell = 6, size = (n + PAD * 2) * cell;
+  canvas.width = canvas.height = size;
+  var ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "#111319";
+  for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (grid(r, c)) ctx.fillRect((c + PAD) * cell, (r + PAD) * cell, cell, cell);
+  holder.remove();
+}
+
+function tillAdd(cents){
+  try {
+    var t = Number(localStorage.getItem("doorTill") || 0) + cents;
+    localStorage.setItem("doorTill", t);
+    document.getElementById("till").textContent = "Cash minted on this device tonight: $" + (t / 100);
+  } catch (e) {}
+}
+try { var t0 = Number(localStorage.getItem("doorTill") || 0); if (t0) document.getElementById("till").textContent = "Cash minted on this device tonight: $" + (t0 / 100); } catch (e) {}
+
+document.getElementById("mintBtn").addEventListener("click", async function(){
+  if (busy) return;
+  busy = true; paint();
+  var msg = document.getElementById("msg");
+  msg.className = ""; msg.textContent = "minting…";
+  try {
+    var r = await fetch("/api/door-sell", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ door: dw.value.trim(), kind: kind, qty: qty, name: document.getElementById("buyerName").value.trim() }) });
+    var d = await r.json();
+    if (!r.ok){ msg.className = "bad"; msg.textContent = d.err || ("failed (" + r.status + ")"); busy = false; paint(); return; }
+    msg.textContent = "SOLD. Tickets below; they can screenshot them, or open " + location.origin + d.url;
+    var out = document.getElementById("out");
+    out.innerHTML = "";
+    (d.seats || []).forEach(function(id){
+      var code = d.codes[id];
+      var div = document.createElement("div");
+      div.className = "ticket";
+      div.innerHTML = '<canvas></canvas><div class="t-info"><b>' + NAMES[kind] + '</b><span>' + code + '</span><span>PAID CASH AT THE DOOR · SAT 29 AUG · 7:00 PM</span></div>';
+      out.appendChild(div);
+      drawQR(div.querySelector("canvas"), code);
+    });
+    tillAdd(d.totalCents || 0);
+    document.getElementById("buyerName").value = "";
+  } catch (e) {
+    msg.className = "bad"; msg.textContent = "Connection hiccup; nothing was sold. Try again.";
+  }
+  busy = false; paint();
+});
+</script>
+</body>
+</html>

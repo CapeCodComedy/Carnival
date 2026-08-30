@@ -195,6 +195,26 @@
     "general"
    ],
    "enabled": true
+  },
+  "OYSTER8": {
+   "off": 0.5,
+   "tiers": [
+    "splash",
+    "house"
+   ],
+   "once": true,
+   "maxSeats": 2,
+   "enabled": true
+  },
+  "3PICKLE": {
+   "off": 0.5,
+   "tiers": [
+    "splash",
+    "house"
+   ],
+   "once": true,
+   "maxSeats": 2,
+   "enabled": true
   }
  },
  "freeCodes": {
