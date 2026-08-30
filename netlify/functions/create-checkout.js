@@ -32,6 +32,10 @@ const LUA_ONCE_BACK = `redis.call('DEL', 'once:' .. ARGV[1]) return 1`;
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "POST" };
+  /* v3.86: the show has happened. house.json boxOffice:"closed" refuses every
+     checkout server-side; BOX_OFFICE_OPEN=1 is the test-harness override only. */
+  if (HOUSE.boxOffice === "closed" && process.env.BOX_OFFICE_OPEN !== "1")
+    return resp(410, { err: "The box office is closed. That show has happened. Bought a ticket? 1140A.com/mytickets" });
   let body;
   try { body = JSON.parse(event.body || "{}"); } catch { return { statusCode: 400, body: "bad json" }; }
   const { holder, seats, accessible } = body;
