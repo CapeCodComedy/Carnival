@@ -9,3 +9,17 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# v3.87: the show page is retired. force = true wins even if a stale
+# show.html still sits in the repo from an earlier upload.
+[[redirects]]
+  from = "/show.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/show"
+  to = "/"
+  status = 301
+  force = true
